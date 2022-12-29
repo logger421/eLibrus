@@ -139,6 +139,10 @@ body {
     padding: 2rem;
 }
 
+th {
+    background-color: gray;
+}
+
     /* Announcments */
 
 .main-body-container .notes-wrapper {
@@ -216,6 +220,29 @@ body {
 }
 
 .main-body-container .homework-wrapper td, .main-body-container .homework-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+}
+
+    /* Grades */
+.main-body-container .grades-wrapper * {
+    border: 1px solid black;
+}
+
+.main-body-container .grades-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .grades-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+.main-body-container .grades-wrapper td, .main-body-container .grades-wrapper th {
     text-align: center;
     padding: 1.2rem;
 }
