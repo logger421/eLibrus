@@ -186,13 +186,38 @@ body {
 }
 
 .main-body-container .schedule-wrapper td, .main-body-container .schedule-wrapper th {
-    padding: 1.2rem;
     text-align: center;
+    padding: 1.2rem;
 }
 
 .main-body-container .schedule-wrapper table {
     border-collapse: collapse;
     width: 90%;
+    table-layout: fixed;
+}
+
+    /* Homeworks */
+
+.main-body-container .homework-wrapper * {
+    border: 1px solid black;
+}
+
+.main-body-container .homework-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .homework-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+.main-body-container .homework-wrapper td, .main-body-container .homework-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
 }
 
 /* footer container styling */
