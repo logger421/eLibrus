@@ -1,0 +1,204 @@
+/* Global variables */
+
+:root {
+    /* Fonts colors */
+    --font-color: white;
+    
+    /* Elements colors */
+    --button-font-color: white;
+    --button-color: #002D62;
+    --button-color-hover: #007FFF;
+
+    /* Background colors */
+    --body-background: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
+    --main-body-background: rgb(224, 224, 224);
+
+    /* Elements parameters */
+    --default-border: 1px solid black;
+}
+
+/* Global settings */
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Font init */
+body {
+    font-family: Helvetica, sans-serif;
+    background: var(--body-background);
+}
+
+.header-container span {
+    font-size: 2em;
+    font-weight: 500;
+    color: var(--font-color);
+}
+
+/* Grid init */
+.header-container { grid-area: header; }
+.navbar-container { grid-area: navbar; }
+.main-body-container { grid-area: main-body; }
+.footer-container { grid-area: footer; }
+
+.main-container {
+    display: grid;
+    grid-template-columns: 21.3em auto auto auto auto auto;
+    grid-template-areas: 
+    'header header header header header header'
+    'navbar main-body main-body main-body main-body main-body'
+    'navbar main-body main-body main-body main-body main-body'
+    'footer footer footer footer footer footer';
+}
+
+/* Header container styling */
+.header-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 5rem;
+    align-self: start;
+    position: sticky;
+    top: 0;
+    background: var(--body-background);
+}
+
+.header-container > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-container span {
+    grid-column-start: 2;
+}
+
+.header-container div {
+    margin-left: auto;
+    grid-column-start: 3;
+}
+
+.header-container button {
+    border: 0;
+    margin: 0.1em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: 7px 48px;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+}
+
+.header-container button:last-child {
+    margin-right: .65em;
+}
+
+/* Navbar container styling */
+
+.navbar-container {
+    display: grid;
+    align-self: start;
+    position: sticky;
+    top: 5rem;
+    margin-left: .65em;
+}
+
+.navbar-container > * {
+    border: var(--default-border);
+    border-bottom: 0;
+    font-size: 1em;
+    width: 20rem;
+    height: 5rem;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+}
+
+.navbar-container > *:last-child {
+    border-bottom: var(--default-border);
+}
+
+.navbar-container > *:hover, .header-container button:hover {
+    background-color: var(--button-color-hover);
+}
+
+.navbar-container .active {
+    text-decoration: underline;
+}
+
+/* main body container styling */
+.main-body-container {
+    background-color: var(--main-body-background);
+    border: var(--default-border);
+    border-right: 0;
+    padding: 2rem;
+}
+
+    /* Announcments */
+
+.main-body-container .notes-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .note {
+    width: 65%;
+    justify-self: center;
+    border: var(--default-border);
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.main-body-container .note-title h3 {
+    text-align: center;
+    margin: .5rem;
+}
+
+.main-body-container .notes-wrapper button {
+    padding: 7px 48px;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .notes-wrapper button:hover {
+    background-color: var(--button-color-hover);
+}
+
+    /* Schedule */
+
+.main-body-container .schedule-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .schedule-wrapper * {
+    border: 1px solid black;
+}
+
+.main-body-container .schedule-wrapper td, .main-body-container .schedule-wrapper th {
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.main-body-container .schedule-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+}
+
+/* footer container styling */
+
+.footer-container {
+    background: var(--body-background);
+    text-align: center;
+    font-weight: bold;
+}
