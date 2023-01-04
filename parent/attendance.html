@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Strona startowa</title>
+</head>
+<body>
+    <!-- Main container for whole body -->
+    <div class="main-container">
+        <!-- container for header panel (top of the page)  -->
+        <div class="header-container">
+            <span>
+                Konto: Nauczyciel / Jan Kowalski
+            </span>
+            <div class="buttons">
+                <button>Ogłoszenia</button>
+                <button>Zmiana hasła</button>
+                <button>Wyloguj</button>
+            </div>    
+        </div>
+        <!-- container for navbar (left side of the page) -->
+        <div class="navbar-container">
+            <button onclick="location.href='/parent/home.html'">Strona główna</button>
+            <button onclick="location.href='/parent/messages.html'">Wiadomości</button>
+            <button class="active" onclick="location.href='/parent/attendance.html'">Frekwencja</button>
+            <button onclick="location.href='/parent/grades.html'">Oceny</button>
+            <button onclick="location.href='/parent/schedule.html'">Plan zajęć</button>
+            <button onclick="location.href='/parent/homeworks.html'">Prace domowe</button>
+        </div>
+        <!-- container for main body on the page (bottom right corner of the page) -->
+        <div class="main-body-container">
+            <fieldset>
+                <legend><h2>Frekwencja</h2></legend>
+				<div class="attendance-wrapper">
+                    <div class="teacher-panel">
+                        <div>
+                            <select name="class_id" id="">
+                                <option value="">Klasa: 1A</option>
+                                <option value="">Klasa: 1B</option>
+                                <option value="">Klasa: 5C</option>
+                                <option value="">Klasa: 2A</option>
+                            </select>
+                            <select name="class" id="">
+                                <option value="">Godzina wychowawcza</option>
+                                <option value="">Matematyka</option>
+                            </select>
+                            <select name="date" id="">
+                                <option value="">12-05-2022</option>
+                                <option value="">11-05-2022</option>
+                                <option value="">10-05-2022</option>
+                                <option value="">9-05-2022</option>
+                                <option value="">8-05-2022</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button>Wszyscy obecni</button>
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Uczeń</th>
+                            <th>Obecny</th>
+                            <th>Nieobecny</th>
+                            <th>Spoźniony</th>
+                            <th>Upsprawiedliwiony</th>
+                            <th>Zwolniony</th>
+                        </tr>
+                        <tr>
+                            <td>Jan Kowalski</td>
+                            <td>
+                                <input type="radio" name="1" id="O">
+                            </td>
+                            <td>
+                                <input type="radio" name="1" id="N">
+                            </td>
+                            <td>
+                                <input type="radio" name="1" id="S">
+                            </td>
+                            <td>
+                                <input type="radio" name="1" id="U">
+                            </td>
+                            <td>
+                                <input type="radio" name="1" id="Z">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Matylda Sokołowska</td>
+                            <td>
+                                <input type="radio" name="2" id="O">
+                            </td>
+                            <td>
+                                <input type="radio" name="2" id="N">
+                            </td>
+                            <td>
+                                <input type="radio" name="2" id="S">
+                            </td>
+                            <td>
+                                <input type="radio" name="2" id="U">
+                            </td>
+                            <td>
+                                <input type="radio" name="2" id="Z">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Celina Jasińska</td>
+                            <td>
+                                <input type="radio" name="3" id="O">
+                            </td>
+                            <td>
+                                <input type="radio" name="3" id="N">
+                            </td>
+                            <td>
+                                <input type="radio" name="3" id="S">
+                            </td>
+                            <td>
+                                <input type="radio" name="3" id="U">
+                            </td>
+                            <td>
+                                <input type="radio" name="3" id="Z">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sylwia Wojciechowska</td>
+                            <td>
+                                <input type="radio" name="4" id="O">
+                            </td>
+                            <td>
+                                <input type="radio" name="4" id="N">
+                            </td>
+                            <td>
+                                <input type="radio" name="4" id="S">
+                            </td>
+                            <td>
+                                <input type="radio" name="4" id="U">
+                            </td>
+                            <td>
+                                <input type="radio" name="4" id="Z">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cezary Rutkowski</td>
+                            <td>
+                                <input type="radio" name="5" id="O">
+                            </td>
+                            <td>
+                                <input type="radio" name="5" id="N">
+                            </td>
+                            <td>
+                                <input type="radio" name="5" id="S">
+                            </td>
+                            <td>
+                                <input type="radio" name="5" id="U">
+                            </td>
+                            <td>
+                                <input type="radio" name="5" id="Z">
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="teacher-panel">
+                        <div>
+                            <button>Zapisz</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+        <div class="footer-container">
+            <h1>Autorzy: </h1>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
