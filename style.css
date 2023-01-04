@@ -247,6 +247,30 @@ th {
     padding: 1.2rem;
 }
 
+    /* Attendance */
+.main-body-container .attendance-wrapper * {
+    border: 1px solid black;
+}
+
+.main-body-container .attendance-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .attendance-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+     /*table-layout: fixed;*/
+}
+
+.main-body-container .attendance-wrapper td, .main-body-container .attendance-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    word-wrap: break-word;
+}
+
 /* footer container styling */
 
 .footer-container {
