@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Strona startowa</title>
+</head>
+<body>
+    <!-- Main container for whole body -->
+    <div class="main-container">
+        <!-- container for header panel (top of the page)  -->
+        <div class="header-container">
+            <div class="buttons">
+                <button onclick="location.href='/general/login.html'">Zaloguj</button>
+            </div>    
+        </div>
+        <!-- container for navbar (left side of the page) -->
+        <div class="navbar-container">
+            <button onclick="location.href='/general/home.html'">Strona główna</button>
+            <button onclick="location.href=''">Wiadomości</button>
+            <button onclick="location.href=''">Frekwencja</button>
+            <button onclick="location.href=''">Oceny</button>
+            <button onclick="location.href=''">Plan zajęć</button>
+            <button onclick="location.href=''">Prace domowe</button>
+        </div>
+        <!-- container for main body on the page (bottom right corner of the page) -->
+        <div class="main-body-container">
+            <fieldset>
+                <legend><h2>Zaloguj się</h2></legend>
+            <div class="login-wrapper">
+                <form action="">
+                    <label for="">Email:</label>
+                    <input type="text" placeholder="Email: @dziennikuj.X.edu.pl">
+                    <label for="">Hasło:</label>
+                    <input type="text" placeholder="***********">
+                    <div>
+                        <button>Zaloguj</button>
+                        <a href="/general/remind_password.html"><strong>Zresetuj hasło</strong></a>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+        </div>
+        <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+        <div class="footer-container">
+            <h1>Autorzy: </h1>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

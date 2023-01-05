@@ -300,7 +300,7 @@ th {
     margin-bottom: 1rem;
 }
 
-.main-body-container .teacher-panel button {
+.main-body-container .teacher-panel button, .main-body-container .login-wrapper button {
     padding: 7px 48px;
     background-color: var(--button-color-teacher-panel);
     color: var(--button-font-color);
@@ -308,7 +308,7 @@ th {
     border: 0;
 }
 
-.main-body-container .teacher-panel button:hover {
+.main-body-container .teacher-panel button:hover, .main-body-container .login-wrapper button:hover {
     background-color: rgb(62, 62, 62);
 }
 
@@ -324,4 +324,34 @@ th {
     background: var(--body-background);
     text-align: center;
     font-weight: bold;
+}
+
+/* = GENERAL */
+
+    /* LOGIN */
+.main-body-container .login-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.main-body-container .login-wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    white-space: nowrap;
+}
+
+.main-body-container .login-wrapper form > label {
+    margin: 0.1rem;
+}
+
+.main-body-container .login-wrapper form div > * {
+    margin: 1rem;
+}
+
+.main-body-container .login-wrapper form > * {
+    margin: .5rem;
+    padding: .5rem;
+    text-align: center;
 }
