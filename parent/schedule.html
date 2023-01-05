@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Strona startowa</title>
+</head>
+<body>
+    <!-- Main container for whole body -->
+    <div class="main-container">
+        <!-- container for header panel (top of the page)  -->
+        <div class="header-container">
+			<select name="" id="">
+                <option value="">Uczeń: Matylda Sokołowska</option>
+            </select>
+            <span>
+                Konto: Rodzic / Jan Kowalski
+            </span>
+            <div class="buttons">
+                <button>Ogłoszenia</button>
+                <button>Zmiana hasła</button>
+                <button>Wyloguj</button>
+            </div>    
+        </div>
+        <!-- container for navbar (left side of the page) -->
+        <div class="navbar-container">
+            <button onclick="location.href='/parent/home.html'">Strona główna</button>
+            <button onclick="location.href='/parent/messages.html'">Wiadomości</button>
+            <button onclick="location.href='/parent/attendance.html'">Frekwencja</button>
+            <button onclick="location.href='/parent/grades.html'">Oceny</button>
+            <button class="active" onclick="location.href='/parent/schedule.html'">Plan zajęć</button>
+            <button onclick="location.href='/parent/homeworks.html'">Prace domowe</button>
+        </div>
+        <!-- container for main body on the page (bottom right corner of the page) -->
+        <div class="main-body-container">
+            <fieldset>
+                <legend><h2>Plan zajęć</h2></legend>
+				<div class="schedule-wrapper">
+					<table>
+						<tr>
+							<th>Nr. Lekcji</th>
+							<th>Poniedziałek</th>
+							<th>Wtorek</th>
+							<th>Środa</th>
+							<th>Czwartek</th>
+							<th>Piątek</th>
+						</tr>
+						<tr>
+							<th>1</th>
+							<td>Fizyka</td>
+							<td>matematyka</td>
+							<td></td>
+							<td>J. Polski</td>
+							<td>Wychowanie fizyczne</td>
+						</tr>
+						<tr>
+							<th>2</th>
+							<td>J. Polski</td>
+							<td>Wychowanie fizyczne</td>
+							<td></td>
+							<td>J. Angielski</td>
+							<td>Wychowanie fizyczne</td>
+						</tr>
+						<tr>
+							<th>3</th>
+							<td>J. Polski</td>
+							<td>J. Niemiecki</td>
+							<td>Historia</td>
+							<td>Informatyka</td>
+							<td>Matematyka</td>
+						</tr>
+						<tr>
+							<th>4</th>
+							<td>Religia</td>
+							<td>BHP</td>
+							<td>J. Angielski</td>
+							<td>Matematyka</td>
+							<td>Religia</td>
+						</tr>
+						<tr>
+							<th>5</th>
+							<td>Matematyka</td>
+							<td>EDB</td>
+							<td>Fizyka</td>
+							<td>Historia</td>
+							<td>Biologia</td>
+						</tr>
+						<tr>
+							<th>6</th>
+							<td>Geografia</td>
+							<td>HiT</td>
+							<td>Geografia</td>
+							<td>J. Niemiecki</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>7</th>
+							<td></td>
+							<td>Plastyka</td>
+							<td></td>
+							<td></td>
+							<td>Plastyka</td>
+						</tr>
+						<tr>
+							<th>8</th>
+							<td></td>
+							<td>Wychowanie fizyczne</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</fieldset>
+        </div>
+        <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+        <div class="footer-container">
+            <h1>Autorzy: </h1>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

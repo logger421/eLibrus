@@ -76,6 +76,13 @@ body {
     justify-content: center;
 }
 
+.header-container select {
+    grid-column-start: 1;
+    margin: 1.5rem;
+    margin-left: 0.65rem;
+    width: 50%;
+}
+
 .header-container span {
     grid-column-start: 2;
 }

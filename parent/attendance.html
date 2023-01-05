@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Strona startowa</title>
+</head>
+<body>
+    <!-- Main container for whole body -->
+    <div class="main-container">
+        <!-- container for header panel (top of the page)  -->
+        <div class="header-container">
+            <select name="" id="">
+                <option value="">Uczeń: Matylda Sokołowska</option>
+            </select>
+            <span>
+                Konto: Rodzic / Jan Kowalski
+            </span>
+            <div class="buttons">
+                <button>Ogłoszenia</button>
+                <button>Zmiana hasła</button>
+                <button>Wyloguj</button>
+            </div>    
+        </div>
+        <!-- container for navbar (left side of the page) -->
+        <div class="navbar-container">
+            <button onclick="location.href='/parent/home.html'">Strona główna</button>
+            <button onclick="location.href='/parent/messages.html'">Wiadomości</button>
+            <button class="active" onclick="location.href='/parent/attendance.html'">Frekwencja</button>
+            <button onclick="location.href='/parent/grades.html'">Oceny</button>
+            <button onclick="location.href='/parent/schedule.html'">Plan zajęć</button>
+            <button onclick="location.href='/parent/homeworks.html'">Prace domowe</button>
+        </div>
+        <!-- container for main body on the page (bottom right corner of the page) -->
+        <div class="main-body-container">
+            <fieldset>
+                <legend><h2>Frekwencja</h2></legend>
+				<div class="attendance-wrapper">
+                    <table>
+                        <tr>
+                            <th rowspan="2">
+                                Data: 
+                                <select name="data" id="data">
+                                    <option value="">2021-04-11</option>
+                                </select>
+                            </th>
+                            <th colspan="8">
+                                Nr. Lekcji
+                            </th>
+                            <th rowspan="2">U</th>
+                            <th rowspan="2">N</th>
+                            <th rowspan="2">S</th>
+                            <th rowspan="2">Z</th>
+                            <th rowspan="2">Zaznacz</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                        </tr>
+                        <tr>
+                            <th>2021-04-15 (Pt)</th>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>-</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>
+                                <input type="checkbox" disabled="disabled" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2021-04-14 (Czw)</th>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>-</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2021-04-13 (Śr)</th>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>-</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2021-04-12 (Wt)</th>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>-</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>
+                                <input type="checkbox" disabled="disabled" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2021-04-11 (Pon)</th>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td>O</td>
+                            <td>O</td>
+                            <td>-</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>
+                                <input type="checkbox" disabled="disabled" name="" id="">
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="teacher-panel">
+                        <div>
+                            <button style="float: right;">Usprawiedliw nieobecności</button>
+                        </div>
+                    </div>
+                </div>
+			</fieldset>
+        </div>
+        <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+        <div class="footer-container">
+            <h1>Autorzy: </h1>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
