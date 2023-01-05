@@ -305,6 +305,12 @@ th {
     background-color: rgb(62, 62, 62);
 }
 
+.main-body-container .teacher-panel form {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
 /* footer container styling */
 
 .footer-container {

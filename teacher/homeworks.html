@@ -33,12 +33,35 @@
         <!-- container for main body on the page (bottom right corner of the page) -->
         <div class="main-body-container">
             <fieldset>
-                <legend><h2>Prace domowe</h2></legend>
+				<legend><h2>Prace domowe</h2></legend>
 				<div class="homework-wrapper">
+				<div class="teacher-panel">
+					<div>
+						<div>
+                            <select name="class_id" id="">
+                                <option value="">Klasa: 1A</option>
+                                <option value="">Klasa: 1B</option>
+                                <option value="">Klasa: 5C</option>
+                                <option value="">Klasa: 2A</option>
+                            </select>
+                            <select name="class" id="">
+                                <option value="">Godzina wychowawcza</option>
+                                <option value="">Matematyka</option>
+                            </select>
+                        </div>
+						<form action="">
+							<label style="margin: .5rem;" for="start">Termin oddania: </label>
+							<input style="padding: .5rem;" type="date" id="start">
+							<label style="margin: .5rem;" for="title">Tytuł: </label>
+							<input style="padding: .5rem;" type="text" id="title">
+							<label style="margin: .5rem;" for="description">Opis: </label>
+							<textarea name="" id="" cols="30" rows="10"></textarea>
+						</form>
+					</div>
+				</div>
 					<table>
 						<tr>
 							<th>Przedmiot</th>
-							<th>Nauczyciel</th>
 							<th>Temat</th>
 							<th>Data</th>
 							<th>Termin</th>
@@ -46,7 +69,6 @@
 						</tr>
 						<tr>
 							<td>Biologia</td>
-							<td>Adam Nowak</td>
 							<td>Ssaki</td>
 							<td>08.12.2022 19:51</td>
 							<td>15.12.2022</td>
@@ -54,53 +76,17 @@
 						</tr>
 						<tr>
 							<td>Biologia</td>
-							<td>Adam Nowak</td>
-							<td>Ssaki</td>
-							<td>08.12.2022 19:51</td>
-							<td>15.12.2022</td>
-							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-						</tr>
-						<tr>
-							<td>Biologia</td>
-							<td>Adam Nowak</td>
-							<td>Ssaki</td>
-							<td>08.12.2022 19:51</td>
-							<td>15.12.2022</td>
-							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-						</tr>
-						<tr>
-							<td>Biologia</td>
-							<td>Adam Nowak</td>
-							<td>Ssaki</td>
-							<td>08.12.2022 19:51</td>
-							<td>15.12.2022</td>
-							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-						</tr>
-						<tr>
-							<td>Biologia</td>
-							<td>Adam Nowak</td>
-							<td>Ssaki</td>
-							<td>08.12.2022 19:51</td>
-							<td>15.12.2022</td>
-							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-						</tr>
-						<tr>
-							<td>Biologia</td>
-							<td>Adam Nowak</td>
-							<td>Ssaki</td>
-							<td>08.12.2022 19:51</td>
-							<td>15.12.2022</td>
-							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-						</tr>
-						<tr>
-							<td>Biologia</td>
-							<td>Adam Nowak</td>
 							<td>Ssaki</td>
 							<td>08.12.2022 19:51</td>
 							<td>15.12.2022</td>
 							<td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
 						</tr>
 					</table>
+					<div class="teacher-panel">
+						<div>
+							<button style="float: right;">Wyślij</button>
+						</div>
+					</div>
 				</div>
 			</fieldset>
         </div>
