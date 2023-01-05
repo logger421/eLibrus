@@ -190,12 +190,13 @@ th {
 }
 
 .main-body-container .schedule-wrapper * {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .main-body-container .schedule-wrapper td, .main-body-container .schedule-wrapper th {
     text-align: center;
     padding: 1.2rem;
+    border: 1px solid black;
 }
 
 .main-body-container .schedule-wrapper table {
@@ -207,7 +208,7 @@ th {
     /* Homeworks */
 
 .main-body-container .homework-wrapper * {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .main-body-container .homework-wrapper {
@@ -226,11 +227,12 @@ th {
 .main-body-container .homework-wrapper td, .main-body-container .homework-wrapper th {
     text-align: center;
     padding: 1.2rem;
+    border: 1px solid black;
 }
 
     /* Grades */
 .main-body-container .grades-wrapper * {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .main-body-container .grades-wrapper {
@@ -249,6 +251,7 @@ th {
 .main-body-container .grades-wrapper td, .main-body-container .grades-wrapper th {
     text-align: center;
     padding: 1.2rem;
+    border: 1px solid black;
 }
 
     /* Attendance */
@@ -284,7 +287,7 @@ th {
     margin: 1.5rem;
 }
 
-.main-body-container .teacher-panel select {
+.main-body-container select {
     padding: 1rem;
     margin-right: 1rem;
     margin-bottom: 1rem;

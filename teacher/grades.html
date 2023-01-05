@@ -35,80 +35,155 @@
 			<fieldset>
                 <legend><h2>Oceny</h2></legend>
                 <div class="grades-wrapper">
+                    <div class="teacher-panel">
+                        <div>
+                            <select name="class_id" id="">
+                                <option value="">Klasa: 1A</option>
+                                <option value="">Klasa: 1B</option>
+                                <option value="">Klasa: 5C</option>
+                                <option value="">Klasa: 2A</option>
+                            </select>
+                            <select name="class" id="">
+                                <option value="">Godzina wychowawcza</option>
+                                <option value="">Matematyka</option>
+                            </select>
+                        </div>
+                    </div>
                     <table>
                         <tr>
-                            <th>Przedmiot</th>
+                            <th>Zaznacz</th>
+                            <th>Osoba</th>
                             <th>I Semestr</th>
                             <th>Śr. I</th>
-                            <th>Ocena końcowa</th>
+                            <th>Ocena Końcowa</th>
                             <th>II Semestr</th>
                             <th>Śr. II</th>
                             <th>Ocena Końcowa</th>
                         </tr>
                         <tr>
-                            <th>Biologia</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
+                            <td>
+                                <input type="checkbox" name="1" id="1">
+                            </td>
+                            <td><a href="/teacher/edit_grade.html">Jan Kowalski</a></td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                5, 4+
+                            </td>
+                            <td>
+                                4.75
+                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>Chemia</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
+                            <td>
+                                <input type="checkbox" name="1" id="2">
+                            </td>
+                            <td><a href="/teacher/edit_grade.html">Matylda Sokołowska</a></td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>Fizyka</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
+                            <td>
+                                <input type="checkbox" name="1" id="3">
+                            </td>
+                            <td><a href="/teacher/edit_grade.html">Celina Jasińska</a></td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                1, 2
+                            </td>
+                            <td>
+                                1.5
+                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>J. Polski</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
+                            <td>
+                                <input type="checkbox" name="1" id="4">
+                            </td>
+                            <td><a href="/teacher/edit_grade.html">Sylwia Wojciechowska</a></td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                5
+                            </td>
+                            <td>
+                                5
+                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>J. Angielski</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <th>J. Niemiecki</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <th>Religia</th>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
-                            <td>1, 2, 5, 4+</td>
-                            <td>4.75</td>
-                            <td>5</td>
+                            <td>
+                                <input type="checkbox" name="1" id="5">
+                            </td>
+                            <td><a href="/teacher/edit_grade.html">Cezary Rutkowski</a></td>
+                            <td>
+                                1, 2, 5, 4+
+                            </td>
+                            <td>
+                                3.1
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                1, 4+
+                            </td>
+                            <td>
+                                2.75
+                            </td>
+                            <td></td>
                         </tr>
                     </table>
+                    <div class="teacher-panel">
+                        <div>
+                            <button>Zbiorcze dodanie</button>
+                            <select name="class_id" id="">
+                                <option value="">1</option>
+                                <option value="">2</option>
+                                <option value="">3</option>
+                                <option value="">4</option>
+                                <option value="">5</option>
+                                <option value="">6</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 			</fieldset>
         </div>
