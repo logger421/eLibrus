@@ -35,10 +35,18 @@
             <fieldset>
                 <legend><h2>Zarządzaj klasami</h2></legend>
             <div class="manage-wrapper">
-                <button onclick="location.href='/admin/create_class.html'">Stwórz klasę</button>
-                <button onclick="location.href='/admin/delete_class.html'">Usuń klasę</button>
-                <button onclick="location.href='/admin/edit_students.html'">Modyfikuj uczniów klasy</button>
-                <button onclick="location.href='/admin/edit_subjects.html'">Modyfikuj zajęcia klasy</button>
+                <form action="">
+                    <input type="text" placeholder="Nazwa klasy: ">
+                    <input type="text" placeholder="Rok rozpoczęcia: ">
+                    <select name="" id="">
+                        <option value="">Jan Kowalski</option>
+                        <option value="">Joanna Kowalski</option>
+                    </select>
+                    <button>Dodaj</button>
+                </form>
+                <div class="go-back-wrapper">
+                    <button class="go-back-btn" onclick="location.href='/admin/manage_classes.html'">Cofnij</button>
+                </div>
             </div>
         </fieldset>
         </div>

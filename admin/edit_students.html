@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Strona startowa</title>
+</head>
+<body>
+    <!-- Main container for whole body -->
+    <div class="main-container">
+        <!-- container for header panel (top of the page)  -->
+        <div class="header-container">
+            <span>
+                Konto: Administrator / Jan Kowalski
+            </span>
+            <div class="buttons">
+                <button>Powiadomienia</button>
+                <button>Zmiana hasła</button>
+                <button>Wyloguj</button>
+            </div>    
+        </div>
+        <!-- container for navbar (left side of the page) -->
+        <div class="navbar-container">
+            <button onclick="location.href='/admin/home.html'">Strona główna</button>
+            <button onclick="location.href='/admin/messages.html'">Wiadomości</button>
+            <button onclick="location.href='/admin/manage_users.html'">Zarządzaj użytkownikami</button>
+            <button onclick="location.href='/admin/manage_subject.html'">Zarządzaj zajęciami</button>
+            <button class="active" onclick="location.href='/admin/manage_classes.html'">Zarządzaj klasami</button>
+            <button onclick="location.href='/admin/add_announcement.html'">Dodaj ogłoszenie</button>
+        </div>
+        <!-- container for main body on the page (bottom right corner of the page) -->
+        <div class="main-body-container">
+            <fieldset>
+                <legend><h2>Zarządzaj klasami</h2></legend>
+            <div class="manage-wrapper">
+                <form action="">
+                    <select name="class_id" id="">
+                        <option value="">Klasa: 1A</option>
+                        <option value="">Klasa: 1B</option>
+                        <option value="">Klasa: 5C</option>
+                        <option value="">Klasa: 2A</option>
+                    </select>
+                    <input type="text" name="" id="" placeholder="Email / Imie i nazwisko">
+                    <table>
+                        <tr>
+                            <th>Imię i nazwisko</th>
+                            <th>Rocznik</th>
+                            <th>Email</th>
+                            <th>Wybierz</th>
+                        </tr>
+                        <tr>
+                            <td>Jan Kowalski</td>
+                            <td>2000</td>
+                            <td>jan.kowalski@dziennikuj.uczen.pl</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Matylda Sokołowska</td>
+                            <td>2001</td>
+                            <td>matylkda.sokolowska@dziennikuj.uczen.pl</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Celina Jasińska</td>
+                            <td>2005</td>
+                            <td>celina.jasinska@dziennikuj.uczen.pl</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sylwia Wojciechowska</td>
+                            <td>2003</td>
+                            <td>sylwia.wojciechowska@dziennikuj.uczen.pl</td>
+                            <td>
+                                <input type="checkbox" name="" id="">
+                            </td>
+                        </tr>
+                    </table>
+                    <button>Dodaj</button>
+                </form>
+                <div class="go-back-wrapper">
+                    <button class="go-back-btn" onclick="location.href='/admin/manage_classes.html'">Cofnij</button>
+                </div>
+            </div>
+        </fieldset>
+        </div>
+        <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+        <div class="footer-container">
+            <h1>Autorzy: </h1>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

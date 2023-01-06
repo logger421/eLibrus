@@ -355,3 +355,110 @@ th {
     padding: .5rem;
     text-align: center;
 }
+
+/* ADMIN */
+    /* announcements */
+
+.main-body-container .add-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .add-wrapper form {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.main-body-container .add-wrapper form > * {
+    padding: 1rem;
+    margin: .5rem;
+}
+
+.main-body-container .add-wrapper button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .add-wrapper button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+    /* Manage classes */
+
+.main-body-container .manage-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .manage-wrapper > button {
+    width: 30%;
+    margin: 1rem;
+    padding: 1rem;
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .manage-wrapper > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .manage-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+.main-body-container .manage-wrapper form > * {
+    width: 100%;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.main-body-container .manage-wrapper form > button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .manage-wrapper form > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.go-back-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.go-back-btn {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+    margin: 1rem;
+    padding: 1rem;
+    float: left;
+}
+
+.go-back-btn:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .manage-wrapper td, .main-body-container .manage-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    word-wrap: break-word;
+    border: 1px solid black;
+}
+
+.main-body-container .manage-wrapper table {
+    border-collapse: collapse;
+    width: 100%;
+     /*table-layout: fixed;*/
+}

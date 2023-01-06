@@ -35,10 +35,36 @@
             <fieldset>
                 <legend><h2>Zarządzaj klasami</h2></legend>
             <div class="manage-wrapper">
-                <button onclick="location.href='/admin/create_class.html'">Stwórz klasę</button>
-                <button onclick="location.href='/admin/delete_class.html'">Usuń klasę</button>
-                <button onclick="location.href='/admin/edit_students.html'">Modyfikuj uczniów klasy</button>
-                <button onclick="location.href='/admin/edit_subjects.html'">Modyfikuj zajęcia klasy</button>
+                <form action="">
+                    <select name="" id="" place>
+                        <option value="" disabled selected>Nauczyciel</option>
+                        <option value="">Jan Kowalski</option>
+                        <option value="">Joanna Kowalska</option>
+                    </select>
+                    <select name="" id="" place>
+                        <option value="" disabled selected>Sala</option>
+                        <option value="">21a</option>
+                        <option value="">32b</option>
+                    </select>
+                    <select name="" id="" place>
+                        <option value="" disabled selected>Przedmiot</option>
+                        <option value="">Matematyka</option>
+                        <option value="">Biologia</option>
+                    </select>
+                    <select name="" id="" place>
+                        <option value="" disabled selected>Dzień tygodnia</option>
+                        <option value="">Poniedziałek</option>
+                        <option value="">Wtorek</option>
+                        <option value="">Środa</option>
+                        <option value="">Czwartek</option>
+                        <option value="">Piątek</option>
+                    </select>
+                    <input type="time" name="" id="">
+                    <button>Dodaj</button>
+                </form>
+                <div class="go-back-wrapper">
+                    <button class="go-back-btn" onclick="location.href='/admin/manage_subject.html'">Cofnij</button>
+                </div>
             </div>
         </fieldset>
         </div>
