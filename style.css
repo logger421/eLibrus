@@ -388,6 +388,83 @@ th {
     background-color: rgb(62, 62, 62);
 }
 
+    /* Magane users */
+
+.test {
+    display: flex;
+    justify-content: space-between;
+}
+
+.align-left {
+    display: flex;
+    justify-content: center;
+}
+
+.account-name-input > input {
+    height: 2rem;
+    padding-left: 1rem;
+    font-size: 1.1rem;
+}
+
+.account-name-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.account-type-picker {
+    height: 100%;
+    margin-left: 1em;
+    display: flex;
+    float: right;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+
+.account-type-picker .radio label {
+    padding-left: 0.3em;
+    font-size: 1.2rem;
+}
+
+.align-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.align-right > * {
+    margin-top: 0.25em;
+}
+
+    /* edit user */
+
+#edit_user_type_selector {
+    width: 50%;
+    transform: translateX(50%);
+}
+
+.first-last-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.first-last-name > input {
+    height: 2rem;
+}
+
+.account-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    grid-gap: 1.5em;
+    align-content: space-around;
+}
+
+.account-info > * {
+    height: 2rem;
+}
+
     /* Manage classes */
 
 .main-body-container .manage-wrapper {

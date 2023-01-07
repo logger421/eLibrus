@@ -35,7 +35,83 @@
             <fieldset>
                 <legend><h2>Zarządzaj użytkownikami</h2></legend>
             <div class="notes-wrapper">
-                
+            <div class="manage-wrapper">
+                <form action="">
+                    <div class="test">
+                        <div class="align-left">
+                            <div class="account-name-input">
+                                <input type="text" name="" id="" placeholder="Imie">
+                                <input type="text" name="" id="" placeholder="Nazwisko">
+                            </div>
+                            <div class="account-type-picker">
+                                <div class="radio">
+                                    <input type="radio" name="account-type" id="nauczyciel">
+                                    <label for="nauczyciel">Nauczyciel</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="account-type" id="rodzic">
+                                    <label for="rodzic">Rodzic</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="account-type" id="uczen">
+                                    <label for="uczen">Uczeń</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- TODO: fix button nav -->
+                        <div class="align-right">
+                            <button onclick="location.href='/admin/create_user.html'">
+                                <a href="create_user.html" style="color:white">Stwórz</a> 
+                            </button>
+                            <button>Szukaj</button>
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Imię i nazwisko</th>
+                            <th>Rocznik</th>
+                            <th>Email</th>
+                            <th>Rola</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Jan Kowalski</td>
+                            <td>2000</td>
+                            <td>jan.kowalski@dziennikuj.uczen.pl</td>
+                            <td>Uczeń</td>
+                            <td>
+                                <a href="edit_user.html">Edytuj</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Matylda Sokołowska</td>
+                            <td>2001</td>
+                            <td>matylkda.sokolowska@dziennikuj.uczen.pl</td>
+                            <td>Uczeń</td>
+                            <td>
+                                <a href="edit_user.html">Edytuj</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Celina Jasińska</td>
+                            <td>2005</td>
+                            <td>celina.jasinska@dziennikuj.uczen.pl</td>
+                            <td>Uczeń</td>
+                            <td>
+                                <a href="edit_user.html">Edytuj</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sylwia Wojciechowska</td>
+                            <td>2003</td>
+                            <td>sylwia.wojciechowska@dziennikuj.uczen.pl</td>
+                            <td>Uczeń</td>
+                            <td>
+                                <a href="edit_user.html">Edytuj</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
             </div>
         </fieldset>
         </div>
