@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../style.css">
+        <title>Wyślij wiadomość</title>
+    </head>
+
+    <body>
+        <!-- Main container for whole body -->
+        <div class="main-container">
+            <!-- container for header panel (top of the page)  -->
+            <div class="header-container">
+                <span>
+                    Konto:
+                </span>
+                <div class="buttons">
+                    <button>Powiadomienia</button>
+                    <button>Zmiana hasła</button>
+                    <button>Wyloguj</button>
+                </div>
+            </div>
+            <!-- container for navbar (left side of the page) -->
+            <div class="navbar-container">
+                <button>Strona główna</button>
+                <button class="active" onclick="location.href='/general/messages.html'">Wiadomości</button>
+                <button>Zarządzaj użytkownikami</button>
+                <button>Zarządzaj zajęciami</button>
+                <button>Zarządzaj klasami</button>
+                <button>Dodaj ogłoszenie</button>
+            </div>
+            <!-- container for main body on the page (bottom right corner of the page) -->
+            <div class="main-body-container">
+                <fieldset>
+                    <legend>
+                        <h2>Wiadomości</h2>
+                    </legend>
+                    <div class="messages-wrapper">
+                        <form>
+                            <div class="pair">
+                                <label for="msgReceiver">Odbiorca</label>
+                                <input type="text" id="msgReceiver">
+                            </div>
+                            <div class="pair">
+                                <label for="msgtitle">Tytuł</label>
+                                <input type="text" id="msgTitle">
+                            </div>
+                            <div class="pair">
+                                <label for="msgText">Treść wiadomości</label>
+                                <textarea id="msgText" rows="15"></textarea>
+                            </div>
+                        </form>
+                        <div class="messages-bttn-decisions-wrapper">
+                            <div class="left-bttn"><button onclick="location.href='/general/messages.html'"
+                                    class="messages-bttn-decisions">Cofnij</button></div>
+                            <div class="right-bttn"><button onclick="location.href='/general/messages.html'"
+                                    class="messages-bttn-decisions">Wyślij</button></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <!-- container for footer (bottom of the page (nie wiem co tutaj mozemy dac ale na wszelki wypadek dodaje)) -->
+            <div class="footer-container">
+                <h1>Autorzy: </h1>
+                <ul>
+
+                </ul>
+            </div>
+        </div>
+    </body>
+
+</html>
