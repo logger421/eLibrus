@@ -39,6 +39,44 @@
                         <h2>Dodaj użytkownika</h2>
                     </legend>
                     <div class="manage-wrapper">
+                        <form action="">
+                            <select name="account-type" id="edit_user_type_selector">
+                                <option value="">Uczen</option>
+                                <option value="">Nauczyciel</option>
+                                <option value="">Rodzic</option>
+                            </select>
+                            <div class="account-info">
+                                <label for="imie">Imie</label>
+                                <input type="text" name="" id="imie" placeholder="Jan">
+
+                                <label for="nazwisko">Nazwisko</label>
+                                <input type="text" name="" id="nazwisko" placeholder="Kowalski">
+
+                                <label for="pesel">PESEL</label>
+                                <input type="text" name="" id="pesel" placeholder="0123456789">
+
+                                <label for="birthdate">Data urodzenia</label>
+                                <input type="date" name="" id="birthdate">
+
+                                <label for="city">Miasto</label>
+                                <input type="text" name="" id="city" placeholder="Kraków">
+
+                                <label for="zip-code">Kod pocztowy</label>
+                                <input type="text" name="" id="zip-code" placeholder="12-345">
+
+                                <label for="street">Ulica</label>
+                                <input type="text" name="" id="street" placeholder="Łojasiewicza">
+
+                                <label for="house-no">Numer domu/mieszkania</label>
+                                <input type="text" name="" id="house-no" placeholder="11">
+                            </div>
+                            <div class="parent-picker">
+                                <button type="button" class="parent-search-btn"
+                                    onclick="location.href='/admin/find_parent.html'">Wyszukaj rodzica</button>
+                                <input type="text" name="" id="parent-info" placeholder="" readonly>
+                            </div>
+                        </form>
+                        <button class="edit-user-btn">Stwórz</button>
                         <div class="go-back-wrapper">
                             <button class="go-back-btn"
                                 onclick="location.href='/admin/manage_users.html'">Cofnij</button>
