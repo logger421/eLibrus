@@ -465,6 +465,25 @@ th {
     height: 2rem;
 }
 
+.account-name-input > input {
+    padding: 1.5rem;
+    margin: 1rem;
+}
+
+.align-right > * {
+    padding: 1rem !important;
+    margin: 1rem;
+    width: 10rem;
+    background-color: var(--button-color-teacher-panel) !important;
+    color: var(--button-font-color) !important;
+    font-size: 1.2em;
+    border: 0;
+}
+
+.align-right > *:hover {
+    background-color: rgb(62, 62, 62) !important;
+}
+
     /* Manage classes */
 
 .main-body-container .manage-wrapper {
