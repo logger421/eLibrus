@@ -655,3 +655,14 @@ th {
 .main-body-container .change-pass-wrapper form > button:hover {
     background-color: rgb(62, 62, 62);
 }
+
+
+/* TEMP */
+.temp {
+    align-self: center;
+}
+
+.temp fieldset > button {
+    padding: 1.2rem!important;
+    margin: 1rem;
+}
