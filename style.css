@@ -279,6 +279,12 @@ th {
      /*table-layout: fixed;*/
 }
 
+.main-body-container .table-stat {
+    width: 50% !important;
+    align-self: flex-end;
+    margin: 5%;
+}
+
 .main-body-container .attendance-wrapper td, .main-body-container .attendance-wrapper th {
     text-align: center;
     padding: 1.2rem;
@@ -324,36 +330,6 @@ th {
     background: var(--body-background);
     text-align: center;
     font-weight: bold;
-}
-
-/* = GENERAL */
-
-    /* LOGIN */
-.main-body-container .login-wrapper {
-    display: flex;
-    justify-content: center;
-}
-
-.main-body-container .login-wrapper form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 30%;
-    white-space: nowrap;
-}
-
-.main-body-container .login-wrapper form > label {
-    margin: 0.1rem;
-}
-
-.main-body-container .login-wrapper form div > * {
-    margin: 1rem;
-}
-
-.main-body-container .login-wrapper form > * {
-    margin: .5rem;
-    padding: .5rem;
-    text-align: center;
 }
 
 /* ADMIN */
@@ -559,6 +535,37 @@ th {
      /*table-layout: fixed;*/
 }
 
+/* = GENERAL */
+
+/* Login */
+.main-body-container .login-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.main-body-container .login-wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    white-space: nowrap;
+}
+
+.main-body-container .login-wrapper form > label {
+    margin: 0.1rem;
+}
+
+.main-body-container .login-wrapper form div > * {
+    margin: 1rem;
+}
+
+.main-body-container .login-wrapper form > * {
+    margin: .5rem;
+    padding: .5rem;
+    text-align: center;
+}
+    
+
     /* notificatins */
 
 .main-body-container .notifications-wrapper {
@@ -596,4 +603,36 @@ th {
 .main-body-container .notifications-wrapper div {
     align-self: flex-start;
     margin-left: 11.5%;
+}
+
+    /* Change password */
+
+.main-body-container .change-pass-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.main-body-container .change-pass-wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    white-space: nowrap;
+}
+
+.main-body-container .change-pass-wrapper form > * {
+    margin: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.main-body-container .change-pass-wrapper form > button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .change-pass-wrapper form > button:hover {
+    background-color: rgb(62, 62, 62);
 }
