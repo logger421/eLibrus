@@ -86,6 +86,8 @@ ALTER TABLE
     `rola` ADD PRIMARY KEY `rola_id_primary`(`id`);
 CREATE TABLE `uzytkownik`(
     `user_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(255) NOT NULL,
+    `haslo` VARCHAR(255) NOT NULL,
     `imie` VARCHAR(255) NOT NULL,
     `nazwisko` VARCHAR(255) NOT NULL,
     `pesel` VARCHAR(255) NOT NULL,
@@ -99,6 +101,8 @@ CREATE TABLE `uzytkownik`(
 );
 ALTER TABLE
     `uzytkownik` ADD PRIMARY KEY `uzytkownik_user_id_primary`(`user_id`);
+ALTER TABLE
+    `uzytkownik` ADD UNIQUE `uzytkownik_email_unique`(`email`);
 ALTER TABLE
     `rodzicielstwo` ADD CONSTRAINT `rodzicielstwo_dziecko_id_foreign` FOREIGN KEY(`dziecko_id`) REFERENCES `uzytkownik`(`user_id`);
 ALTER TABLE
