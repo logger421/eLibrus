@@ -1,0 +1,777 @@
+/* Global variables */
+
+:root {
+    /* Fonts colors */
+    --font-color: white;
+    
+    /* Elements colors */
+    --button-font-color: white;
+    --button-color: #002D62;
+    --button-color-teacher-panel: gray;
+    --button-color-hover: #007FFF;
+
+    /* Background colors */
+    --body-background: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
+    --main-body-background: rgb(224, 224, 224);
+
+    /* Elements parameters */
+    --default-border: 1px solid black;
+}
+
+/* Global settings */
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Font init */
+body {
+    font-family: Helvetica, sans-serif;
+    background: var(--body-background);
+}
+
+.header-container span {
+    font-size: 2em;
+    font-weight: 500;
+    color: var(--font-color);
+}
+
+/* Grid init */
+.header-container { grid-area: header; }
+.navbar-container { grid-area: navbar; }
+.main-body-container { grid-area: main-body; }
+.footer-container { grid-area: footer; }
+
+.main-container {
+    display: grid;
+    grid-template-columns: 21.3em auto auto auto auto auto;
+    grid-template-areas: 
+    'header header header header header header'
+    'navbar main-body main-body main-body main-body main-body'
+    'navbar main-body main-body main-body main-body main-body'
+    'footer footer footer footer footer footer';
+}
+
+/* Header container styling */
+.header-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 5rem;
+    align-self: start;
+    position: sticky;
+    top: 0;
+    background: var(--body-background);
+}
+
+.header-container > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-container select {
+    grid-column-start: 1;
+    margin: 1.5rem;
+    margin-left: 0.65rem;
+    width: 50%;
+}
+
+.header-container span {
+    grid-column-start: 2;
+}
+
+.header-container div {
+    margin-left: auto;
+    grid-column-start: 3;
+}
+
+.header-container button {
+    border: 0;
+    margin: 0.1em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding: 7px 48px;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+}
+
+.header-container button:last-child {
+    margin-right: .65em;
+}
+
+/* Navbar container styling */
+
+.navbar-container {
+    display: grid;
+    align-self: start;
+    position: sticky;
+    top: 5rem;
+    margin-left: .65em;
+}
+
+.navbar-container > * {
+    border: var(--default-border);
+    border-bottom: 0;
+    font-size: 1em;
+    width: 20rem;
+    height: 5rem;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+}
+
+.navbar-container > *:last-child {
+    border-bottom: var(--default-border);
+}
+
+.navbar-container > *:hover, .header-container button:hover {
+    background-color: var(--button-color-hover);
+}
+
+.navbar-container .active {
+    text-decoration: underline;
+}
+
+/* main body container styling */
+.main-body-container {
+    background-color: var(--main-body-background);
+    border: var(--default-border);
+    border-right: 0;
+    padding: 2rem;
+}
+
+th {
+    background-color: gray;
+}
+
+    /* Announcments */
+
+.main-body-container .notes-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .note {
+    width: 65%;
+    justify-self: center;
+    border: var(--default-border);
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.main-body-container .note-title h3 {
+    text-align: center;
+    margin: .5rem;
+}
+
+.main-body-container .notes-wrapper button {
+    padding: 7px 48px;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .notes-wrapper button:hover {
+    background-color: var(--button-color-hover);
+}
+
+/* = STUDENT = */
+/* Schedule */
+
+    /* Schedule */
+
+.main-body-container .schedule-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .schedule-wrapper * {
+    /* border: 1px solid black; */
+}
+
+.main-body-container .schedule-wrapper td, .main-body-container .schedule-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    border: 1px solid black;
+}
+
+.main-body-container .schedule-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+    /* Homeworks */
+
+.main-body-container .homework-wrapper * {
+    /* border: 1px solid black; */
+}
+
+.main-body-container .homework-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .homework-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+.main-body-container .homework-wrapper td, .main-body-container .homework-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    border: 1px solid black;
+}
+
+    /* Grades */
+.main-body-container .grades-wrapper * {
+    /* border: 1px solid black; */
+}
+
+.main-body-container .grades-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .grades-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+.main-body-container .grades-wrapper td, .main-body-container .grades-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    border: 1px solid black;
+}
+
+    /* Attendance */
+/* .main-body-container .attendance-wrapper * {
+    border: 1px solid black;
+} */
+
+.main-body-container .attendance-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.main-body-container .attendance-wrapper table {
+    border-collapse: collapse;
+    width: 90%;
+     /*table-layout: fixed;*/
+}
+
+.main-body-container .table-stat {
+    width: 50% !important;
+    align-self: flex-end;
+    margin: 5%;
+}
+
+.main-body-container .attendance-wrapper td, .main-body-container .attendance-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    word-wrap: break-word;
+    border: 1px solid black;
+}
+
+/* = TEACHER = */
+.main-body-container .teacher-panel {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem;
+}
+
+.main-body-container select {
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.main-body-container .teacher-panel button, .main-body-container .login-wrapper button {
+    padding: 7px 48px;
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .teacher-panel button:hover, .main-body-container .login-wrapper button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .teacher-panel form {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+/* footer container styling */
+
+.footer-container {
+    background: var(--body-background);
+    text-align: center;
+    font-weight: bold;
+}
+
+/* ADMIN */
+    /* announcements */
+
+.main-body-container .add-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .add-wrapper form {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.main-body-container .add-wrapper form > * {
+    padding: 1rem;
+    margin: .5rem;
+}
+
+.main-body-container .add-wrapper button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .add-wrapper button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+    /* Magane users */
+
+.manage-users-input-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.align-left {
+    display: flex;
+    justify-content: center;
+}
+
+.account-name-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.account-name-input > input {
+    height: 2rem;
+    padding: 1.5rem;
+    margin: 0.4rem;
+    font-size: 1.1rem;
+}
+
+.account-type-picker {
+    height: 100%;
+    margin-left: 1em;
+    display: flex;
+    float: right;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+
+.account-type-picker .radio label {
+    padding-left: 0.3em;
+    font-size: 1.2rem;
+}
+
+.align-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.align-right > * {
+    padding: 1rem !important;
+    margin: 1rem;
+    width: 10rem;
+    background-color: var(--button-color-teacher-panel) !important;
+    color: var(--button-font-color) !important;
+    font-size: 1.2em;
+    border: 0;
+}
+
+.align-right>*:hover {
+    background-color: rgb(62, 62, 62) !important;
+}
+
+    /* edit user */
+
+#edit_user_type_selector {
+    width: 50%;
+    transform: translateX(50%);
+}
+
+.account-info {
+    display: grid;
+    grid-template-columns: fit-content(10em) 1fr fit-content(10em) 1fr;
+    justify-content: space-between;
+    align-content: space-around;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0.6em !important;
+}
+
+.account-info > input {
+    height: 1.5rem;
+    padding: 1.5rem;
+    margin: 1rem;
+}
+
+.account-info > label {
+    text-align: right;
+}
+
+.edit-user-btn {
+    width: 20% !important;
+    margin: 0.5em !important;
+}
+
+    /* create user */
+
+.parent-picker {
+    display: flex;
+}
+
+.parent-search-btn {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    width: 30%;
+    font-size: 1.2em;
+    border: 0;
+}
+
+.parent-search-btn {
+    background-color: rgb(62, 62, 62);
+}
+
+#parent-info {
+    width: 65%;
+    font-size: 1.2em;
+}
+
+    /* Manage classes */
+
+.main-body-container .manage-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .manage-wrapper > button {
+    width: 30%;
+    margin: 1rem;
+    padding: 1rem;
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .manage-wrapper > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .manage-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+.main-body-container .manage-wrapper form > * {
+    width: 100%;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.main-body-container .manage-wrapper form > button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .manage-wrapper form > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.go-back-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.go-back-btn {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+    margin: 1rem;
+    padding: 1rem;
+    float: left;
+}
+
+.go-back-btn:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .manage-wrapper td, .main-body-container .manage-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    word-wrap: break-word;
+    border: 1px solid black;
+}
+
+.main-body-container .manage-wrapper table {
+    border-collapse: collapse;
+    width: 100%;
+     /*table-layout: fixed;*/
+}
+
+/* = GENERAL */
+
+/* Login */
+.main-body-container .login-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.main-body-container .login-wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    white-space: nowrap;
+}
+
+.main-body-container .login-wrapper form > label {
+    margin: 0.1rem;
+}
+
+.main-body-container .login-wrapper form div > * {
+    margin: 1rem;
+}
+
+.main-body-container .login-wrapper form > * {
+    margin: .5rem;
+    padding: .5rem;
+    text-align: center;
+}
+    
+
+    /* notificatins */
+
+.main-body-container .notifications-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-body-container .notifications-wrapper table {
+    border-collapse: collapse;
+    width: 75%;
+    table-layout: fixed;
+}
+
+.main-body-container .notifications-wrapper td, .main-body-container .notifications-wrapper th {
+    text-align: center;
+    padding: 1.2rem;
+    word-wrap: break-word;
+    border: 1px solid black;
+}
+
+.main-body-container .notifications-wrapper div > button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.main-body-container .notifications-wrapper div > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.main-body-container .notifications-wrapper div {
+    align-self: flex-start;
+    margin-left: 11.5%;
+}
+
+    /* Change password */
+
+.main-body-container .change-pass-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.main-body-container .change-pass-wrapper form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    white-space: nowrap;
+}
+
+.main-body-container .change-pass-wrapper form > * {
+    margin: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.main-body-container .change-pass-wrapper form > button {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+}
+
+.main-body-container .change-pass-wrapper form > button:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+    /* Manage messages */
+
+.main-body-container .messages-wrapper * {
+    /* border: 1px solid black; */
+}
+
+.main-body-container .messages-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.main-body-container .messages-wrapper table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.main-body-container .messages-wrapper td,
+.main-body-container .messages-wrapper th {
+    font-weight: 600;
+    text-align: center;
+    padding: 1.2rem;
+    border: 1px solid black;
+}
+
+.main-body-container .messages-wrapper .checker,
+.main-body-container .messages-wrapper .data {
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid black;
+    width: 15%;
+}
+
+.messages-bttn-decisions-wrapper-right {
+    width: 100%;
+    position: relative;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    text-align: right;
+}
+
+.messages-bttn-decisions-wrapper-left {
+    width: 100%;
+    text-align: left;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    position: relative;
+}
+
+.messages-bttn-decisions {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+    padding: 1rem;
+}
+
+.messages-bttn-decisions-right {
+    margin-top: 1rem;
+}
+
+.messages-bttn-decisions-left {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.messages-bttn-decisions:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.messages-wrapper form {
+    margin-top: 1rem;
+    width: 75%;
+}
+
+.messages-wrapper form .pair {
+    margin-top: 1rem;
+}
+
+.messages-wrapper input,
+.messages-wrapper textarea {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0 1rem 0;
+    resize: none;
+    font-size: 1.1em;
+}
+
+.messages-bttn-decisions-wrapper {
+    width: 75%;
+    position: relative;
+    text-align: center;
+    display: flex;
+    margin: 1rem;
+}
+
+.messages-bttn-decisions-wrapper .left-bttn {
+    text-align: left;
+    width: 50%;
+}
+
+.messages-bttn-decisions-wrapper .right-bttn {
+    text-align: right;
+    width: 50%;
+}
+
+/* TEMP */
+.temp {
+    align-self: center;
+}
+
+.temp fieldset > button {
+    padding: 1.2rem!important;
+    margin: 1rem;
+}
+

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Uczeń - Strona startowa</title>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header-container">
+            <span>
+                Konto: <%= user.role %> / <%= user.name %> 
+            </span>
+            <div class="buttons">
+                <button onclick="location.href='/notifications'">Powiadomienia</button>
+                <button onclick="location.href='/change_password'">Zmiana hasła</button>
+                <button onclick="location.href='/login'">Wyloguj</button>
+            </div>
+        </div>
