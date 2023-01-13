@@ -1,0 +1,9 @@
+<% if (user.role == 1) { %>
+    <%- include ../templates/student_navbar %>
+<% } else if (user.role == 2) { %>
+    <%- include ../templates/parent_navbar %>
+<% } else if (user.role == 3) { %>
+    <%- include ../templates/teacher_navbar %>
+<% } else { %>
+    <%- include ../templates/admin_navbar %>
+<% } %>
