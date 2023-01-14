@@ -12,10 +12,10 @@
                 <tr>
                     <th rowspan="2">
                         Data:
-                        <form method="post" action="/attendance" id="attendance_date">
-                            <input type="date" name="data" id="data" value="2023-01-03">
+                        <form method="get" action="/student/attendance" id="attendance_date">
+                            <input type="date" name="data" id="attendance_date_picker" value="<%= date %>" form="attendance_date">
+                            <!-- <input type="week" name="attendance_date" id="attendance_date_picker" form="attendance_date"> -->
                         </form>
-                        <button id="submit-button">Submit</button>
                     </th>
                     <th colspan="8">
                         Nr. Lekcji
@@ -87,3 +87,9 @@
 
 
 <%- include ../templates/footer %>
+
+<script>
+    $("#attendance_date_picker").on('change', function () {
+        $("#attendance_date").submit();
+    })
+</script>

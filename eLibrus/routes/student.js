@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const moment = require('moment')
 
 const {
     uzytkownik,
@@ -27,10 +28,25 @@ router.get("/", async function (req, res) {
 router.get("/attendance", function (req, res) {
     // const selectedDate = "2023-01-03";
     let selectedDate = req.query.data;
-    if (typeof selectedDate == 'undefined')
-        selectedDate = '2023-01-03'
+
+    // const week = req.query.attendance_date
+    // const start = moment(week, "GGGG-[W]WW").startOf("week").format();
+    // const end = moment(week, "GGGG-[W]WW").endOf("week").format();
+    // const dates = [];
+    // let currentDate = moment(start);
+    // while (currentDate <= end) {
+    //     dates.push(currentDate.format("YYYY-MM-DD"));
+    //     currentDate = moment(currentDate).add(1, "day");
+    // }
+    // console.log(req.query);
+
+
+    // no date specified = use current day
+    if (typeof selectedDate == 'undefined') {
+        let yourDate = new Date();
+        selectedDate = yourDate.toISOString().split("T")[0];
+    }
     const user_id = req.user.dataValues.user_id
-    console.log(selectedDate)
     frekwencja
         .findAll({
             where: {
@@ -62,9 +78,10 @@ router.get("/attendance", function (req, res) {
                 { O: 0, N: 0, S: 0, Z: 0 }
             );
             res.render("student/attendance", {
+                date: selectedDate,
                 user: req.user,
                 attendance: full_attendance,
-                stats: count
+                stats: count,
             });
         });
 });
