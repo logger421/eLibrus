@@ -1,6 +1,30 @@
 <%- include ../templates/header %>
 <%- include ../templates/navbar %>
 
-<!-- reszta -->
-<h1>homework</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Prace domowe</h2></legend>
+        <div class="homework-wrapper">
+            <table>
+                <tr>
+                    <th>Przedmiot</th>
+                    <th>Nauczyciel</th>
+                    <th>Temat</th>
+                    <th>Termin</th>
+                    <th>Treść</th>
+                </tr>
+                <% for(var i=0; i<homeworks.length; i++) { %>
+                    <tr>
+                        <td><%= homeworks[i].nazwa %></td>
+                        <td><%= homeworks[i].imie %> <%= homeworks[i].nazwisko %></td>
+                        <td><%= homeworks[i].tytul %></td>
+                        <td><%= homeworks[i].termin_oddania %></td>
+                        <td><%= homeworks[i].opis %></td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+    </fieldset>
+</div>
+
 <%- include ../templates/footer %>

@@ -32,13 +32,46 @@ router.get('/grades', function(req, res) {
 });
 
 // parent schedule
-router.get('/schedule', function(req, res) {
-	res.render('parent/schedule', { user: req.user, students: req.students, current_student: req.cookies.current_student});
+router.get('/schedule', async function(req, res) {
+	const [result, metadata] = await sequelize.query(
+		`SELECT nr_lekcji, dzien, przedmioty.nazwa FROM zajecia 
+		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty WHERE user_id = ${req.cookies.current_student}`
+	);
+	
+	let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
+	let schedule = {
+		1: ["", "", "", "", ""],
+		2: ["", "", "", "", ""],
+		3: ["", "", "", "", ""],
+		4: ["", "", "", "", ""],
+		5: ["", "", "", "", ""],
+		6: ["", "", "", "", ""],
+		7: ["", "", "", "", ""],
+		8: ["", "", "", "", ""],
+	};
+
+	for (var i=0; i<5; i++) {
+		for(var j=1; j<9; j++) {
+			result.forEach(element => {
+				if (element.dzien == dni[i] && element.nr_lekcji == j) {
+					schedule[j][i] = element.nazwa;
+				}
+			});
+		}
+	}
+
+	res.render('parent/schedule', { user: req.user, students: req.students, current_student: req.cookies.current_student, schedule});
 });
 
 // parent homeworks
-router.get('/homeworks', function(req, res) {
-	res.render('parent/homeworks', { user: req.user, students: req.students, current_student: req.cookies.current_student});
+router.get('/homeworks', async function(req, res) {
+	const [homeworks, metadata] = await sequelize.query(`
+		SELECT prowadzacy.imie, prowadzacy.nazwisko, termin_oddania, tytul, opis, przedmioty.nazwa FROM zadanie_domowe 
+		NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen inner join uzytkownik AS prowadzacy 
+		ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ${req.cookies.current_student}`
+	);
+	
+	res.render('parent/homeworks', { user: req.user, students: req.students, current_student: req.cookies.current_student, homeworks});
 });
 
 router.post('/change_student', function(req, res) {
