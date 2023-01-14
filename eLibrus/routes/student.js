@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const moment = require('moment')
+const moment = require("moment");
+const sequelize = require("../models").sequelize;
 
 const {
     uzytkownik,
@@ -12,49 +13,40 @@ const {
 
 // student home page
 router.get("/", async function (req, res) {
-    let result = await uzytkownik.findAll({
-        include: [
-            {
-                model: zajecia,
-                required: true,
-            },
-        ],
-    });
-    console.log(result[0].dataValues);
     res.render("general/home", { user: req.user });
 });
 
-// student attendance
-router.get("/attendance", function (req, res) {
-    // const selectedDate = "2023-01-03";
-    let selectedDate = req.query.data;
-
-    // const week = req.query.attendance_date
-    // const start = moment(week, "GGGG-[W]WW").startOf("week").format();
-    // const end = moment(week, "GGGG-[W]WW").endOf("week").format();
-    // const dates = [];
-    // let currentDate = moment(start);
-    // while (currentDate <= end) {
-    //     dates.push(currentDate.format("YYYY-MM-DD"));
-    //     currentDate = moment(currentDate).add(1, "day");
-    // }
-    // console.log(req.query);
-
-
-    // no date specified = use current day
-    if (typeof selectedDate == 'undefined') {
-        let yourDate = new Date();
-        selectedDate = yourDate.toISOString().split("T")[0];
+router.get("/attendance", async function (req, res) {
+    let week = req.query.attendance_date;
+    const user_id = req.user.dataValues.user_id;
+    if (typeof week == "undefined") {
+        week = moment().week();
+        week = `${moment().year()}-W${week < 10 ? `0${week}` : week}`;
     }
-    const user_id = req.user.dataValues.user_id
-    frekwencja
-        .findAll({
-            where: {
-                data_zajec: selectedDate,
-                user_id: user_id,
-            },
-        })
-        .then((attendance) => {
+    const start = moment(week, "GGGG-[W]WW").startOf("week").format();
+    const end = moment(week, "GGGG-[W]WW").endOf("week").format();
+    const dates = [];
+    let currentDate = moment(start);
+    while (currentDate.isBefore(end)) {
+        dates.push(currentDate.format("YYYY-MM-DD"));
+        currentDate = moment(currentDate).add(1, "day");
+    }
+    console.log(`THERE IS THE WEEK: ${dates}`);
+    let promiseArr = [];
+    for (const date of dates) {
+        promiseArr.push(
+            frekwencja.findAll({
+                where: {
+                    data_zajec: date,
+                    user_id: user_id,
+                },
+            })
+        );
+    }
+    let attendanceData = await Promise.all(promiseArr);
+    let days = {};
+    Promise.all(
+        attendanceData.map((attendance, i) => {
             let template_attendance = Array.from({ length: 8 }, (_, i) => ({
                 id: i + 1,
                 zajecia_id: 0,
@@ -77,13 +69,20 @@ router.get("/attendance", function (req, res) {
                 },
                 { O: 0, N: 0, S: 0, Z: 0 }
             );
-            res.render("student/attendance", {
-                date: selectedDate,
-                user: req.user,
+            days[dates[i]] = {
+                date: dates[i],
                 attendance: full_attendance,
                 stats: count,
-            });
+            };
+        })
+    ).then(() => {
+        console.log(week);
+        res.render("student/attendance", {
+            week: week,
+            days: days,
+            user: req.user,
         });
+    });
 });
 
 // student grades
@@ -92,13 +91,55 @@ router.get("/grades", function (req, res) {
 });
 
 // student schedule
-router.get("/schedule", function (req, res) {
-    res.render("student/schedule", { user: req.user });
+router.get("/schedule", async function (req, res) {
+    const [result, metadata] = await sequelize.query(
+        `SELECT nr_lekcji, dzien, przedmioty.nazwa FROM zajecia 
+        NATURAL JOIN uzytkownik NATURAL JOIN przedmioty WHERE user_id = ${req.user.user_id}`
+    );
+
+    let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
+    let schedule = {
+        1: ["", "", "", "", ""],
+        2: ["", "", "", "", ""],
+        3: ["", "", "", "", ""],
+        4: ["", "", "", "", ""],
+        5: ["", "", "", "", ""],
+        6: ["", "", "", "", ""],
+        7: ["", "", "", "", ""],
+        8: ["", "", "", "", ""],
+    };
+
+    for (var i = 0; i < 5; i++) {
+        for (var j = 1; j < 9; j++) {
+            result.forEach((element) => {
+                if (element.dzien == dni[i] && element.nr_lekcji == j) {
+                    schedule[j][i] = element.nazwa;
+                }
+            });
+        }
+    }
+
+    res.render("student/schedule", {
+        user: req.user,
+        students: req.students,
+        current_student: req.user.user_id,
+        schedule,
+    });
 });
 
 // student homeworks
-router.get("/homeworks", function (req, res) {
-    res.render("student/homeworks", { user: req.user });
+router.get("/homeworks", async function (req, res) {
+    const [homeworks, metadata] = await sequelize.query(`
+        SELECT prowadzacy.imie, prowadzacy.nazwisko, termin_oddania, tytul, opis, przedmioty.nazwa FROM zadanie_domowe 
+        NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen inner join uzytkownik AS prowadzacy 
+        ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ${req.user.user_id}`);
+
+    res.render("student/homeworks", {
+        user: req.user,
+        students: req.students,
+        current_student: req.user.user_id,
+        homeworks,
+    });
 });
 
 module.exports = router;

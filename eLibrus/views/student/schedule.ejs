@@ -2,5 +2,34 @@
 <%- include ../templates/navbar %>
 
 <!-- reszta -->
-<h1>schedule</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Plan zajęć</h2>
+        </legend>
+        <div class="schedule-wrapper">
+            <table>
+                <tr>
+                    <th>Nr. Lekcji</th>
+                    <th>Poniedziałek</th>
+                    <th>Wtorek</th>
+                    <th>Środa</th>
+                    <th>Czwartek</th>
+                    <th>Piątek</th>
+                </tr>
+                <% for(var i=1; i<9; i++) { %>
+                <tr>
+                    <th><%= i+1 %></th>
+                    <% for(var j=0; j<5; j++) { %>
+                    <td><%= schedule[i][j] %></td>
+                    <% } %>
+                </tr>
+                <% } %>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+
+
 <%- include ../templates/footer %>

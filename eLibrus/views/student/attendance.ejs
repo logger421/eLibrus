@@ -13,8 +13,7 @@
                     <th rowspan="2">
                         Data:
                         <form method="get" action="/student/attendance" id="attendance_date">
-                            <input type="date" name="data" id="attendance_date_picker" value="<%= date %>" form="attendance_date">
-                            <!-- <input type="week" name="attendance_date" id="attendance_date_picker" form="attendance_date"> -->
+                            <input type="week" name="attendance_date" id="attendance_date_picker" value="<%= week %>" form="attendance_date">
                         </form>
                     </th>
                     <th colspan="8">
@@ -35,17 +34,20 @@
                     <th>7</th>
                     <th>8</th>
                 </tr>
+                <% for (var key in days) { %>
                 <tr>
-                    <th>2021-04-15 (Pon)</th>
-                    <% attendance.forEach((item) => { %>
+                    <th><%=key%></th>
+                    <% days[key].attendance.forEach((item) => { %>
                     <td><%= item.frekwencja %></td>
                     <% }); %>
-
-                    <td> <%= stats.O %> </td>
-                    <td> <%= stats.N %> </td>
-                    <td> <%= stats.S %> </td>
-                    <td> <%= stats.Z %> </td>
+                    <td> <%= days[key].stats.O %> </td>
+                    <td> <%= days[key].stats.N %> </td>
+                    <td> <%= days[key].stats.S %> </td>
+                    <td> <%= days[key].stats.Z %> </td>
+                    <% console.log(days[key]) %>
                 </tr>
+                <% } %>
+
             </table>
 
             <table class="table-stat">
