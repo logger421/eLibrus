@@ -2,7 +2,88 @@
 <%- include ../templates/navbar %>
 
 <!-- reszta -->
-<h1>attendance</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Obecnosc</h2>
+        </legend>
+        <div class="attendance-wrapper">
+            <table>
+                <tr>
+                    <th rowspan="2">
+                        Data:
+                        <form method="post" action="/attendance" id="attendance_date">
+                            <input type="date" name="data" id="data" value="2023-01-03">
+                        </form>
+                        <button id="submit-button">Submit</button>
+                    </th>
+                    <th colspan="8">
+                        Nr. Lekcji
+                    </th>
+                    <th rowspan="2">O</th>
+                    <th rowspan="2">N</th>
+                    <th rowspan="2">S</th>
+                    <th rowspan="2">Z</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                </tr>
+                <tr>
+                    <th>2021-04-15 (Pon)</th>
+                    <% attendance.forEach((item) => { %>
+                    <td><%= item.frekwencja %></td>
+                    <% }); %>
+
+                    <td> <%= stats.O %> </td>
+                    <td> <%= stats.N %> </td>
+                    <td> <%= stats.S %> </td>
+                    <td> <%= stats.Z %> </td>
+                </tr>
+            </table>
+
+            <table class="table-stat">
+                <tr>
+                    <td style="border: 0;"></td>
+                    <th colspan="6">Ilość</th>
+                </tr>
+                <tr>
+                    <td style="border: 0;"></td>
+                    <th>Obecności (O)</th>
+                    <th>Usprawiedliwionych (U)</th>
+                    <th>Nieusprawiedliwionych (N)</th>
+                    <th>Spoźnień (S)</th>
+                    <th>Zwolnień (Z)</th>
+                    <th>% frekwencji</th>
+                </tr>
+                <tr>
+                    <th>I Semestr</th>
+                    <td>152</td>
+                    <td>33</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>8</td>
+                    <td>98,7%</td>
+                </tr>
+                <tr>
+                    <th>II Semestr</th>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>92,3%</td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
 
 
 <%- include ../templates/footer %>
