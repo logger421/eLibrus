@@ -10,26 +10,32 @@
 <body>
     <div class="main-container">
         <div class="header-container">
-            <% if (user.role == 2) { %>
-                <select name="" id="">
-                    <option value="">Uczeń: Matylda Sokołowska</option>
-                </select>
+            <% if (typeof(user) != 'undefined') { %>
+                <% if (user.role == 2) { %>
+                    <select name="" id="">
+                        <option value="">Uczeń: Matylda Sokołowska</option>
+                    </select>
+                <% } %>
+                <span>
+                    Konto: 
+                    <% if (user.role == 1) { %> 
+                        Uczeń
+                    <% } else if (user.role == 2) { %>
+                        Rodzic
+                    <% } else if (user.role == 3) { %>
+                        Nauczyciel
+                    <% } else { %>
+                        Administrator
+                    <% } %> / <%= user.name %>  
+                </span>
             <% } %>
-            <span>
-                Konto: 
-                <% if (user.role == 1) { %> 
-                    Uczeń
-                <% } else if (user.role == 2) { %>
-                    Rodzic
-                <% } else if (user.role == 3) { %>
-                    Nauczyciel
-                <% } else { %>
-                    Administrator
-                <% } %> / <%= user.name %>  
-            </span>
             <div class="buttons">
-                <button onclick="location.href='/notifications'">Powiadomienia</button>
-                <button onclick="location.href='/change_password'">Zmiana hasła</button>
-                <button onclick="location.href='/login'">Wyloguj</button>
+                <% if (typeof(user) != 'undefined') { %>
+                    <button onclick="location.href='/notifications'">Powiadomienia</button>
+                    <button onclick="location.href='/change_password'">Zmiana hasła</button>
+                    <button onclick="location.href='/logout'">Wyloguj</button>
+                <% } else { %>
+                    <button onclick="location.href='/login'">Zaloguj</button>
+                <% } %>
             </div>
         </div>

@@ -8,6 +8,9 @@ var logger = require('morgan');
 var studentRouter = require('./routes/student');
 var parentRouter = require('./routes/parent');
 var teacherRouter = require('./routes/teacher');
+var adminRouter = require('./routes/admin');
+var loginRouter = require('./routes/login');
+var { checkRole } = require('./helpers/redirect_role');
 
 var app = express();
 
@@ -21,9 +24,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use('/', checkRole);
+app.use('/home', loginRouter);
 app.use('/student', studentRouter);
 app.use('/teacher', teacherRouter);
 app.use('/parent', parentRouter);
+// app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
