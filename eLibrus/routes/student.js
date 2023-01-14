@@ -2,8 +2,20 @@ var express = require('express');
 var router = express.Router();
 let user = {role: 1, name: 'Jan Kowalski'};
 
+const { uzytkownik, klasa, zajecia, przedmioty } = require('../models');
+ 
 // student home page
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
+	let result = await uzytkownik.findAll(
+		{
+			include: [{
+				model: zajecia,
+				required: true
+			},
+		]
+		}
+	);
+	console.log(result[0].dataValues);
 	res.render('general/home', {user});
 });
 
