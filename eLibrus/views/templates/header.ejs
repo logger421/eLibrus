@@ -6,15 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <title>Strona startowa</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
     <div class="main-container">
         <div class="header-container">
             <% if (typeof(user) != 'undefined') { %>
                 <% if (user.dataValues.rola == 2) { %>
-                    <select name="" id="">
-                        <option value="">Uczeń: Matylda Sokołowska</option>
-                    </select>
+                    <% if (typeof(students) != 'undefined') { %>
+                        <form action="/parent/change_student" method="post" id="change_student"></form>
+                        <select name="selected_student" id="select_student" form="change_student">
+                            <% students.forEach((student) => { %>
+                                <option value="<%= student.user_id %>" 
+                                    <% if (student.user_id == current_student) { %>
+                                    selected="selected"
+                                <% } %>    
+                                >
+                                    <%= student.imie %> <%= student.nazwisko %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    <% } %>    
                 <% } %>
                 <span>
                     Konto: 
@@ -26,7 +38,7 @@
                         Nauczyciel
                     <% } else { %>
                         Administrator
-                    <% } %> / <%= user.name %>  
+                    <% } %> / <%= user.dataValues.imie %>  <%= user.dataValues.nazwisko %>    
                 </span>
             <% } %>
             <div class="buttons">
@@ -39,3 +51,8 @@
                 <% } %>
             </div>
         </div>
+        <script>
+            $("#select_student").on('change', function() {
+                $("#change_student").submit();
+            })
+        </script>

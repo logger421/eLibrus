@@ -11,7 +11,7 @@ var parentRouter = require('./routes/parent');
 var teacherRouter = require('./routes/teacher');
 var adminRouter = require('./routes/admin');
 var loginRouter = require('./routes/login');
-var { checkRole } = require('./helpers/redirect_role');
+var { isStudent, isParent, isTeacher, isAdmin, redirectWithRole } = require('./helpers/redirect_role');
 var passport = require('passport');
 require('./helpers/passportLocal')(passport);
 var app = express();
@@ -37,10 +37,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/home', loginRouter);
-app.use('/student', studentRouter);
-app.use('/teacher', teacherRouter);
-app.use('/parent', parentRouter);
-app.use('/', checkRole);
+app.use('/student', isStudent, studentRouter);
+app.use('/parent', isParent, parentRouter);
+app.use('/teacher', isTeacher, teacherRouter);
+app.use('/', redirectWithRole);
 // app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
