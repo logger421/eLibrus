@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-let user = {role: 2, name: 'Jan Kowalski'};
 
 // parent home page
 router.get('/', function(req, res) {

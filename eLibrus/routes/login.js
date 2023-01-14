@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
 
 // home page unauthenticated
 router.get('/', (req, res) => {
@@ -12,14 +13,11 @@ router.get('/login', (req, res) => {
 });
 
 
-router.post('/login', (req, res) => {
-	const { email, password } = req.body;
-	
-	if (email && password) {
-
-	}
-
-	res.render('general/login');
+router.post('/login', (req, res, next) => {
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/home/login',
+	})(req, res, next);
 });
 
 // remind password page get / post
@@ -35,6 +33,13 @@ router.post('/remind_password', (req, res) => {
 	}
 
 	res.render('general/remind_password');
+});
+
+router.get('/logout', (req, res, next) => {
+	req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/home/login');
+    });
 });
 
 module.exports = router;

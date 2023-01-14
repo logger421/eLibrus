@@ -1,42 +1,29 @@
 var express = require('express');
 var router = express.Router();
-let user = {role: 1, name: 'Jan Kowalski'};
 
-const { uzytkownik, klasa, zajecia, przedmioty } = require('../models');
- 
 // student home page
-router.get('/', async function(req, res) {
-	let result = await uzytkownik.findAll(
-		{
-			include: [{
-				model: zajecia,
-				required: true
-			},
-		]
-		}
-	);
-	console.log(result[0].dataValues);
-	res.render('general/home', {user});
+router.get('/', function(req, res) {
+	res.render('general/home', {user: req.user});
 });
 
 // student attendance
 router.get('/attendance', function(req, res) {
-	res.render('student/attendance', {user});
+	res.render('student/attendance', {user: req.user});
 });
 
 // student grades
 router.get('/grades', function(req, res) {
-	res.render('student/grades', {user});
+	res.render('student/grades', {user: req.user});
 });
 
 // student schedule
 router.get('/schedule', function(req, res) {
-	res.render('student/schedule', {user});
+	res.render('student/schedule', {user: req.user});
 });
 
 // student homeworks
 router.get('/homeworks', function(req, res) {
-	res.render('student/homeworks', {user});
+	res.render('student/homeworks', {user: req.user});
 });
 
 module.exports = router;
