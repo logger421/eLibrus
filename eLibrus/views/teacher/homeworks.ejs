@@ -1,6 +1,74 @@
 <%- include ../templates/header %>
 <%- include ../templates/navbar %>
 
-<!-- reszta -->
-<h1>homework</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Prace domowe</h2></legend>
+        <div class="homework-wrapper">
+        <div class="teacher-panel">
+            <div>
+                <div>
+                    <form action="">
+
+                    </form>
+                    <select name="class_id" id="" form="add_homework">
+                        <% classes.forEach((subject) => { %>
+                            <option value="<%= subject.klasa_id %>">Klasa: <%= subject.klasa_id %></option>
+                        <% }) %>
+                    </select>
+                    <select name="any_subject_id" id="" form="add_homework">
+                        <% subjects.forEach((subject) => { %>
+                            <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <form action="" method="POST" id="add_homework">
+                    <label style="margin: .5rem;" for="start">Termin oddania: </label>
+                    <input style="padding: .5rem;" type="date" id="start" name="deadline">
+                    <label style="margin: .5rem;" for="title">Tytuł: </label>
+                    <input style="padding: .5rem;" type="text" id="title" name="title">
+                    <label style="margin: .5rem;" for="description">Opis: </label>
+                    <textarea name="description" id="" cols="50" rows="10" form="add_homework"></textarea>
+                </form>
+            </div>
+        </div>
+            <table>
+                <tr>
+                    <th>Klasa</th>
+                    <th>Przedmiot</th>
+                    <th>Temat</th>
+                    <th>Termin</th>
+                    <th>Treść</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Biologia</td>
+                    <td>Ssaki</td>
+                    <td>15.12.2022</td>
+                    <td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Biologia</td>
+                    <td>Ssaki</td>
+                    <td>15.12.2022</td>
+                    <td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
+                </tr>
+            </table>
+            <div class="teacher-panel">
+                <div>
+                    <button id="add_homework_button" style="float: right;">Wyślij</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+<script>
+    $("#add_homework_button").on('click', function () {
+        $("#add_homework").submit();
+    })
+</script>
+
 <%- include ../templates/footer %>
