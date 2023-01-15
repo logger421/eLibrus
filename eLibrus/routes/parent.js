@@ -80,9 +80,10 @@ router.get('/attendance', async function(req, res) {
                     if (obj.frekwencja === "N") acc.N++;
                     if (obj.frekwencja === "S") acc.S++;
                     if (obj.frekwencja === "Z") acc.Z++;
+                    if (obj.frekwencja === "U") acc.U++;
                     return acc;
                 },
-                { O: 0, N: 0, S: 0, Z: 0 }
+                { O: 0, N: 0, S: 0, Z: 0, U: 0 }
             );
             days[dates[i]] = {
                 date: dates[i],
