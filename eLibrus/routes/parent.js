@@ -27,8 +27,31 @@ router.get('/attendance', function(req, res) {
 });
 
 // parent grades
-router.get('/grades', function(req, res) {
-	res.render('parent/grades', { user: req.user, students: req.students, current_student: req.cookies.current_student});
+router.get('/grades', async function(req, res) {
+	const [przedmioty, metadata_przedmioty] = await sequelize.query(
+		`SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
+		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty 
+		WHERE user_id = ${req.cookies.current_student}`
+	);
+
+	const [oceny, metadata_oceny] = await sequelize.query(
+		`SELECT zajecia_id, ocena FROM oceny 
+		NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
+		WHERE user_id = ${req.cookies.current_student}`
+	);
+
+	let grades = {};
+	przedmioty.forEach(przedmiot => {
+		if (grades[`${przedmiot.nazwa}`] == undefined) grades[`${przedmiot.nazwa}`] = {"oceny": [], "avg": 0};
+		oceny.forEach(ocena => {
+			if (przedmiot.zajecia_id == ocena.zajecia_id) {
+				grades[`${przedmiot.nazwa}`]['oceny'].push(ocena.ocena);
+				grades[`${przedmiot.nazwa}`]['avg'] += ocena.ocena;
+			}
+		});
+	});
+
+	res.render('parent/grades', { user: req.user, students: req.students, current_student: req.cookies.current_student, grades});
 });
 
 // parent schedule

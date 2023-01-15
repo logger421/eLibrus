@@ -1,6 +1,34 @@
 <%- include ../templates/header %>
 <%- include ../templates/navbar %>
 
-<!-- reszta -->
-<h1>grades</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Oceny</h2></legend>
+        <div class="grades-wrapper">
+            <table>
+                <tr>
+                    <th>Przedmiot</th>
+                    <th>Oceny</th>
+                    <th>Średnia</th>
+                    <th>Ocena końcowa</th>
+                </tr>
+                <% for(var key in grades) { %>
+                    <tr>
+                        <th><%= key %></th>
+                        <td>
+                            <%= grades[key]['oceny'].toString().replace(",", ", ") %>
+                        </td>
+                        <td>
+                            <% if (grades[key]['avg'] > 0) { %> 
+                                <%= grades[key]['avg'] / grades[key]['oceny'].length %>
+                            <% } %>
+                        </td>
+                        <td></td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+    </fieldset>
+</div>
+
 <%- include ../templates/footer %>

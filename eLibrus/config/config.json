@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "kacper",
-    "database": "interfejsy",
+    "password": "password",
+    "database": "eDziennik",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

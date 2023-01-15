@@ -86,8 +86,30 @@ router.get("/attendance", async function (req, res) {
 });
 
 // student grades
-router.get("/grades", function (req, res) {
-    res.render("student/grades", { user: req.user });
+router.get("/grades", async function (req, res) {
+    const [przedmioty, metadata_przedmioty] = await sequelize.query(
+		`SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
+		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty 
+		WHERE user_id = ${req.user.dataValues.user_id}`
+	);
+
+	const [oceny, metadata_oceny] = await sequelize.query(
+		`SELECT zajecia_id, ocena FROM oceny 
+		NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
+		WHERE user_id = ${req.user.dataValues.user_id}`
+	);
+
+	let grades = {};
+	przedmioty.forEach(przedmiot => {
+		if (grades[`${przedmiot.nazwa}`] == undefined) grades[`${przedmiot.nazwa}`] = {"oceny": [], "avg": 0};
+		oceny.forEach(ocena => {
+			if (przedmiot.zajecia_id == ocena.zajecia_id) {
+				grades[`${przedmiot.nazwa}`]['oceny'].push(ocena.ocena);
+				grades[`${przedmiot.nazwa}`]['avg'] += ocena.ocena;
+			}
+		});
+	});
+    res.render("student/grades", { user: req.user, grades });
 });
 
 // student schedule
