@@ -7,14 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    dzien: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    nr_lekcji: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     przedmiot_id: {
       type: DataTypes.INTEGER,
       allowNull: false,

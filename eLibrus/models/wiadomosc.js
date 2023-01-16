@@ -42,6 +42,10 @@ module.exports = function(sequelize, DataTypes) {
     odczytana: {
       type: DataTypes.BOOLEAN,
       allowNull: false
+    },
+    usunieta: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
