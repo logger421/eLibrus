@@ -38,15 +38,15 @@ router.get('/attendance', async function(req, res) {
         week = moment().week();
         week = `${moment().year()}-W${week < 10 ? `0${week}` : week}`;
     }
-    const start = moment(week, "GGGG-[W]WW").startOf("week").format();
-    const end = moment(week, "GGGG-[W]WW").endOf("week").format();
+    day_names = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
+    const start = moment(week, "GGGG-[W]WW").startOf("week").add(1, "day").format();
+    const end = moment(week, "GGGG-[W]WW").endOf("week").subtract(1, "day").format();
     const dates = [];
     let currentDate = moment(start);
     while (currentDate.isBefore(end)) {
         dates.push(currentDate.format("YYYY-MM-DD"));
         currentDate = moment(currentDate).add(1, "day");
     }
-    console.log(`THERE IS THE WEEK: ${dates}`);
     let promiseArr = [];
     for (const date of dates) {
         promiseArr.push(
@@ -87,6 +87,7 @@ router.get('/attendance', async function(req, res) {
             );
             days[dates[i]] = {
                 date: dates[i],
+                day_name: day_names[i],
                 attendance: full_attendance,
                 stats: count,
             };

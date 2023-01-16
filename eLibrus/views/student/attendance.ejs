@@ -36,17 +36,17 @@
                     <th>7</th>
                     <th>8</th>
                 </tr>
-                <% for (var key in days) { %>
+                <% for (var date in days) { %>
                 <tr>
-                    <th><%=key%></th>
-                    <% days[key].attendance.forEach((item) => { %>
+                    <th><%=date%> (<%= days[date].day_name%>)</th>
+                    <% days[date].attendance.forEach((item) => { %>
                     <td><%= item.frekwencja %></td>
                     <% }); %>
-                    <td> <%= days[key].stats.O %> </td>
-                    <td> <%= days[key].stats.N %> </td>
-                    <td> <%= days[key].stats.S %> </td>
-                    <td> <%= days[key].stats.Z %> </td>
-                    <td> <%= days[key].stats.U %> </td>
+                    <td> <%= days[date].stats.O %> </td>
+                    <td> <%= days[date].stats.N %> </td>
+                    <td> <%= days[date].stats.S %> </td>
+                    <td> <%= days[date].stats.Z %> </td>
+                    <td> <%= days[date].stats.U %> </td>
                 </tr>
                 <% } %>
 
