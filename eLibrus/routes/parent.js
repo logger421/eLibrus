@@ -127,10 +127,11 @@ router.get('/grades', async function(req, res) {
 
 // parent schedule
 router.get('/schedule', async function(req, res) {
-	const [result, metadata] = await sequelize.query(
-		`SELECT nr_lekcji, dzien, przedmioty.nazwa FROM zajecia 
-		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty WHERE user_id = ${req.cookies.current_student}`
-	);
+	const [result, metadata] = await sequelize.query(`
+        SELECT nazwa, dzien, nr_lekcji FROM zajecia 
+        NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
+        WHERE user_id = ${req.cookies.current_student}
+    `);
 	
 	let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
 	let schedule = {

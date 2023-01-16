@@ -16,7 +16,7 @@
                             <option value="<%= subject.klasa_id %>">Klasa: <%= subject.klasa_id %></option>
                         <% }) %>
                     </select>
-                    <select name="any_subject_id" id="" form="add_homework">
+                    <select name="subject_id" id="" form="add_homework">
                         <% subjects.forEach((subject) => { %>
                             <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
                         <% }) %>
@@ -40,20 +40,15 @@
                     <th>Termin</th>
                     <th>Treść</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Biologia</td>
-                    <td>Ssaki</td>
-                    <td>15.12.2022</td>
-                    <td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Biologia</td>
-                    <td>Ssaki</td>
-                    <td>15.12.2022</td>
-                    <td>Proszę sporządzić notatkę na temat interesujących was ssaków</td>
-                </tr>
+                <% for(var i=0; i<homeworks.length; i++) { %>
+                    <tr>
+                        <td><%= homeworks[i].klasa_id %></td>
+                        <td><%= homeworks[i].nazwa %></td>
+                        <td><%= homeworks[i].tytul %></td>
+                        <td><%= homeworks[i].termin_oddania %></td>
+                        <td><%= homeworks[i].opis %></td>
+                    </tr>
+                <% } %>
             </table>
             <div class="teacher-panel">
                 <div>

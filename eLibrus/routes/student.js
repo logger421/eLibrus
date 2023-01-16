@@ -95,12 +95,14 @@ router.get("/grades", async function (req, res) {
 		WHERE user_id = ${req.user.dataValues.user_id}`
 	);
 
-	const [oceny, metadata_oceny] = await sequelize.query(
-		`SELECT zajecia_id, ocena FROM oceny 
+    
+	const [oceny, metadata_oceny] = await sequelize.query(`
+        SELECT zajecia_id, ocena FROM oceny 
 		NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
-		WHERE user_id = ${req.user.dataValues.user_id}`
-	);
-
+		WHERE user_id = ${req.user.dataValues.user_id}
+    `);
+        
+    console.log(przedmioty, oceny);
 	let grades = {};
 	przedmioty.forEach(przedmiot => {
 		if (grades[`${przedmiot.nazwa}`] == undefined) grades[`${przedmiot.nazwa}`] = {"oceny": [], "avg": 0};
@@ -116,10 +118,11 @@ router.get("/grades", async function (req, res) {
 
 // student schedule
 router.get("/schedule", async function (req, res) {
-    const [result, metadata] = await sequelize.query(
-        `SELECT nr_lekcji, dzien, przedmioty.nazwa FROM zajecia 
-        NATURAL JOIN uzytkownik NATURAL JOIN przedmioty WHERE user_id = ${req.user.user_id}`
-    );
+    const [result, metadata] = await sequelize.query(`
+        SELECT nazwa, dzien, nr_lekcji FROM zajecia 
+        NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
+        WHERE user_id = ${req.user.user_id}
+    `);
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
     let schedule = {
@@ -156,7 +159,9 @@ router.get("/homeworks", async function (req, res) {
     const [homeworks, metadata] = await sequelize.query(`
         SELECT prowadzacy.imie, prowadzacy.nazwisko, termin_oddania, tytul, opis, przedmioty.nazwa FROM zadanie_domowe 
         NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen inner join uzytkownik AS prowadzacy 
-        ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ${req.user.user_id}`);
+        ON prowadzacy.user_id = prowadzacy_id 
+        WHERE uczen.user_id = ${req.user.user_id}
+    `);
 
     res.render("student/homeworks", {
         user: req.user,

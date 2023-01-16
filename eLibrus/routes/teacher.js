@@ -22,8 +22,9 @@ router.get('/grades', function(req, res) {
 // teacher schedule
 router.get("/schedule", async function (req, res) {
     const [result, metadata] = await sequelize.query(
-        `SELECT nr_lekcji, dzien, przedmioty.nazwa FROM zajecia 
-        NATURAL JOIN uzytkownik NATURAL JOIN przedmioty WHERE prowadzacy_id = ${req.user.user_id}`
+        `SELECT nazwa, dzien, nr_lekcji FROM zajecia 
+        NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
+        WHERE prowadzacy_id = ${req.user.user_id}`
     );
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
@@ -58,7 +59,13 @@ router.get("/schedule", async function (req, res) {
 
 // teacher homeworks
 router.get('/homeworks', async function(req, res) {
-	const classes = await getClass(req.user.dataValues.user_id);
+	const [homeworks, metadata] = await sequelize.query(`
+    SELECT zajecia.klasa_id, termin_oddania, tytul, opis, nazwa FROM zadanie_domowe 
+    NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen INNER JOIN uzytkownik AS prowadzacy 
+    ON prowadzacy.user_id = prowadzacy_id WHERE prowadzacy.user_id = ${req.user.dataValues.user_id}
+    `);
+    
+    const classes = await getClass(req.user.dataValues.user_id);
 	const subjects = await getSubject(req.user.dataValues.user_id, 1);
 	const temp = new Set();
 
@@ -68,11 +75,11 @@ router.get('/homeworks', async function(req, res) {
 		return !duplicate;
 	});
 	
-	res.render('teacher/homeworks', {user: req.user, subjects: filteredSubjects, classes});
+	res.render('teacher/homeworks', {user: req.user, subjects: filteredSubjects, classes, homeworks});
 });
 
 router.post('/homeworks', async function(req, res) {
-	console.log(req.body);
+	await sequelize.query();
 	res.redirect('/teacher/homeworks');
 });
 
