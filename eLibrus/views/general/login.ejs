@@ -9,11 +9,12 @@
             <label for="">Email:</label>
             <input id="username" name="username" type="text" placeholder="Email: @dziennikuj.X.edu.pl">
             <label for="">Hasło:</label>
-            <input id="password" name="password" type="text" placeholder="***********">
+            <input id="password" name="password" type="password" placeholder="***********">
             <div>
                 <button>Zaloguj</button>
                 <a href="/home/remind_password"><strong>Zresetuj hasło</strong></a>
             </div>
+            <%- include ../templates/messages %>
             </div>
         </form>
         <div class="temp">

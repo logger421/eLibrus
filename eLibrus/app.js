@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var flash = require('connect-flash');
 
 // Routers
 var studentRouter = require('./routes/student');
@@ -12,6 +13,8 @@ var teacherRouter = require('./routes/teacher');
 var adminRouter = require('./routes/admin');
 var loginRouter = require('./routes/login');
 var { isStudent, isParent, isTeacher, isAdmin, redirectWithRole } = require('./helpers/redirect_role');
+
+
 var passport = require('passport');
 require('./helpers/passportLocal')(passport);
 var app = express();
@@ -30,6 +33,15 @@ app.set('view engine', 'ejs');
 // Init passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(flash());
+
+// middleware for flash messages
+app.use((req, res, next) => {
+  res.locals.success_message = req.flash('success_message');
+  res.locals.failure_message = req.flash('error');
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());

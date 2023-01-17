@@ -23,6 +23,8 @@ router.post('/login', (req, res, next) => {
 	passport.authenticate('local', {
 		successRedirect: '/',
 		failureRedirect: '/home/login',
+		failureFlash: true,
+		badRequestMessage: 'Dane logowania nie są poprawne'
 	})(req, res, next);
 });
 
@@ -35,10 +37,13 @@ router.post('/remind_password', (req, res) => {
 	const { email } = req.body;
 	
 	if (email) {
-		
+		req.flash('success_message', 'Prośba o zresetowanie hasła została wysłana!');
+	}
+	else {
+		req.flash('error', 'Należy podać adres e-mail');
 	}
 
-	res.render('general/remind_password');
+	res.redirect('/home/remind_password');
 });
 
 router.get('/logout', (req, res, next) => {
