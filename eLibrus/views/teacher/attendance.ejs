@@ -19,23 +19,32 @@
                             <option value="<%= klasa.klasa_id %>">Klasa: <%= klasa.klasa_id %></option>
                             <% } %>
                             <% }) %>
-                            <input type="date" name="attendance_date" id="attendance_date" value="<%=date%>">
+                            <input type="date" name="attendance_date" id="attendance_date" value="<%=date%>" onchange="checkDate()">
                             <br>
                         </select>
+                        <select name="subject_id" id="attendance_subject_id" form="attendance_class">
+                            <% subjects.forEach((subject) => { %>
+                            <% if (subject.zajecia_id == subject_id) { %>
+                            <option value="<%= subject.zajecia_id %>" selected><%= subject.nazwa %></option>
+                            <% } else { %>
+                            <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
+                            <% } %>
+                            <% }) %>
+                        </select>
+                        <select name="classes_number" id="attendance_classes_number" , form="attendance_class">
+                            <% classes_numbers.forEach((classes_number) => { %>
+                            <% if (classes_number.nr_lekcji == class_number) { %>
+                            <option value="<%= classes_number.nr_lekcji %>" selected><%= classes_number.nr_lekcji %>
+                            </option>
+                            <% } else { %>
+                            <option value="<%= classes_number.nr_lekcji %>"><%= classes_number.nr_lekcji %></option>
+                            <% } %>
+                            <% }) %>
+                        </select>
                     </form>
-                    <select name="any_subject_id" id="">
-                        <% subjects.forEach((subject) => { %>
-                        <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
-                        <% }) %>
-                    </select>
-                    <select name="any_classes_number" id="">
-                        <% classes_numbers.forEach((number) => { %>
-                        <option value=""><%= number.nr_lekcji %></option>
-                        <% }) %>
-                    </select>
                 </div>
                 <div>
-                    <button>Wszyscy obecni</button>
+                    <button id="mark-all-present">Wszyscy obecni</button>
                 </div>
             </div>
             <table>
@@ -46,26 +55,34 @@
                     <th>Spoźniony</th>
                     <th>Upsprawiedliwiony</th>
                     <th>Zwolniony</th>
-
                 </tr>
-                <form action="/teacher/attendance" method="post" id="post_attendance">
+                <form action="/teacher/attendance" method="post" id="post_attendance" name="attendance">
+                    <input type="hidden" name="klasa_id" value="<%= class_id %>">
+                    <input type="hidden" name="date" value="<%= date %>">
+                    <input type="hidden" name="zajecia_id" value="<%= subject_id %>">
+                    <input type="hidden" name="nr_lekcji" value="<%= class_number %>">
                     <% students.forEach(student => { %>
                     <tr>
-                        <td><%= student.dataValues.imie %> <%= student.dataValues.nazwisko %> </td>
+                        <td><%= student.imie %> <%= student.nazwisko %> </td>
                         <td>
-                            <input type="radio" name="<%=student.dataValues.user_id%>" value="O" id="O">
+                            <input type="radio" name="<%=student.user_id%>" value="O" id="O"
+                                <%= student.frekwencja == 'O' ? 'checked' : '' %>>
                         </td>
                         <td>
-                            <input type="radio" name="<%=student.dataValues.user_id%>" value="N" id="N">
+                            <input type="radio" name="<%=student.user_id%>" value="N" id="N"
+                                <%= student.frekwencja == 'N' ? 'checked' : '' %>>
                         </td>
                         <td>
-                            <input type="radio" name="<%=student.dataValues.user_id%>" value="S" id="S">
+                            <input type="radio" name="<%=student.user_id%>" value="S" id="S"
+                                <%= student.frekwencja == 'S' ? 'checked' : '' %>>
                         </td>
                         <td>
-                            <input type="radio" name="<%=student.dataValues.user_id%>" value="U" id="U">
+                            <input type="radio" name="<%=student.user_id%>" value="U" id="U"
+                                <%= student.frekwencja == 'U' ? 'checked' : '' %>>
                         </td>
                         <td>
-                            <input type="radio" name="<%=student.dataValues.user_id%>" value="Z" id="Z">
+                            <input type="radio" name="<%=student.user_id%>" value="Z" id="Z"
+                                <%= student.frekwencja == 'Z' ? 'checked' : '' %>>
                         </td>
                     </tr>
                     <% }); %>
@@ -86,11 +103,33 @@
     $("#class_id").on('change', function () {
         $("#attendance_class").submit();
     })
-    $("#attendance_date").on('change', function () {
+    $("#attendance_subject_id").on('change', function () {
+        $("#attendance_class").submit();
+    })
+    $("#attendance_classes_number").on('change', function () {
         $("#attendance_class").submit();
     })
 
     $("#submit_attendance").on('click', function () {
         $("#post_attendance").submit();
     })
+
+    var button = document.getElementById("mark-all-present");
+    button.addEventListener("click", function () {
+        var radios = document.querySelectorAll("input[id=O]");
+        radios.forEach(function (radio) {
+            radio.checked = true;
+        });
+    });
+
+    function checkDate() {
+        var date = new Date(document.getElementById("attendance_date").value);
+        var day = date.getDay();
+        if (day == 0 || day == 6) {
+            alert("Proszę wybrać dzień z przedziału Poniedziałek-Piątek");
+            document.getElementById("attendance_date").value = "";
+        } else {
+            $("#attendance_class").submit();
+        }
+    }
 </script>
