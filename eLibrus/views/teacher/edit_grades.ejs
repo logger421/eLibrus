@@ -1,0 +1,69 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Oceny</h2></legend>
+        <div class="grades-wrapper">
+            <h3><%= result.imie %> <%= result.nazwisko %>, Klasa <%= result.klasa_id %>, <%= result.nazwa %></h3>
+            <table>
+                <tr>
+                    <th colspan="<%= grades.length + 1 %>">Oceny</th>
+                </tr>
+                <tr>
+                    <% grades.forEach(grade => { %>
+                        <td>
+                            <strong style="padding: .2rem;"><%= grade.ocena %></strong>
+                            <select name="<%= grade.ocena_id %>" id="" form="edit_grade_form">
+                                <option value="remove">Usuń</option>
+                                <% for(var i=1; i<7; i++) { %>
+                                    <% if (i == grade.ocena) { %>
+                                        <option value="<%=i%>" selected><%=i%></option>        
+                                    <% } else { %>
+                                        <option value="<%=i%>"><%=i%></option>
+                                    <% } %>        
+                                <% } %>
+                            </select>
+                        </td>
+                    <% }) %>
+                    <td>
+                        Dodaj: 
+                        <select name="add" id="" form="edit_grade_form">
+                            <option value="0"></option>
+                            <% for(var i=1; i<7; i++) { %>
+                                <option value="<%=i%>"><%=i%></option>
+                            <% } %>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Średnia</th>
+                    <th>
+                        <%= avg.toFixed(2) %>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Ocena Końcowa</th>
+                    <th></th>
+                </tr>
+            </table>
+            <div class="teacher-panel">
+                <div>
+                    <button onclick="location.href='/teacher/grades'">Cofnij</button>
+                    <button id="edit_grades_button">Akceptuj</button>
+                    <form action="/teacher/grades/edit_grades" method="POST" id="edit_grade_form">
+                        <input type="hidden" name="user_id" value="<%= result.user_id %>">
+                        <input type="hidden" name="subject_id" value="<%= result.zajecia_id %>">
+                    </form>
+                </div>
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    $("#edit_grades_button").on('click', () => {
+        $("#edit_grade_form").submit();
+    });
+</script>
+
+<%- include ../templates/footer %>

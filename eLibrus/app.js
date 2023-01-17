@@ -15,6 +15,7 @@ var { isStudent, isParent, isTeacher, isAdmin, redirectWithRole } = require('./h
 var passport = require('passport');
 require('./helpers/passportLocal')(passport);
 var app = express();
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   secret:'secret',
@@ -34,7 +35,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/home', loginRouter);
 app.use('/student', isStudent, studentRouter);
