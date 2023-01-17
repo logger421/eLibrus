@@ -1,22 +1,85 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const sequelize = require("../models").sequelize;
 
-const { getClass, getSubject } = require('../helpers/teacher_classes_subjects');
+const { getClass, getSubject } = require("../helpers/teacher_classes_subjects");
+const {
+    uzytkownik,
+    klasa,
+    zajecia,
+    przedmioty,
+    frekwencja,
+    data_zajec
+} = require("../models");
 
 // teacher home page
-router.get('/', function(req, res) {
-	res.render('general/home', {user: req.user});
+router.get("/", function (req, res) {
+    res.render("general/home", { user: req.user });
 });
 
 // teacher attendance
-router.get('/attendance', function(req, res) {
-	res.render('teacher/attendance', {user: req.user});
+router.get("/attendance", async function (req, res) {
+    const classes = await getClass(req.user.dataValues.user_id);
+    let class_id = req.query.class_id;
+    if (typeof class_id == "undefined") {
+        class_id = classes[0].klasa_id;
+    }
+    const subjects = await getSubject(req.user.dataValues.user_id, class_id);
+    const temp = new Set();
+
+    let selectedDate = req.query.attendance_date;
+    if (typeof selectedDate == "undefined") {
+        let current_day = new Date();
+        selectedDate = current_day.toISOString().split("T")[0];
+    }
+    let date = new Date(selectedDate);
+    let day = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek", "Sobota", "Niedziela"][date.getUTCDay()]
+
+    // const classes_numbers = await zajecia.findAll({
+    //     include: [
+    //         {
+    //             model: data_zajec,
+    //             where: { klasa_id: class_id, dzien: day },
+    //         },
+    //     ],
+    // });
+
+
+    const [classes_numbers, metadata] = await sequelize.query(
+        `SELECT * FROM zajecia NATURAL JOIN data_zajec WHERE klasa_id=${class_id} AND dzien="${day}"`
+    );
+
+    const filteredSubjects = subjects.filter((el) => {
+        const duplicate = temp.has(el.nazwa);
+        temp.add(el.nazwa);
+        return !duplicate;
+    });
+
+    students = await uzytkownik.findAll({
+        where: {
+            klasa_id: class_id,
+        },
+    });
+
+    res.render("teacher/attendance", {
+        user: req.user,
+        class_id: class_id,
+        subjects: filteredSubjects,
+        classes: classes,
+        students: students,
+        date: selectedDate,
+        classes_numbers: classes_numbers
+    });
 });
 
+router.post("/attendance", (req, res) => {
+    console.log(req.body)
+    res.redirect("/teacher/attendance")
+})
+
 // teacher grades
-router.get('/grades', function(req, res) {
-	res.render('teacher/grades', {user: req.user});
+router.get("/grades", function (req, res) {
+    res.render("teacher/grades", { user: req.user });
 });
 
 // teacher schedule
@@ -57,23 +120,27 @@ router.get("/schedule", async function (req, res) {
 });
 
 // teacher homeworks
-router.get('/homeworks', async function(req, res) {
-	const classes = await getClass(req.user.dataValues.user_id);
-	const subjects = await getSubject(req.user.dataValues.user_id, 1);
-	const temp = new Set();
+router.get("/homeworks", async function (req, res) {
+    const classes = await getClass(req.user.dataValues.user_id);
+    const subjects = await getSubject(req.user.dataValues.user_id, 1);
+    const temp = new Set();
 
-	const filteredSubjects = subjects.filter(el => {
-		const duplicate = temp.has(el.nazwa);
-		temp.add(el.nazwa);
-		return !duplicate;
-	});
-	
-	res.render('teacher/homeworks', {user: req.user, subjects: filteredSubjects, classes});
+    const filteredSubjects = subjects.filter((el) => {
+        const duplicate = temp.has(el.nazwa);
+        temp.add(el.nazwa);
+        return !duplicate;
+    });
+
+    res.render("teacher/homeworks", {
+        user: req.user,
+        subjects: filteredSubjects,
+        classes,
+    });
 });
 
-router.post('/homeworks', async function(req, res) {
-	console.log(req.body);
-	res.redirect('/teacher/homeworks');
+router.post("/homeworks", async function (req, res) {
+    console.log(req.body);
+    res.redirect("/teacher/homeworks");
 });
 
 module.exports = router;

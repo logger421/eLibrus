@@ -2,7 +2,95 @@
 <%- include ../templates/navbar %>
 
 <!-- reszta -->
-<h1>attendance</h1>
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Frekwencja</h2>
+        </legend>
+        <div class="attendance-wrapper">
+            <div class="teacher-panel">
+                <div>
+                    <form method="get" action="/teacher/attendance" id="attendance_class">
+                        <select name="class_id" id="class_id" form="attendance_class">
+                            <% classes.forEach((klasa) => { %>
+                            <% if (klasa.klasa_id == class_id) { %>
+                            <option value="<%= klasa.klasa_id %>" selected>Klasa: <%= klasa.klasa_id %></option>
+                            <% } else { %>
+                            <option value="<%= klasa.klasa_id %>">Klasa: <%= klasa.klasa_id %></option>
+                            <% } %>
+                            <% }) %>
+                            <input type="date" name="attendance_date" id="attendance_date" value="<%=date%>">
+                            <br>
+                        </select>
+                    </form>
+                    <select name="any_subject_id" id="">
+                        <% subjects.forEach((subject) => { %>
+                        <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
+                        <% }) %>
+                    </select>
+                    <select name="any_classes_number" id="">
+                        <% classes_numbers.forEach((number) => { %>
+                        <option value=""><%= number.nr_lekcji %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div>
+                    <button>Wszyscy obecni</button>
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <th>Uczeń</th>
+                    <th>Obecny</th>
+                    <th>Nieobecny</th>
+                    <th>Spoźniony</th>
+                    <th>Upsprawiedliwiony</th>
+                    <th>Zwolniony</th>
 
+                </tr>
+                <form action="/teacher/attendance" method="post" id="post_attendance">
+                    <% students.forEach(student => { %>
+                    <tr>
+                        <td><%= student.dataValues.imie %> <%= student.dataValues.nazwisko %> </td>
+                        <td>
+                            <input type="radio" name="<%=student.dataValues.user_id%>" value="O" id="O">
+                        </td>
+                        <td>
+                            <input type="radio" name="<%=student.dataValues.user_id%>" value="N" id="N">
+                        </td>
+                        <td>
+                            <input type="radio" name="<%=student.dataValues.user_id%>" value="S" id="S">
+                        </td>
+                        <td>
+                            <input type="radio" name="<%=student.dataValues.user_id%>" value="U" id="U">
+                        </td>
+                        <td>
+                            <input type="radio" name="<%=student.dataValues.user_id%>" value="Z" id="Z">
+                        </td>
+                    </tr>
+                    <% }); %>
+                </form>
+            </table>
+            <div class="teacher-panel">
+                <div>
+                    <button id="submit_attendance">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
 
 <%- include ../templates/footer %>
+
+<script>
+    $("#class_id").on('change', function () {
+        $("#attendance_class").submit();
+    })
+    $("#attendance_date").on('change', function () {
+        $("#attendance_class").submit();
+    })
+
+    $("#submit_attendance").on('click', function () {
+        $("#post_attendance").submit();
+    })
+</script>
