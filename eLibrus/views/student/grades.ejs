@@ -16,11 +16,11 @@
                     <tr>
                         <th><%= key %></th>
                         <td>
-                            <%= grades[key]['oceny'].toString().replaceAll(",", ", ") %>
+                            <%= grades[key].toString().replaceAll(",", ", ") %>
                         </td>
                         <td>
-                            <% if (grades[key]['avg'] > 0) { %> 
-                                <%= (grades[key]['avg'] / grades[key]['oceny'].length).toFixed(2) %>
+                            <% if (grades[key].length > 0) { %> 
+                                <%= (grades[key].reduce((a,b)=>a+b,0) / grades[key].length).toFixed(2) %>
                             <% } %>
                         </td>
                         <td></td>

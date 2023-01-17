@@ -2,10 +2,15 @@ const cookieParser = require('cookie-parser');
 var express = require('express');
 var router = express.Router();
 const passport = require('passport');
+const { sequelize } = require('../models');
 
 // home page unauthenticated
-router.get('/', (req, res) => {
-	res.render('general/home');
+router.get('/', async (req, res) => {
+	const [notes, meta] = await sequelize.query(`
+		SELECT tytul, tresc FROM ogloszenia;
+	`);
+
+	res.render('general/home', { notes });
 });
 
 // login page get / post

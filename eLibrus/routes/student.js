@@ -13,7 +13,10 @@ const {
 
 // student home page
 router.get("/", async function (req, res) {
-    res.render("general/home", { user: req.user });
+    const [notes, meta] = await sequelize.query(`
+		SELECT tytul, tresc FROM ogloszenia;
+	`);
+    res.render("general/home", { user: req.user, notes });
 });
 
 router.get("/attendance", async function (req, res) {
@@ -105,11 +108,10 @@ router.get("/grades", async function (req, res) {
     console.log(przedmioty, oceny);
 	let grades = {};
 	przedmioty.forEach(przedmiot => {
-		if (grades[`${przedmiot.nazwa}`] == undefined) grades[`${przedmiot.nazwa}`] = {"oceny": [], "avg": 0};
+		if (grades[`${przedmiot.nazwa}`] == undefined) grades[`${przedmiot.nazwa}`] = [];
 		oceny.forEach(ocena => {
 			if (przedmiot.zajecia_id == ocena.zajecia_id) {
-				grades[`${przedmiot.nazwa}`]['oceny'].push(ocena.ocena);
-				grades[`${przedmiot.nazwa}`]['avg'] += ocena.ocena;
+				grades[`${przedmiot.nazwa}`].push(ocena.ocena);
 			}
 		});
 	});
@@ -122,7 +124,7 @@ router.get("/schedule", async function (req, res) {
         SELECT nazwa, dzien, nr_lekcji FROM zajecia 
         NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
         WHERE user_id = ${req.user.user_id}
-    `);
+        `);
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
     let schedule = {

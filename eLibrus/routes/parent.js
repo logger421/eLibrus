@@ -27,7 +27,10 @@ router.get('*', async function (req, res, next) {
 
 // parent home page
 router.get('/', async function(req, res) {
-	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student});
+	const [notes, meta] = await sequelize.query(`
+		SELECT tytul, tresc FROM ogloszenia;
+	`);
+	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student, notes});
 });
 
 // parent attendance
