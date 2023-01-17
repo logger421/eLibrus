@@ -261,7 +261,8 @@ router.post("/grades/edit_grades", async (req, res) => {
             `);
         }
     }
-    res.redirect("/teacher/grades");
+    req.flash('success_message', 'Zmiany zostały zapisane');
+    res.redirect('/teacher/grades');
 });
 
 // teacher schedule
@@ -306,7 +307,7 @@ router.get("/schedule", async function (req, res) {
 // teacher homeworks
 router.get("/homeworks", async function (req, res) {
     const [homeworks, metadata] = await sequelize.query(`
-    SELECT zajecia.klasa_id, termin_oddania, tytul, opis, nazwa FROM zadanie_domowe 
+    SELECT zajecia.klasa_id, termin_oddania, tytul, opis, nazwa, zadanie_id FROM zadanie_domowe 
     NATURAL JOIN zajecia NATURAL JOIN przedmioty INNER JOIN uzytkownik AS prowadzacy 
     ON prowadzacy.user_id = prowadzacy_id WHERE prowadzacy.user_id = ${req.user.dataValues.user_id}
     `);
@@ -343,8 +344,24 @@ router.post("/homeworks", async function (req, res) {
             VALUES 
             (${subject_id}, '${deadline}', '${title}', '${description}')
         `);
+        req.flash('success_message', 'Praca domowa została dodana');
     }
-    res.redirect("/teacher/homeworks");
+
+    if (deadline == '') req.flash('error', 'Nie wybrano terminu');
+    if (title == '') req.flash('error', 'Nie wprowadzono tytułu');
+    if (description == '') req.flash('error', 'Nie wprowadzono opisu');
+
+	res.redirect('/teacher/homeworks');
+});
+
+router.post('/homeworks/delete_homework', async (req, res) => {
+    console.log(req.body);
+    await sequelize.query(`
+        DELETE FROM zadanie_domowe 
+        WHERE zadanie_id = ${req.body.to_delete}
+    `);
+    req.flash('success_message', 'Praca domowa została usunięta');
+    res.redirect('/teacher/homeworks');
 });
 
 module.exports = router;

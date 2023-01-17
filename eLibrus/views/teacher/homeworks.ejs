@@ -34,10 +34,17 @@
                     <label style="margin: .5rem;" for="description">Opis: </label>
                     <textarea name="description" id="" cols="50" rows="10" form="add_homework"></textarea>
                 </form>
+                <div class="teacher-panel">
+                    <div>
+                        <button id="add_homework_button" style="float: left;">Dodaj pracę domową</button>
+                    </div>
+                </div>
+                <%- include ../templates/messages %>
             </div>
         </div>
             <table>
                 <tr>
+                    <td style="border: 0; "></td>
                     <th>Klasa</th>
                     <th>Przedmiot</th>
                     <th>Temat</th>
@@ -46,6 +53,12 @@
                 </tr>
                 <% for(var i=0; i<homeworks.length; i++) { %>
                     <tr>
+                        <form action="/teacher/homeworks/delete_homework" method="POST">
+                            <td>
+                                <button id="delete_homework_btn" style="padding: .5rem; width: 100%;">Usuń</button>
+                            </td>
+                            <input type="hidden" name="to_delete" value="<%= homeworks[i].zadanie_id %>">
+                        </form>
                         <td><%= homeworks[i].klasa_id %></td>
                         <td><%= homeworks[i].nazwa %></td>
                         <td><%= homeworks[i].tytul %></td>
@@ -54,11 +67,6 @@
                     </tr>
                 <% } %>
             </table>
-            <div class="teacher-panel">
-                <div>
-                    <button id="add_homework_button" style="float: right;">Wyślij</button>
-                </div>
-            </div>
         </div>
     </fieldset>
 </div>

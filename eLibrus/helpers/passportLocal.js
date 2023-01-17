@@ -5,9 +5,9 @@ module.exports = function(passport) {
     passport.use(
         new localStrategy({ usernameField: 'username' }, (username, password, done) => {
             uzytkownik.findOne({where: { email: username }}).then(user => {
-                if (!user) return done(null, false, {message: 'Invalid credentials'});
+                if (!user) return done(null, false, {message: 'Dane logowania nie są poprawne'});
                     if(password === user.dataValues.haslo) return done(null, user);
-                    else return done(null, false, {message: 'Invalid credentials'})
+                    else return done(null, false, {message: 'Dane logowania nie są poprawne'})
             }).catch(err => console.log(err))
         })
     );

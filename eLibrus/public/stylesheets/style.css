@@ -297,7 +297,8 @@ th {
     width: 90%;
     display: flex;
     flex-direction: column;
-    margin: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .main-body-container select {
@@ -714,6 +715,18 @@ th {
     font-size: 1.2em;
     border: 0;
     padding: 1rem;
+}
+
+#delete_homework_btn {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1.2em;
+    border: 0;
+    padding: 1rem;
+}
+
+#delete_homework_btn:hover {
+    background-color: rgb(62, 62, 62);
 }
 
 .messages-bttn-decisions-right {
