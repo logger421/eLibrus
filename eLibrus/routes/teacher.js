@@ -32,7 +32,7 @@ router.get("/attendance", async function (req, res) {
     }
 
     let selected_date = req.query.attendance_date;
-    if (typeof selected_date == "undefined") {
+    if (!selected_date) {
         let current_day = new Date();
         selected_date = current_day.toISOString().split("T")[0];
     }
@@ -58,7 +58,8 @@ router.get("/attendance", async function (req, res) {
     // TODO: fix the case of no subjects
     let selected_subject = req.query.subject_id;
     if (typeof selected_subject == "undefined") {
-        selected_subject = subjects[0].zajecia_id;
+        if (subjects.length == 0) selected_subject = 0;
+        else selected_subject = subjects[0].zajecia_id;
     }
 
     const [classes_numbers] = await sequelize.query(
@@ -68,7 +69,8 @@ router.get("/attendance", async function (req, res) {
     // TODO: fix the case of no classes numbers
     let selected_classes_number = req.query.classes_number;
     if (typeof selected_classes_number == "undefined") {
-        selected_classes_number = classes_numbers[0].nr_lekcji;
+        if(classes_numbers.length == 0) selected_classes_number = 0;
+        else selected_classes_number = classes_numbers[0].nr_lekcji;
     }
 
     const [frekwencja] = await sequelize.query(
