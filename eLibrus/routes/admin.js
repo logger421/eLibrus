@@ -1,3 +1,4 @@
+const e = require("express");
 var express = require("express");
 var router = express.Router();
 const sequelize = require("../models").sequelize;
@@ -180,9 +181,104 @@ router.post('/manage_classes/delete_class', async (req, res) => {
     }
 });
 
-router.get('/manage_classes/edit_subjects', (req, res) => {
-    
-    res.render('admin/edit_subjects');
+router.get('/manage_classes/edit_subjects', async (req, res) => {
+    const [classes] = await sequelize.query(`
+        SELECT klasa_id FROM klasa
+    `);
+    let class_id = classes[0].klasa_id;
+    if (req.query.class_id) {
+        class_id = req.query.class_id;
+    }
+
+    const [result, metadata] = await sequelize.query(`
+        SELECT nazwa, dzien, nr_lekcji FROM zajecia 
+        NATURAL JOIN data_zajec NATURAL JOIN przedmioty 
+        WHERE klasa_id = ${class_id}
+    `);
+
+	let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
+	let schedule = {
+		1: ["", "", "", "", ""],
+		2: ["", "", "", "", ""],
+		3: ["", "", "", "", ""],
+		4: ["", "", "", "", ""],
+		5: ["", "", "", "", ""],
+		6: ["", "", "", "", ""],
+		7: ["", "", "", "", ""],
+		8: ["", "", "", "", ""],
+	};
+
+	for (var i=0; i<5; i++) {
+		for(var j=1; j<9; j++) {
+			result.forEach(element => {
+				if (element.dzien == dni[i] && element.nr_lekcji == j) {
+					schedule[j][i] = element.nazwa;
+				}
+			});
+		}
+	}
+
+    const [subjects] = await sequelize.query(`
+        SELECT zajecia_id, nazwa FROM zajecia 
+        NATURAL JOIN przedmioty
+        WHERE zajecia.klasa_id = ${class_id}
+    `);
+    let subject_id;
+    if (subjects.length > 0)
+        subject_id = subjects[0].zajecia_id;
+    if (req.query.subject_id)
+        subject_id = req.query.subject_id;
+    else
+        subject_id = 0;
+    res.render('admin/edit_subjects', { user: req.user, classes, current_class: class_id, current_subject: subject_id, schedule, subjects });
+});
+
+router.post('/manage_classes/edit_subjects', async (req, res) => {
+    const { class_id, subject_id, day, number, operation } = req.body;
+
+    if (operation == 'add') {
+        const [check] = await sequelize.query(`
+            SELECT * FROM data_zajec 
+            NATURAL JOIN zajecia 
+            WHERE klasa_id = ${class_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+        `);
+
+        if (check.length > 0) {
+            req.flash('error', 'W podanym czasie odbywają się inne zajęcia');
+            res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        }
+        else {
+            await sequelize.query(`
+                INSERT INTO data_zajec 
+                (\`dzien\`,\`nr_lekcji\`,\`zajecia_id\`)
+                VALUES
+                ('${day}', ${number}, ${subject_id})
+            `);
+            req.flash('success_message', 'Zajęcia zostały pomyślnie dodane');
+            res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        }
+    }
+    else if (operation == 'delete') {
+        const [check] = await sequelize.query(`
+            SELECT * FROM data_zajec 
+            NATURAL JOIN zajecia 
+            WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+        `);
+
+        if (check.length == 0) {
+            req.flash('error', 'W podanym czasie wybrane zajęcia się nie odbywają');
+            res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        }
+        else {
+            await sequelize.query(`
+                DELETE FROM data_zajec 
+                WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+            `);
+            req.flash('success_message', 'Zajęcia zostały pomyślnie usunięte');
+            res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        }
+    }
+
 });
 
 module.exports = router;

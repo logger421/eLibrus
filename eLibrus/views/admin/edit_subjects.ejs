@@ -5,108 +5,95 @@
     <fieldset>
         <legend><h2>Zarządzaj klasami</h2></legend>
     <div class="manage-wrapper">
-        <form action="">
-            <select name="class_id" id="">
-                <option value="">Klasa: 1A</option>
-                <option value="">Klasa: 1B</option>
-                <option value="">Klasa: 5C</option>
-                <option value="">Klasa: 2A</option>
+        <form action="" method="GET" id="change_class">
+            <input type="hidden" name="class_id" id="hidden_class">
+            <input type="hidden" name="subject_id" id="hidden_subject">
+        </form>
+        <form action="" method="POST" id="manage_class_form">
+            <select name="class_id" id="class">
+                <% for(var i=0; i<classes.length; i++) { %>
+                    <% if (current_class == classes[i].klasa_id) { %>
+                        <option value="<%= classes[i].klasa_id %>" selected>Klasa: <%= classes[i].klasa_id %></option>
+                    <% } else { %>
+                        <option value="<%= classes[i].klasa_id %>">Klasa: <%= classes[i].klasa_id %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <select name="subject_id" id="subject">
+                <% for(var i=0; i<subjects.length; i++) { %>
+                    <% if (current_subject == subjects[i].zajecia_id) { %>
+                        <option value="<%= subjects[i].zajecia_id %>" selected><%= subjects[i].nazwa %></option>
+                        <% } else { %>
+                            <option value="<%= subjects[i].zajecia_id %>"><%= subjects[i].nazwa %></option>
+                        <% } %>
+                    <% } %>
             </select>
             <select name="day" id="">
-                <option value="">Kod zajęć: </option>
+                <option value="Poniedzialek">Dzień: Poniedzialek</option>
+                <option value="Wtorek">Dzień: Wtorek</option>
+                <option value="Sroda">Dzień: Sroda</option>
+                <option value="Czwartek">Dzień: Czwartek</option>
+                <option value="Piatek">Dzień: Piatek</option>
             </select>
-            <select name="day" id="">
-                <option value="">Poniedzialek</option>
-                <option value="">Wtorek</option>
-                <option value="">Sroda</option>
-                <option value="">Czwartek</option>
-                <option value="">Piatek</option>
+            <select name="number" id="">
+                <option value="1">Numer lekcji: 1</option>
+                <option value="2">Numer lekcji: 2</option>
+                <option value="3">Numer lekcji: 3</option>
+                <option value="4">Numer lekcji: 4</option>
+                <option value="5">Numer lekcji: 5</option>
+                <option value="6">Numer lekcji: 6</option>
+                <option value="7">Numer lekcji: 7</option>
+                <option value="8">Numer lekcji: 8</option>
             </select>
+            <button id="add" type="button">Dodaj zajęcia</button>
+            <button id="delete" type="button">Usuń zajęcia</button>
+            <input type="hidden" id="operation" name="operation">
         </form>
-        <form action="">
-            <input type="text" placeholder="Kod zajęć">
-            <button>Dodaj zajęcia</button>
-        </form>
-        <button>Usuń zajęcia</button>
-        <table>
-            <tr>
-                <th>Nr. Lekcji</th>
-                <th>Poniedziałek</th>
-                <th>Wtorek</th>
-                <th>Środa</th>
-                <th>Czwartek</th>
-                <th>Piątek</th>
-            </tr>
-            <tr>
-                <th>1</th>
-                <td>Fizyka</td>
-                <td>matematyka</td>
-                <td></td>
-                <td>J. Polski</td>
-                <td>Wychowanie fizyczne</td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td>J. Polski</td>
-                <td>Wychowanie fizyczne</td>
-                <td></td>
-                <td>J. Angielski</td>
-                <td>Wychowanie fizyczne</td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td>J. Polski</td>
-                <td>J. Niemiecki</td>
-                <td>Historia</td>
-                <td>Informatyka</td>
-                <td>Matematyka</td>
-            </tr>
-            <tr>
-                <th>4</th>
-                <td>Religia</td>
-                <td>BHP</td>
-                <td>J. Angielski</td>
-                <td>Matematyka</td>
-                <td>Religia</td>
-            </tr>
-            <tr>
-                <th>5</th>
-                <td>Matematyka</td>
-                <td>EDB</td>
-                <td>Fizyka</td>
-                <td>Historia</td>
-                <td>Biologia</td>
-            </tr>
-            <tr>
-                <th>6</th>
-                <td>Geografia</td>
-                <td>HiT</td>
-                <td>Geografia</td>
-                <td>J. Niemiecki</td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>7</th>
-                <td></td>
-                <td>Plastyka</td>
-                <td></td>
-                <td></td>
-                <td>Plastyka</td>
-            </tr>
-            <tr>
-                <th>8</th>
-                <td></td>
-                <td>Wychowanie fizyczne</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        <%- include ../templates/messages %>
+        <div class="schedule-wrapper">
+            <table>
+                <tr>
+                    <th>Nr. Lekcji</th>
+                    <th>Poniedziałek</th>
+                    <th>Wtorek</th>
+                    <th>Środa</th>
+                    <th>Czwartek</th>
+                    <th>Piątek</th>
+                </tr>
+                <% for(var i=1; i<9; i++) { %>
+                <tr>
+                    <th><%= i %></th>
+                    <% for(var j=0; j<5; j++) { %>
+                    <td><%= schedule[i][j] %></td>
+                    <% } %>
+                </tr>
+                <% } %>
+                </tr>
+            </table>
+        </div>
         <div class="go-back-wrapper">
             <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
         </div>
     </div>
 </fieldset>
 </div>
+
+<script>
+    $("#add").on('click', () => {
+        $("#operation").val('add');
+        $("#manage_class_form").submit();
+    });
+
+    $("#delete").on('click', () => {
+        $("#operation").val('delete');
+        $("#manage_class_form").submit();
+    });
+
+    $("#class").on('change', () => {
+        $("#hidden_class").val($("#class").val());
+        $("#hidden_subject").val($("#subject").val());
+        $("#change_class").submit();
+    });    
+</script>
 
 <%- include ../templates/footer %>
