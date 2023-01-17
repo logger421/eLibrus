@@ -1,0 +1,16 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj klasami</h2></legend>
+    <div class="manage-wrapper">
+        <button onclick="location.href='/admin/manage_classes/create_class'">Stwórz klasę</button>
+        <button onclick="location.href='/admin/manage_classes/delete_class'">Usuń klasę</button>
+        <button onclick="location.href='/admin/manage_classes/edit_students'">Modyfikuj uczniów klasy</button>
+        <button onclick="location.href='/admin/manage_classes/edit_subjects'">Modyfikuj zajęcia klasy</button>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

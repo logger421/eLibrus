@@ -1,0 +1,18 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Dodaj ogłoszenie</h2></legend>
+    <div class="add-wrapper">
+        <form action="" method="POST">
+            <input type="text" name="title" id="" placeholder="Tytuł ogłoszenia: ">
+            <textarea name="description" id="" cols="30" rows="10" placeholder="Zawartość ogłoszenia:"></textarea>
+            <button>Dodaj</button>
+        </form>
+        <%- include ../templates/messages %>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

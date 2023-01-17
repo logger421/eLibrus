@@ -20,7 +20,7 @@
                         </td>
                         <td>
                             <% if (grades[key]['avg'] > 0) { %> 
-                                <%= grades[key]['avg'] / grades[key]['oceny'].length %>
+                                <%= (grades[key]['avg'] / grades[key]['oceny'].length).toFixed(2) %>
                             <% } %>
                         </td>
                         <td></td>

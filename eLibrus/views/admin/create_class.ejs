@@ -1,0 +1,27 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj klasami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="" method="POST">
+            <input type="text" name="class_id" placeholder="Numer klasy: ">
+            <input type="text" name="year" placeholder="Rok rozpoczęcia: ">
+            <select name="teacher">
+                <option value="" selected disabled>Wychowawca: </option>
+                <% for(var i=0; i<teachers.length; i++) { %>
+                    <option value="<%= teachers[i].user_id %>">Wychowawca: <%= teachers[i].imie %> <%= teachers[i].nazwisko %></option>
+                <% } %>
+            </select>
+            <button>Dodaj</button>
+        </form>
+        <%- include ../templates/messages %>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

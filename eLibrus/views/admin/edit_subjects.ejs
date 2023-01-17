@@ -1,0 +1,112 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj klasami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="">
+            <select name="class_id" id="">
+                <option value="">Klasa: 1A</option>
+                <option value="">Klasa: 1B</option>
+                <option value="">Klasa: 5C</option>
+                <option value="">Klasa: 2A</option>
+            </select>
+            <select name="day" id="">
+                <option value="">Kod zajęć: </option>
+            </select>
+            <select name="day" id="">
+                <option value="">Poniedzialek</option>
+                <option value="">Wtorek</option>
+                <option value="">Sroda</option>
+                <option value="">Czwartek</option>
+                <option value="">Piatek</option>
+            </select>
+        </form>
+        <form action="">
+            <input type="text" placeholder="Kod zajęć">
+            <button>Dodaj zajęcia</button>
+        </form>
+        <button>Usuń zajęcia</button>
+        <table>
+            <tr>
+                <th>Nr. Lekcji</th>
+                <th>Poniedziałek</th>
+                <th>Wtorek</th>
+                <th>Środa</th>
+                <th>Czwartek</th>
+                <th>Piątek</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <td>Fizyka</td>
+                <td>matematyka</td>
+                <td></td>
+                <td>J. Polski</td>
+                <td>Wychowanie fizyczne</td>
+            </tr>
+            <tr>
+                <th>2</th>
+                <td>J. Polski</td>
+                <td>Wychowanie fizyczne</td>
+                <td></td>
+                <td>J. Angielski</td>
+                <td>Wychowanie fizyczne</td>
+            </tr>
+            <tr>
+                <th>3</th>
+                <td>J. Polski</td>
+                <td>J. Niemiecki</td>
+                <td>Historia</td>
+                <td>Informatyka</td>
+                <td>Matematyka</td>
+            </tr>
+            <tr>
+                <th>4</th>
+                <td>Religia</td>
+                <td>BHP</td>
+                <td>J. Angielski</td>
+                <td>Matematyka</td>
+                <td>Religia</td>
+            </tr>
+            <tr>
+                <th>5</th>
+                <td>Matematyka</td>
+                <td>EDB</td>
+                <td>Fizyka</td>
+                <td>Historia</td>
+                <td>Biologia</td>
+            </tr>
+            <tr>
+                <th>6</th>
+                <td>Geografia</td>
+                <td>HiT</td>
+                <td>Geografia</td>
+                <td>J. Niemiecki</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>7</th>
+                <td></td>
+                <td>Plastyka</td>
+                <td></td>
+                <td></td>
+                <td>Plastyka</td>
+            </tr>
+            <tr>
+                <th>8</th>
+                <td></td>
+                <td>Wychowanie fizyczne</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

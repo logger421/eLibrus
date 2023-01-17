@@ -52,8 +52,8 @@ app.use('/home', loginRouter);
 app.use('/student', isStudent, studentRouter);
 app.use('/parent', isParent, parentRouter);
 app.use('/teacher', isTeacher, teacherRouter);
+app.use('/admin', isAdmin, adminRouter);
 app.use('/', redirectWithRole);
-// app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

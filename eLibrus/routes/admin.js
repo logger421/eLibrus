@@ -1,0 +1,188 @@
+var express = require("express");
+var router = express.Router();
+const sequelize = require("../models").sequelize;
+
+router.get('/', async (req, res) => {
+    const [notes, meta] = await sequelize.query(`
+		SELECT tytul, tresc FROM ogloszenia;
+	`);
+    res.render('general/home', {user: req.user, notes});
+})
+
+router.get('/add_announcement', (req, res) => {
+    res.render('admin/add_announcement', {user: req.user});
+});
+
+router.post('/add_announcement', async (req, res) => {
+    const { title, description } = req.body;
+
+    if (!title) req.flash('error', 'Nie wprowadzono tytuł ogłoszenia');
+    if (!description) req.flash('error', 'Nie wprowadzono zawartości ogłoszenia');
+
+    if (title && description) {
+        await sequelize.query(`
+            INSERT INTO ogloszenia (\`tytul\`, \`tresc\`)
+            VALUES
+            ("${title}", "${description}")
+        `);
+    }
+
+    res.redirect('/admin/add_announcement');
+});
+
+router.get('/manage_subjects', (req, res) => {
+    res.render('admin/manage_subjects', {user: req.user});
+});
+
+router.get('/manage_subjects/create_subject', async (req, res) => {
+    const [subjects, meta_subjects] = await sequelize.query(`
+        SELECT przedmiot_id, nazwa FROM przedmioty
+    `);
+
+    const [teachers, meta_teachers] = await sequelize.query(`
+        SELECT user_id, imie, nazwisko FROM uzytkownik
+        WHERE rola = 3
+    `);
+
+    const [rooms, meta_rooms] = await sequelize.query(`
+        SELECT sala_id, nazwa FROM sala
+    `);
+
+    const [classes, meta_classes] = await sequelize.query(`
+        SELECT klasa_id FROM klasa
+    `);
+
+    res.render('admin/create_subject', {user: req.user, teachers, rooms, subjects, classes});
+});
+
+router.post('/manage_subjects/create_subject', async (req, res) => {
+    const { teacher_id, room_id, subject_id, class_id } = req.body;
+    
+    if (!teacher_id) req.flash('error', 'Nie wybrano nauczyciela');
+    if (!room_id) req.flash('error', 'Nie wybrano sali');
+    if (!subject_id) req.flash('error', 'Nie wybrano przedmiotu');
+    if (!class_id) req.flash('error', 'Nie wybrano klasy');
+
+    if (teacher_id && room_id && subject_id && class_id) {
+        const [check, meta_check] = await sequelize.query(`
+            SELECT imie, nazwisko, nazwa FROM zajecia 
+            NATURAL JOIN przedmioty INNER JOIN uzytkownik 
+            ON uzytkownik.user_id = prowadzacy_id
+            WHERE zajecia.klasa_id = ${class_id} AND przedmiot_id = ${subject_id}
+        `);
+        if (check.length > 0) {
+            req.flash('error', `${check[0].nazwa} jest już prowadzony w klasie ${class_id} przez nauczyciela: ${check[0].imie} ${check[0].nazwisko}`);
+        }
+        else {
+            await sequelize.query(`
+                INSERT INTO zajecia 
+                (\`przedmiot_id\`,\`prowadzacy_id\`,\`sala_id\`,\`klasa_id\`)
+                VALUES
+                (${subject_id}, ${teacher_id}, ${room_id}, ${class_id})
+            `);
+            req.flash('success_message', 'Zajęcia zostały dodane pomyślnie, przejdź do zarządzania klasami żeby dodać dzień i numer lekcji')
+        }
+    }
+
+    res.redirect('/admin/manage_subjects/create_subject');
+});
+
+router.get('/manage_subjects/delete_subject', async (req, res) => {
+    const [subjects, meta_subjects] = await sequelize.query(`
+        SELECT imie, nazwisko, przedmioty.nazwa as przedmiot_nazwa, sala.nazwa as sala_nazwa, zajecia.klasa_id, zajecia_id FROM zajecia 
+        INNER JOIN sala ON sala.sala_id = zajecia.sala_id 
+        INNER JOIN przedmioty ON przedmioty.przedmiot_id = zajecia.przedmiot_id 
+        INNER JOIN uzytkownik ON uzytkownik.user_id = prowadzacy_id
+    `);
+
+    res.render('admin/delete_subject', {user: req.user, subjects});
+});
+
+router.post('/manage_subjects/delete_subject', async (req, res) => { 
+    const { to_delete } = req.body;
+
+    if (!to_delete) req.flash('error', 'Nie wybrano zajęć');
+    else {
+        try {
+            await sequelize.query(`
+                DELETE FROM zajecia 
+                WHERE zajecia_id = ${to_delete}
+            `);
+            req.flash('success_message', 'Zajęcia zostały pomyślnie usunięte');
+        } catch (e) {
+            req.flash('error', 'Nie można usunąć, zajęcia posiadają datę zajęć lub inne powiązania');
+        }
+    }
+    res.redirect('/admin/manage_subjects/delete_subject');
+});
+
+router.get('/manage_classes', (req, res) => {
+    res.render('admin/manage_classes', {user: req.user});
+});
+
+router.get('/manage_classes/create_class', async (req, res) => {
+    const [avilable_teachers, meta_teachers] = await sequelize.query(`
+        SELECT imie, nazwisko, user_id FROM uzytkownik 
+        WHERE user_id NOT IN 
+        (SELECT wychowawca_id FROM klasa) 
+        AND rola = 3
+    `);
+    res.render('admin/create_class', {user: req.user, teachers: avilable_teachers});
+});
+
+router.post('/manage_classes/create_class', async (req, res) => {
+    const { class_id, teacher, year } = req.body;
+    if (!class_id) req.flash('error', 'Nie wybrano numeru klasy');
+    if (!teacher) req.flash('error', 'Nie wybrano wychowawcy');
+    if (!year) req.flash('error', 'Nie wybrano roku rozpoczęcia');
+
+    if (class_id && teacher && year) {
+        try {
+            await sequelize.query(`
+                INSERT INTO klasa 
+                VALUES
+                (${class_id}, ${teacher})
+            `);
+            req.flash('success_message', 'Klasa została dodana');
+        } catch(e) {
+            req.flash('error', 'Numer klasy nie jest poprawny lub jest już zajęty');
+        }
+    }
+
+    res.redirect('/admin/manage_classes/create_class')
+});
+
+router.get('/manage_classes/delete_class', async (req, res) => {
+    const [classes, meta_classes] = await sequelize.query(`
+        SELECT imie, nazwisko, klasa.klasa_id FROM klasa 
+        INNER JOIN uzytkownik 
+        ON uzytkownik.user_id = wychowawca_id;
+    `);
+    res.render('admin/delete_class', {user: req.user, classes});
+});
+
+router.post('/manage_classes/delete_class', async (req, res) => {
+    const { to_delete } = req.body;
+    if (!to_delete) {
+        req.flash('error', 'Nie wybrano numeru klasy');
+        res.redirect('/admin/manage_classes/delete_class');
+    } else {
+        try {
+            await sequelize.query(`
+                DELETE FROM klasa 
+                WHERE klasa_id = ${to_delete}
+            `);
+            req.flash('success_message', 'Klasa została pomyślnie usunięta');
+        } catch (e) {
+            req.flash('error', 'Nie można usunąć, klasa posiada zajęcia lub powiązania');
+        }
+        res.redirect('/admin/manage_classes/delete_class');
+    }
+});
+
+router.get('/manage_classes/edit_subjects', (req, res) => {
+    
+    res.render('admin/edit_subjects');
+});
+
+module.exports = router;

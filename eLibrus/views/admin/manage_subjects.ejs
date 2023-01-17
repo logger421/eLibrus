@@ -1,0 +1,14 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj zajęciami</h2></legend>
+    <div class="manage-wrapper">
+        <button onclick="location.href='/admin/manage_subjects/create_subject'">Stwórz zajęcia</button>
+        <button onclick="location.href='/admin/manage_subjects/delete_subject'">Usuń zajęcia</button>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

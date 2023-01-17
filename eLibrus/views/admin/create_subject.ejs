@@ -1,0 +1,43 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj zajęciami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="" method="POST">
+            <select name="teacher_id" id="">
+                <option value="" disabled selected>Nauczyciel</option>
+                <% for(var i=0; i<teachers.length; i++) { %>
+                    <option value="<%= teachers[i].user_id %>"><%= teachers[i].imie %> <%= teachers[i].nazwisko %></option>
+                <% } %>
+            </select>
+            <select name="room_id" id="">
+                <option value="" disabled selected>Sala</option>
+                <% for(var i=0; i<rooms.length; i++) { %>
+                    <option value="<%= rooms[i].sala_id %>"><%= rooms[i].nazwa %></option>
+                <% } %>
+            </select>
+            <select name="subject_id" id="">
+                <option value="" disabled selected>Przedmiot</option>
+                <% for(var i=0; i<subjects.length; i++) { %>
+                    <option value="<%= subjects[i].przedmiot_id %>"><%= subjects[i].nazwa %></option>
+                <% } %>
+            </select>
+            <select name="class_id" id="">
+                <option value="" disabled selected>Klasa</option>
+                <% for(var i=0; i<classes.length; i++) { %>
+                    <option value="<%= classes[i].klasa_id %>"><%= classes[i].klasa_id %></option>
+                <% } %>
+            </select>
+            <button type="submit">Dodaj</button>
+        </form>
+        <%- include ../templates/messages %>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_subjects'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<%- include ../templates/footer %>

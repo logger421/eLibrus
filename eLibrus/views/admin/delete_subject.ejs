@@ -1,0 +1,43 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj zajęciami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="" method="POST">
+            <input id="to_delete" type="hidden" name="to_delete" value="">
+            <input list="subject" placeholder="Kod zajęć:" id="subject_id" autocomplete="off">
+            <datalist id="subject">
+                <% for(var i=0; i<subjects.length; i++) { %>
+                    <option sub_id="<%= subjects[i].zajecia_id %>" value="<%= subjects[i].przedmiot_nazwa %>-<%= subjects[i].sala_nazwa %>-<%= subjects[i].klasa_id %>-<%= subjects[i].imie %> <%= subjects[i].nazwisko %>">
+                <% } %>
+            </datalist>
+            <input type="text" name="" id="teacher_input" value="Nauczyciel: " disabled>
+            <input type="text" name="" id="subject_input" value="Przedmiot: " disabled>
+            <input type="text" name="" id="room_input" value="Sala: " disabled>
+            <input type="text" name="" id="class_input" value="Klasa: " disabled>
+            <button type="submit">Usuń</button>
+        </form>
+        <%- include ../templates/messages %>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_subjects'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<script>
+    $("#subject_id").on('change', () => {
+        let to_input = $("#subject_id").val().split('-');
+        $("#subject_input").val(`Przedmiot: ${to_input[0]}`);
+        $("#room_input").val(`Sala: ${to_input[1]}`);
+        $("#class_input").val(`Klasa: ${to_input[2]}`);
+        $("#teacher_input").val(`Nauczyciel: ${to_input[3]}`);
+        let sub_to_delete = $(`option[value='${$("#subject_id").val()}']`).attr('sub_id');
+        console.log(sub_to_delete);
+        $("#to_delete").val(sub_to_delete);
+    });  
+</script>
+
+<%- include ../templates/footer %>

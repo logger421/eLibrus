@@ -1,0 +1,34 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj klasami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="" method="POST">
+            <select name="to_delete" id="class_select">
+                <option value="" selected disabled>Klasa: </option>
+                <% for(var i=0; i<classes.length; i++) { %>
+                    <option value="<%= classes[i].klasa_id %>" teacher="<%= classes[i].imie %> <%= classes[i].nazwisko %>">Klasa: <%= classes[i].klasa_id %></option>
+                <% } %>
+            </select>
+            <input type="text" id="year_input" placeholder="Rok rozpoczęcia: " disabled>
+            <input type="text" id="teacher_input" placeholder="Wychowawca: " disabled>
+            <button>Usuń</button>
+        </form>
+        <%- include ../templates/messages %>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<script>
+    $("#class_select").on('change', () => {
+        $("#year_input").val("Data rozpoczęcia: 2023");
+        $("#teacher_input").val('Wychowawca: ' + $(`option[value='${$("#class_select").val()}']`).attr('teacher'));
+    });
+</script>
+
+<%- include ../templates/footer %>

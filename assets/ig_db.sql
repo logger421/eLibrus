@@ -265,6 +265,9 @@ INSERT INTO `uzytkownik` VALUES (1,'jan.kowalski@student.dziennikuj.pl','uczen12
 /*!40000 ALTER TABLE `uzytkownik` ENABLE KEYS */;
 UNLOCK TABLES;
 
+INSERT INTO `uzytkownik` VALUES (6,'pawel1.kowal@nauczyciel.dziennikuj.pl','nauczyciel123','Pawel1','Kowal','12312312312','1996-01-04','Krakow','30-302','Gwarna','11/1','3',NULL,1)
+INSERT INTO `uzytkownik` VALUES (6,'pawel2.kowal@nauczyciel.dziennikuj.pl','nauczyciel123','Pawel2','Kowal','12312312312','1996-01-04','Krakow','30-302','Gwarna','11/1','3',NULL,1)
+
 --
 -- Table structure for table `wiadomosc`
 --
