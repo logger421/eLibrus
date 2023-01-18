@@ -81,6 +81,11 @@
     </fieldset>
 </div>
 
+
+<div id="dialog-1" title="Potwierdź wstawienie">
+    <p>Czy na pewno chcesz wstawić zbiorczą ocenę?</p>
+</div>
+
 <script>
     $("#class").on("change", () => {
         $("#change_class_id").val($("#class").val());
@@ -91,9 +96,25 @@
         $("#change_class_id").val($("#class").val());
         $("#change_class_form").submit();
     });
-    $("#add_grades_button").on("click", () => {
-        $("#add_grades").submit();
-    })
+
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#add_grades").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#add_grades_button").on("click", () => {
+            $("#dialog-1").dialog("open");
+        })
+    });
 </script>
 
 <%- include ../templates/footer %>

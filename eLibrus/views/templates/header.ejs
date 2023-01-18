@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <title>Strona startowa</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
     <div class="main-container">
@@ -44,7 +46,31 @@
             <div class="buttons">
                 <% if (typeof(user) != 'undefined') { %>
                     <button onclick="location.href='/home/notifications'">Powiadomienia</button>
-                    <button onclick="location.href='/home/change_password'">Zmiana hasła</button>
+                    <% if (user.dataValues.rola == 1) { %> 
+                        <button onclick="location.href='/student/change_password'"
+                        <% if (current_path == "change_password") { %>
+                            class='active'
+                        <% } %>
+                        >Zmiana hasła</button>
+                    <% } else if (user.dataValues.rola == 2) { %>
+                        <button onclick="location.href='/parent/change_password'"
+                        <% if (current_path == "change_password") { %>
+                            class='active'
+                        <% } %>
+                        >Zmiana hasła</button>
+                    <% } else if (user.dataValues.rola == 3) { %>
+                        <button onclick="location.href='/teacher/change_password'"
+                        <% if (current_path == "change_password") { %>
+                            class='active'
+                        <% } %>
+                        >Zmiana hasła</button>
+                    <% } else { %>
+                        <button onclick="location.href='/admin/change_password'"
+                        <% if (current_path == "change_password") { %>
+                            class='active'
+                        <% } %>
+                        >Zmiana hasła</button>
+                    <% } %>
                     <button onclick="location.href='/home/logout'">Wyloguj</button>
                 <% } else { %>
                     <button onclick="location.href='/home/login'">Zaloguj</button>

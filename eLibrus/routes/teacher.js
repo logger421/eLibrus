@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const sequelize = require("../models").sequelize;
 const querystring = require('querystring');    
-
+const change_password = require("../helpers/change_pass");
 const { getClass, getSubject } = require("../helpers/teacher_classes_subjects");
 const {
     uzytkownik,
@@ -16,9 +16,30 @@ const {
 // teacher home page
 router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+        SELECT tytul, tresc FROM ogloszenia
+        ORDER BY id DESC
 	`);
     res.render("general/home", { user: req.user, notes, current_path: 'teacher' });
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+});
+
+router.post('/change_password', async (req, res) => {
+    const { old_pass, new_pass, new_pass_again } = req.body;
+
+    const result = await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again);
+
+    if (result[0] == 0) {
+        for(let i=0; i<result[1].length; i++) 
+            req.flash('error', result[1][i]);
+    }
+    else {
+        req.flash('success_message', result[1][0]);
+    }
+
+    res.redirect('/teacher/change_password');
 });
 
 // teacher attendance
@@ -107,7 +128,7 @@ router.get("/attendance", async function (req, res) {
     });
 });
 
-router.post("/attendance", (req, res) => {
+router.post("/attendance", async (req, res) => {
     const attendance_list = Object.entries(req.body)
         .filter(
             ([key]) =>
@@ -115,7 +136,7 @@ router.post("/attendance", (req, res) => {
         )
         .map(([id, value]) => ({ user_id: id, frekwencja: value }));
 
-    attendance_list.forEach((item) => {
+    await attendance_list.forEach((item) => {
         frekwencja
             .findOne({
                 where: {
@@ -238,6 +259,7 @@ router.get("/grades/edit_grades/:subject_id/:user_id", async (req, res) => {
         result: result[0],
         grades,
         avg,
+        current_path: 'edit_grades'
     });
 });
 

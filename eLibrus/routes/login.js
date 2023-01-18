@@ -7,7 +7,8 @@ const { sequelize } = require('../models');
 // home page unauthenticated
 router.get('/', async (req, res) => {
 	const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+		SELECT tytul, tresc FROM ogloszenia
+		ORDER BY id DESC
 	`);
 
 	res.render('general/home', { notes });

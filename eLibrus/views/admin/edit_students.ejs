@@ -8,7 +8,7 @@
         <form action="" method="GET" id="change_class">
             <input type="hidden" id="hidden_class" name="class_id">
         </form>
-        <form action="" method="POST" style="width: 80%;">
+        <form action="" method="POST" style="width: 80%;" id="send_form">
             <select name="class_id" id="class_id">
                 <% for(var i=0; i<classes.length; i++) { %>
                     <% if (current_class == classes[i].klasa_id) { %>
@@ -44,13 +44,17 @@
                     </tr>
                 <% } %>
             </table>
-            <button type="submit">Zapisz zmiany</button>
+            <button type="button" id="submit_form">Zapisz zmiany</button>
         </form>
         <div class="go-back-wrapper">
             <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
         </div>
     </div>
 </fieldset>
+</div>
+
+<div id="dialog-1" title="Potwierdź zmiany">
+    <p>Czy na pewno chcesz zapisać zmiany?</p>
 </div>
 
 <script>
@@ -73,6 +77,26 @@
                     } 
                 }
             })
+    });
+
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#send_form").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_form").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
     })
 
 </script>

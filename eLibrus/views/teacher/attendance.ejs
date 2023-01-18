@@ -97,6 +97,10 @@
     </fieldset>
 </div>
 
+<div id="dialog-1" title="Potwierdź zmiany">
+    <p>Czy na pewno chcesz zapisać zmiany?</p>
+</div>
+
 <%- include ../templates/footer %>
 
 <script>
@@ -110,8 +114,24 @@
         $("#attendance_class").submit();
     })
 
-    $("#submit_attendance").on('click', function () {
-        $("#post_attendance").submit();
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Zapisz",
+                click: () => {
+                    $("#post_attendance").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_attendance").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
     })
 
     var button = document.getElementById("mark-all-present");

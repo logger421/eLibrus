@@ -1,8 +1,8 @@
 <div class="navbar-container">
-    <button <% if (current_path == 'admin') { %> <=% class="active" %> <% } %> onclick="location.href='/home'">Strona główna</button>
-    <button <% if (current_path == 'messages') { %> <=% class="active" %> <% } %> onclick="location.href='/messages'">Wiadomości</button>
-    <button <% if (current_path == 'manage_users') { %> <=% class="active" %> <% } %> onclick="location.href='/admin/manage_users'">Zarządzaj użytkownikami</button>
-    <button <% if (current_path == 'manage_subjects') { %> <=% class="active" %> <% } %> onclick="location.href='/admin/manage_subjects'">Zarządzaj zajęciami</button>
-    <button <% if (current_path == 'manage_classes') { %> <=% class="active" %> <% } %> onclick="location.href='/admin/manage_classes'">Zarządzaj klasami</button>
-    <button <% if (current_path == 'add_ann') { %> <=% class="active" %> <% } %> onclick="location.href='/admin/add_announcement'">Dodaj ogłoszenie</button>
+    <button <% if (current_path == 'admin')             { %> class="active" <% } %> onclick="location.href='/admin'">Strona główna</button>
+    <button <% if (current_path == 'messages')          { %> class="active" <% } %> onclick="location.href='/messages'">Wiadomości</button>
+    <button <% if (current_path == 'manage_users')      { %> class="active" <% } %> onclick="location.href='/admin/manage_users'">Zarządzaj użytkownikami</button>
+    <button <% if (current_path == 'manage_subjects')   { %> class="active" <% } %> onclick="location.href='/admin/manage_subjects'">Zarządzaj zajęciami</button>
+    <button <% if (current_path == 'manage_classes')    { %> class="active" <% } %> onclick="location.href='/admin/manage_classes'">Zarządzaj klasami</button>
+    <button <% if (current_path == 'add_ann')           { %> class="active" <% } %> onclick="location.href='/admin/add_announcement'">Dodaj ogłoszenie</button>
 </div>

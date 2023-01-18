@@ -78,16 +78,50 @@
 </fieldset>
 </div>
 
-<script>
-    $("#add").on('click', () => {
-        $("#operation").val('add');
-        $("#manage_class_form").submit();
-    });
+<div id="dialog-1" title="Usunąć zajęcia?">
+    <p>Czy na pewno chcesz usunąć zajęcia z planu lekcji?</p>
+</div>
 
-    $("#delete").on('click', () => {
-        $("#operation").val('delete');
-        $("#manage_class_form").submit();
-    });
+<div id="dialog-2" title="Dodać zajęcia?">
+    <p>Czy na pewno chcesz dodać zajęcia do planu lekcji?</p>
+</div>
+
+<script>
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#manage_class_form").submit();
+                }
+              },  
+            ]
+        });
+        $("#dialog-2").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#manage_class_form").submit();
+                }
+              },  
+            ]
+        });
+        $("#add").on('click', () => {
+            $("#operation").val('add');
+            $("#dialog-2").dialog("open");
+        });
+    
+        $("#delete").on('click', () => {
+            $("#operation").val("delete");
+            $("#dialog-1").dialog("open");
+        });
+    })
 
     $("#class").on('change', () => {
         $("#hidden_class").val($("#class").val());

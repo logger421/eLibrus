@@ -5,7 +5,7 @@
     <fieldset>
         <legend><h2>Zarządzaj zajęciami</h2></legend>
     <div class="manage-wrapper">
-        <form action="" method="POST">
+        <form action="" method="POST" id="send_form">
             <select name="teacher_id" id="">
                 <option value="" disabled selected>Nauczyciel</option>
                 <% for(var i=0; i<teachers.length; i++) { %>
@@ -30,7 +30,7 @@
                     <option value="<%= classes[i].klasa_id %>"><%= classes[i].klasa_id %></option>
                 <% } %>
             </select>
-            <button type="submit">Dodaj</button>
+            <button type="button" id="submit_form">Dodaj</button>
         </form>
         <%- include ../templates/messages %>
         <div class="go-back-wrapper">
@@ -39,5 +39,31 @@
     </div>
 </fieldset>
 </div>
+
+<div id="dialog-1" title="Potwierdź stworzenie">
+    <p>Czy na pewno chcesz stworzyć zajęcia?</p>
+</div>
+
+<script>
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#send_form").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_form").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
+    })
+</script>
 
 <%- include ../templates/footer %>

@@ -60,10 +60,30 @@
     </fieldset>
 </div>
 
+<div id="dialog-1" title="Potwierdź zmiany">
+    <p>Czy na pewno chcesz zapisać zmiany?</p>
+</div>
+
 <script>
-    $("#edit_grades_button").on('click', () => {
-        $("#edit_grade_form").submit();
-    });
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#edit_grade_form").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#edit_grades_button").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
+    })
 </script>
 
 <%- include ../templates/footer %>
