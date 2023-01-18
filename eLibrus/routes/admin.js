@@ -270,58 +270,69 @@ router.get("/manage_classes/edit_subjects", async (req, res) => {
 router.post("/manage_classes/edit_subjects", async (req, res) => {
     const { class_id, subject_id, day, number, operation } = req.body;
 
-    if (operation == "add") {
-        const [check] = await sequelize.query(`
-            SELECT * FROM data_zajec 
-            NATURAL JOIN zajecia 
-            WHERE klasa_id = ${class_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-        `);
+    if (!class_id) req.flash('error', 'Nie wybrano klasy');
+    if (!subject_id) req.flash('error', 'Nie wybrano przedmiotu');
+    if (!day) req.flash('error', 'Nie wybrano dnia');
+    if (!number) req.flash('error', 'Nie wybrano numeru lekcji');
+    if (!operation) req.flash('error', 'Wystąpił błąd');
 
-        if (check.length > 0) {
-            req.flash("error", "W podanym czasie odbywają się inne zajęcia");
-            res.redirect(
-                `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
-            );
-        } else {
-            await sequelize.query(`
-                INSERT INTO data_zajec 
-                (\`dzien\`,\`nr_lekcji\`,\`zajecia_id\`)
-                VALUES
-                ('${day}', ${number}, ${subject_id})
-            `);
-            req.flash("success_message", "Zajęcia zostały pomyślnie dodane");
-            res.redirect(
-                `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
-            );
-        }
-    } else if (operation == "delete") {
-        const [check] = await sequelize.query(`
-            SELECT * FROM data_zajec 
-            NATURAL JOIN zajecia 
-            WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-        `);
-
-        if (check.length == 0) {
-            req.flash(
-                "error",
-                "W podanym czasie wybrane zajęcia się nie odbywają"
-            );
-            res.redirect(
-                `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
-            );
-        } else {
-            await sequelize.query(`
-                DELETE FROM data_zajec 
-                WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-            `);
-            req.flash("success_message", "Zajęcia zostały pomyślnie usunięte");
-            res.redirect(
-                `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
-            );
-        }
+    if (!class_id || !subject_id || !day || !number || !operation) {
+        res.redirect('/admin/manage_classes/edit_subjects');
     }
     else {
-        res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        if (operation == "add") {
+            const [check] = await sequelize.query(`
+                SELECT * FROM data_zajec 
+                NATURAL JOIN zajecia 
+                WHERE klasa_id = ${class_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+            `);
+    
+            if (check.length > 0) {
+                req.flash("error", "W podanym czasie odbywają się inne zajęcia");
+                res.redirect(
+                    `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
+                );
+            } else {
+                await sequelize.query(`
+                    INSERT INTO data_zajec 
+                    (\`dzien\`,\`nr_lekcji\`,\`zajecia_id\`)
+                    VALUES
+                    ('${day}', ${number}, ${subject_id})
+                `);
+                req.flash("success_message", "Zajęcia zostały pomyślnie dodane");
+                res.redirect(
+                    `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
+                );
+            }
+        } else if (operation == "delete") {
+            const [check] = await sequelize.query(`
+                SELECT * FROM data_zajec 
+                NATURAL JOIN zajecia 
+                WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+            `);
+    
+            if (check.length == 0) {
+                req.flash(
+                    "error",
+                    "W podanym czasie wybrane zajęcia się nie odbywają"
+                );
+                res.redirect(
+                    `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
+                );
+            } else {
+                await sequelize.query(`
+                    DELETE FROM data_zajec 
+                    WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
+                `);
+                req.flash("success_message", "Zajęcia zostały pomyślnie usunięte");
+                res.redirect(
+                    `/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`
+                );
+            }
+        }
+        else {
+            res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+        }
     }
 
 });
