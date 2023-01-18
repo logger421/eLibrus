@@ -1,5 +1,5 @@
-<% include ../templates/header %>
-<% include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -14,7 +14,7 @@
                 <button>Zaloguj</button>
                 <a href="/home/remind_password"><strong>Zresetuj hasło</strong></a>
             </div>
-            <% include ../templates/messages %>
+            <%- include('../templates/messages.ejs') %>
             </div>
         </form>
         <div class="temp">
@@ -53,4 +53,4 @@
     })
 </script>
 
-<% include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>

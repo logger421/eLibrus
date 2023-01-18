@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -19,7 +19,7 @@
                 <% } %>
             </select>
             <input type="text" name="" id="filter" placeholder="Email / Imie i nazwisko">
-            <%- include ../templates/messages %>
+            <%- include('../templates/messages.ejs') %>
             <table>
                 <tr>
                     <th>Imię i nazwisko</th>
@@ -101,4 +101,4 @@
 
 </script>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>

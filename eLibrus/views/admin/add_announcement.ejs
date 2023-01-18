@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -10,7 +10,7 @@
             <textarea name="description" id="" cols="30" rows="10" placeholder="Zawartość ogłoszenia:"></textarea>
             <button type="button" id="submit_form">Dodaj</button>
         </form>
-        <%- include ../templates/messages %>
+        <%- include('../templates/messages.ejs') %>
     </div>
 </fieldset>
 </div>
@@ -41,4 +41,4 @@
     })
 </script>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>
