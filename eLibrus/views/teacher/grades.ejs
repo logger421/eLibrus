@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -74,7 +74,7 @@
                         <option value="6">6</option>
                     </select>
                     <form id="add_grades" action="" method="GET"></form>
-                    <%- include ../templates/messages %>
+                    <%- include('../templates/messages.ejs') %>
                 </div>
             </div>
         </div>
@@ -117,4 +117,4 @@
     });
 </script>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>

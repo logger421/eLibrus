@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -50,7 +50,7 @@
                     </datalist>
                 </div>
             </form>
-            <%- include ../templates/messages %>
+            <%- include('../templates/messages.ejs') %>
             <button class="edit-user-btn" id="create_user_btn">Stwórz</button>
             <div class="go-back-wrapper">
                 <button class="go-back-btn" onclick="location.href='/admin/manage_users'">Cofnij</button>
@@ -59,7 +59,7 @@
     </fieldset>
 </div>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>
 
 <script>
     $("#create_user_btn").on('click', () => {
