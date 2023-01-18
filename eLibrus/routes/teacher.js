@@ -4,6 +4,9 @@ const sequelize = require("../models").sequelize;
 const querystring = require('querystring');    
 const change_password = require("../helpers/change_pass");
 const { getClass, getSubject } = require("../helpers/teacher_classes_subjects");
+const { notification_student, notification_class } = require("../helpers/create_notification");
+const get_notifications = require("../helpers/get_notifications");
+
 const {
     uzytkownik,
     klasa,
@@ -22,12 +25,45 @@ router.get("/", async function (req, res) {
     res.render("general/home", { user: req.user, notes, current_path: 'teacher' });
 });
 
-router.get('/change_password', (req, res) => {
-    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+
+router.get('/notifications', async (req, res) => {
+    const notifications = await get_notifications(req.user.dataValues.user_id);
+    res.render('general/notifications', { user: req.user, notifications,  current_path: 'notifications' })
 });
 
-router.get('/notifications', (req, res) => {
-    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
+router.post('/notifications', async (req, res) => {
+    let { note_id, operation } = req.body;
+    console.log(req.body);
+    if (!note_id || !operation) res.redirect('/teacher/notifications');
+    else {
+        if (typeof(note_id) == 'string') note_id = [note_id];
+        if (operation == 'read') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    UPDATE wiadomosc 
+                    SET odczytana = 1 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        else if (operation == 'delete') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    DELETE FROM wiadomosc 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        res.redirect('/teacher/notifications');
+    }
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 router.post('/change_password', async (req, res) => {
@@ -188,8 +224,11 @@ router.get("/grades", async function (req, res) {
                 INSERT INTO oceny 
                 (\`ocena\`, \`user_id\`, \`zajecia_id\`)
                 VALUES 
-                (${grade_value}, ${user_id[i]}, ${subject_id})
-            `);
+                (?, ?, ?)
+                `, {
+                    replacements: [grade_value, user_id[i], subject_id]
+            });
+            await notification_student(user_id[i], subject_id);
         }
     }
     const classes = await getClass(req.user.dataValues.user_id);
@@ -269,12 +308,14 @@ router.get("/grades/edit_grades/:subject_id/:user_id", async (req, res) => {
 
 router.post("/grades/edit_grades", async (req, res) => {
     let result = req.body;
+    let changed = 0;
     for (var key in result) {
         if (result[key] == "remove") {
             await sequelize.query(`
                 DELETE FROM oceny
                 WHERE ocena_id = ${key}
             `);
+            changed = 1;
         } else if (key == "add") {
             if (result[key] > 0) {
                 await sequelize.query(`
@@ -282,6 +323,7 @@ router.post("/grades/edit_grades", async (req, res) => {
                     (\`ocena\`, \`user_id\`, \`zajecia_id\`)
                     values(${result[key]}, ${result["user_id"]}, ${result["subject_id"]})
                 `);
+                changed = 1;
             }
         } else if (/^[0-9]+/.test(key)) {
             await sequelize.query(`
@@ -289,8 +331,14 @@ router.post("/grades/edit_grades", async (req, res) => {
                 SET ocena = ${result[key]}
                 WHERE ocena_id = ${key}
             `);
+            changed = 1;
         }
     }
+
+    if (changed) {
+        notification_student(result["user_id"], result["subject_id"]);
+    }
+
     req.flash('success_message', 'Zmiany zostały zapisane');
     res.redirect('/teacher/grades');
 });
@@ -376,6 +424,7 @@ router.post("/homeworks", async function (req, res) {
             VALUES 
             (${subject_id}, '${deadline}', '${title}', '${description}')
         `);
+        notification_class(subject_id);
         req.flash('success_message', 'Praca domowa została dodana');
     }
 

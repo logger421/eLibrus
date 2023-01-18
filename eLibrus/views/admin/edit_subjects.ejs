@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -49,7 +49,7 @@
             <button id="delete" type="button">Usuń zajęcia</button>
             <input type="hidden" id="operation" name="operation">
         </form>
-        <%- include ../templates/messages %>
+        <%- include('../templates/messages.ejs') %>
         <div class="schedule-wrapper">
             <table>
                 <tr>
@@ -130,4 +130,4 @@
     });    
 </script>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>

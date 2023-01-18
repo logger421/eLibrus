@@ -1,5 +1,5 @@
-<%- include ../templates/header %>
-<%- include ../templates/navbar %>
+<%- include('../templates/header.ejs') %>
+<%- include('../templates/navbar.ejs') %>
 
 <div class="main-body-container">
     <fieldset>
@@ -32,7 +32,7 @@
             </select>
             <button type="button" id="submit_form">Dodaj</button>
         </form>
-        <%- include ../templates/messages %>
+        <%- include('../templates/messages.ejs') %>
         <div class="go-back-wrapper">
             <button class="go-back-btn" onclick="location.href='/admin/manage_subjects'">Cofnij</button>
         </div>
@@ -66,4 +66,4 @@
     })
 </script>
 
-<%- include ../templates/footer %>
+<%- include('../templates/footer.ejs') %>
