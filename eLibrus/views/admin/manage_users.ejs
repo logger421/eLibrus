@@ -1,0 +1,64 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Zarządzaj użytkownikami</h2>
+        </legend>
+        <div class="notes-wrapper">
+            <div class="manage-wrapper">
+                <form action="">
+                    <div class="manage-users-input-wrapper">
+                        <div class="align-left">
+                            <form action="/admin/manage_users" method="get" name="search_users" id="search_users">
+                                <div class="account-name-input">
+                                    <input type="text" name="first_name" id="first_name" placeholder="Imie">
+                                    <input type="text" name="second_name" id="second_name" placeholder="Nazwisko">
+                                    <input type="text" name="email" id="email" placeholder="Email">
+                                </div>
+                                <div class="account-type-picker">
+                                    <div class="radio">
+                                        <input type="radio" name="account_type" id="nauczyciel" value="nauczyciel">
+                                        <label for="nauczyciel">Nauczyciel</label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="account_type" id="rodzic" value="rodzic">
+                                        <label for="rodzic">Rodzic</label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="account_type" id="uczen" value="uczen">
+                                        <label for="uczen">Uczeń</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="align-right">
+                            <button type="button" onclick="location.href='/admin/create_user'">Stwórz</button>
+                            <button>Szukaj</button>
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Imię i nazwisko</th>
+                            <th>Data urodzenia</th>
+                            <th>Email</th>
+                            <th>Rola</th>
+                            <th></th>
+                        </tr>
+                        <% users.forEach(element => { %>
+                            <tr>
+                                <td><%=element.imie %> <%= element.nazwisko %></td>
+                                <td><%= element.data_urodzenia %></td>
+                                <td><%= element.email %></td>
+                                <td><%= element.rola %></td>
+                                <td>Edytuj</td>
+                            </tr>
+                        <% }); %>
+                    </table>
+                </form>
+            </div>
+    </fieldset>
+</div>
+
+<%- include ../templates/footer %>
