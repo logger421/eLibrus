@@ -351,11 +351,37 @@ router.get('/manage_classes/edit_students', async (req, res) => {
     }
 
     const [students] = await sequelize.query(`
-        SELECT user_id, imie, nazwisko, email, YEAR(data_urodzenia) as rocznik FROM uzytkownik 
+        SELECT user_id, imie, nazwisko, email, YEAR(data_urodzenia) as rocznik, klasa_id FROM uzytkownik 
         WHERE rola = 1 AND (klasa_id = ${class_id} OR klasa_id IS NULL)
     `);
 
     res.render('admin/edit_students', { user: req.user, classes, current_class: class_id, students, current_path: 'manage_classes' });
+});
+
+router.post('/manage_classes/edit_students', async (req, res) => {
+    let { class_id, student_id } = req.body;
+
+    if(!class_id) {
+        req.flash('error', 'Nie wybrano klasy');
+        res.redirect('/admin/manage_classes/edit_studets');
+    }
+
+    if (!student_id) student_id = [0]
+    if (typeof(student_id) == 'string') student_id = [student_id];
+
+    await sequelize.query(`
+        UPDATE uzytkownik 
+        SET klasa_id = NULL
+        WHERE rola = 1 AND user_id NOT IN (${student_id.toString()})
+    `);
+
+    await sequelize.query(`
+        UPDATE uzytkownik 
+        SET klasa_id = ${class_id}
+        WHERE rola = 1 AND user_id IN (${student_id.toString()})
+    `);
+
+    res.redirect('/admin/manage_classes/edit_students');
 });
 
 router.get("/manage_users", async (req, res) => {

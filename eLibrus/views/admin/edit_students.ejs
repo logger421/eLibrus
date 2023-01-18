@@ -19,6 +19,7 @@
                 <% } %>
             </select>
             <input type="text" name="" id="filter" placeholder="Email / Imie i nazwisko">
+            <%- include ../templates/messages %>
             <table>
                 <tr>
                     <th>Imię i nazwisko</th>
@@ -33,11 +34,17 @@
                         </td>
                         <td id="year"><%= students[i].rocznik %></td>
                         <td id="email"><%= students[i].email %></td>
-                        <td><input type="checkbox" name="student_id" value="<%= students[i].user_id %>"></td>
+                        <td>
+                            <input type="checkbox" name="student_id" value="<%= students[i].user_id %>"
+                                <% if(students[i].klasa_id) { %>
+                                    checked
+                                <% } %>    
+                            >
+                        </td>
                     </tr>
                 <% } %>
             </table>
-            <button>Dodaj</button>
+            <button type="submit">Zapisz zmiany</button>
         </form>
         <div class="go-back-wrapper">
             <button class="go-back-btn" onclick="location.href='/admin/manage_classes'">Cofnij</button>
