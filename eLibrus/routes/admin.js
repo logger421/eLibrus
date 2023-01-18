@@ -20,10 +20,6 @@ router.get('/change_password', (req, res) => {
     res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
-router.get('/notifications', (req, res) => {
-    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
-});
-
 router.post('/change_password', async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
@@ -434,7 +430,7 @@ router.post("/manage_classes/edit_students", async (req, res) => {
     await sequelize.query(`
         UPDATE uzytkownik 
         SET klasa_id = NULL
-        WHERE rola = 1 AND user_id NOT IN (${student_id.toString()})
+        WHERE rola = 1 AND user_id NOT IN (${student_id.toString()}) AND klasa_id = ${class_id}
     `);
 
     await sequelize.query(`

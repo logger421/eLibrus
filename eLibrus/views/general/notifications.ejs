@@ -6,6 +6,7 @@
         <legend><h2>Powiadomienia</h2></legend>
     <div class="notifications-wrapper">
         <table>
+            <form action="" method="POST" id="send_form">
             <tr>
                 <th>Zaznacz</th>
                 <th>Data</th>
@@ -13,9 +14,14 @@
             </tr>
                 <% for(var i=0; i<notifications.length; i++) { %>
                     <tr>
-                        <td><input type="checkbox" name="" id="checkbox"></td>
+                        <td><input type="checkbox" name="note_id" id="checkbox" value="<%= notifications[i].wiadomosc_id %>"></td>
                         <td>
-                            <%= notifications[i].data %>
+                            <% if (notifications[i].odczytana == 0) { %>
+                                <strong><%= notifications[i].data %></strong>
+                            <% } else { %>
+                                <%= notifications[i].data %>
+                            <% } %>
+                            
                         </td>
                         <td>
                             <% if (notifications[i].odczytana == 0) { %>
@@ -26,12 +32,14 @@
                         </td>
                     </tr>
                 <% } %>
+                <input type="hidden" name="operation" id="hidden_value">
+            </form>
         </table>
         <div>
             <button id="select_all">Zaznacz wszystkie</button>
-            <button>Usuń</button>
+            <button id="read">Oznacz jako przeczytane</button>
+            <button id="delete">Usuń</button>
         </div>
-        
     </div>
 </fieldset>
 </div>
@@ -42,6 +50,17 @@
             e.checked = true;
         });
     })
+
+    $("#read").on("click", () => {
+        $("#hidden_value").val('read');
+        $("#send_form").submit();
+    })
+
+    $("#delete").on("click", () => {
+        $("#hidden_value").val('delete');
+        $("#send_form").submit();
+    })
+
 </script>
 
 <%- include ../templates/footer %>

@@ -22,16 +22,45 @@ router.get("/", async function (req, res) {
     res.render("general/home", { user: req.user, notes, current_path: 'student' });
 });
 
-router.get('/change_password', (req, res) => {
-    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
-});
 
 router.get('/notifications', async (req, res) => {
     const notifications = await get_notifications(req.user.dataValues.user_id);
-
-    console.log(notifications);
-
     res.render('general/notifications', { user: req.user, current_path: 'notifications', notifications })
+});
+
+router.post('/notifications', async (req, res) => {
+    let { note_id, operation } = req.body;
+    console.log(req.body);
+    if (!note_id || !operation) res.redirect('/student/notifications');
+    else {
+        if (typeof(note_id) == 'string') note_id = [note_id];
+        if (operation == 'read') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    UPDATE wiadomosc 
+                    SET odczytana = 1 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        else if (operation == 'delete') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    DELETE FROM wiadomosc 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        res.redirect('/student/notifications');
+    }
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 router.post('/change_password', async (req, res) => {
@@ -127,15 +156,15 @@ router.get("/grades", async function (req, res) {
     const [przedmioty, metadata_przedmioty] = await sequelize.query(
 		`SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
 		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty 
-		WHERE user_id = ${req.user.dataValues.user_id}`
-	);
+		WHERE user_id = ?`
+	, {replacements: [req.user.dataValues.user_id]});
 
     
 	const [oceny, metadata_oceny] = await sequelize.query(`
         SELECT zajecia_id, ocena FROM oceny 
 		NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
-		WHERE user_id = ${req.user.dataValues.user_id}
-    `);
+		WHERE user_id = ?`
+    , {replacements: [req.user.dataValues.user_id]});
         
     console.log(przedmioty, oceny);
 	let grades = {};
@@ -155,8 +184,8 @@ router.get("/schedule", async function (req, res) {
     const [result, metadata] = await sequelize.query(`
         SELECT nazwa, dzien, nr_lekcji FROM zajecia 
         NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
-        WHERE user_id = ${req.user.user_id}
-        `);
+        WHERE user_id = ?`
+        , {replacements: [req.user.dataValues.user_id]});
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
     let schedule = {
@@ -195,8 +224,8 @@ router.get("/homeworks", async function (req, res) {
         SELECT prowadzacy.imie, prowadzacy.nazwisko, termin_oddania, tytul, opis, przedmioty.nazwa FROM zadanie_domowe 
         NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen inner join uzytkownik AS prowadzacy 
         ON prowadzacy.user_id = prowadzacy_id 
-        WHERE uczen.user_id = ${req.user.user_id}
-    `);
+        WHERE uczen.user_id = ?`
+        , {replacements: [req.user.dataValues.user_id]});
 
     res.render("student/homeworks", {
         user: req.user,

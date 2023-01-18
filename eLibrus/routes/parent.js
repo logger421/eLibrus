@@ -3,6 +3,8 @@ var router = express.Router();
 const moment = require("moment");
 const change_password = require("../helpers/change_pass");
 const sequelize = require('../models').sequelize;
+const get_notifications = require("../helpers/get_notifications");
+const { notification_teacher } = require("../helpers/create_notification");
 
 const {
     uzytkownik,
@@ -39,12 +41,46 @@ router.get('/', async function(req, res) {
 	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student, notes, current_path: 'parent'});
 });
 
-router.get('/change_password', (req, res) => {
-    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+
+router.get('/notifications', async (req, res) => {
+	const notifications = await get_notifications(req.user.dataValues.user_id);
+    res.render('general/notifications', { user: req.user, notifications, current_path: 'notifications' })
 });
 
-router.get('/notifications', (req, res) => {
-    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
+router.post('/notifications', async (req, res) => {
+    let { note_id, operation } = req.body;
+    console.log(req.body);
+    if (!note_id || !operation) res.redirect('/parent/notifications');
+    else {
+        if (typeof(note_id) == 'string') note_id = [note_id];
+        if (operation == 'read') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    UPDATE wiadomosc 
+                    SET odczytana = 1 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        else if (operation == 'delete') {
+            for(let i=0; i<note_id.length; i++) {
+                await sequelize.query(`
+                    DELETE FROM wiadomosc 
+                    WHERE wiadomosc_id = ?
+                `, {
+                    replacements: [note_id[i]]
+                });
+            }
+        }
+        res.redirect('/parent/notifications');
+    }
+});
+
+
+router.get('/change_password', (req, res) => {
+	res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 router.post('/change_password', async (req, res) => {
@@ -135,14 +171,14 @@ router.get('/grades', async function(req, res) {
 	const [classses, metadata_przedmioty] = await sequelize.query(
 		`SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
 		NATURAL JOIN uzytkownik NATURAL JOIN przedmioty 
-		WHERE user_id = ${req.cookies.current_student}`
-	);
+		WHERE user_id = ?`
+	, {replacements: [req.cookies.current_student]});
 
 	const [all_grades, metadata_oceny] = await sequelize.query(
 		`SELECT zajecia_id, ocena FROM oceny 
 		NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
-		WHERE user_id = ${req.cookies.current_student}`
-	);
+		WHERE user_id = ?`
+	, {replacements: [req.cookies.current_student]});
 
 	let grades = {};
 	classses.forEach(przedmiot => {
@@ -163,8 +199,8 @@ router.get('/schedule', async function(req, res) {
 	const [result, metadata] = await sequelize.query(`
         SELECT nazwa, dzien, nr_lekcji FROM zajecia 
         NATURAL JOIN data_zajec NATURAL JOIN przedmioty NATURAL JOIN uzytkownik 
-        WHERE user_id = ${req.cookies.current_student}
-    `);
+        WHERE user_id = ?`
+	, {replacements: [req.cookies.current_student]});
 	
 	let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
 	let schedule = {
@@ -196,8 +232,8 @@ router.get('/homeworks', async function(req, res) {
 	const [homeworks, metadata] = await sequelize.query(`
 		SELECT prowadzacy.imie, prowadzacy.nazwisko, termin_oddania, tytul, opis, przedmioty.nazwa FROM zadanie_domowe 
 		NATURAL JOIN zajecia NATURAL JOIN przedmioty NATURAL JOIN uzytkownik AS uczen inner join uzytkownik AS prowadzacy 
-		ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ${req.cookies.current_student}`
-	);
+		ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ?`
+	, {replacements: [req.cookies.current_student]});
 	
 	res.render('parent/homeworks', { user: req.user, students: req.students, current_student: req.cookies.current_student, homeworks, current_path: 'homeworks'});
 });
@@ -208,24 +244,23 @@ router.post('/change_student', function(req, res) {
 });
 
 router.post('/justify_attendance', async function(req, res) {
-
-
+	let changed = 0;
+	let justify;
 	if (req.body['justify']) {
 		if (typeof(req.body['justify']) == 'string') {
-			console.log(1, " : ", req.body['justify']);
-			await sequelize.query(`
-				UPDATE frekwencja SET frekwencja = 'U' 
-				WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${req.body['justify']}'
-			`);
+			justify = [req.body['justify']];
 		}
-		else {
-			for(var i=0; i<req.body['justify'].length; i++) {
+		 	for(var i=0; i<justify.length; i++) {
 				await sequelize.query(`
 					UPDATE frekwencja SET frekwencja = 'U' 
-					WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${req.body['justify'][i]}'
+					WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${justify[i]}'
 				`);
-			}
-		}
+				changed = 1;
+			}	
+	}
+
+	if(changed) {
+		notification_teacher(req.cookies.current_student);
 	}
 
 	res.redirect(`/parent/attendance/?attendance_date=${req.body['redirect_to_attendance_date']}`);
