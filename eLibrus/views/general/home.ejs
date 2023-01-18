@@ -5,6 +5,11 @@
     <fieldset>
         <legend><h2>Strona główna</h2></legend>
     <div class="notes-wrapper">
+        <% if (typeof(current_student) != 'undefined') { %>
+            <% if (current_student == 0) { %>
+                <p style="color: red; font-weight:bold;">Do konta rodzica nie są przypisani żadni uczniowie</p>
+            <% } %>
+        <% } %>
         <% for (var i=0; i<notes.length; i++) { %>
             <div class="note">
                 <span class="note-title">

@@ -7,11 +7,11 @@ router.get("/", async (req, res) => {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia;
 	`);
-    res.render("general/home", { user: req.user, notes });
+    res.render("general/home", { user: req.user, notes, current_path: 'admin' });
 });
 
 router.get("/add_announcement", (req, res) => {
-    res.render("admin/add_announcement", { user: req.user });
+    res.render("admin/add_announcement", { user: req.user, current_path: 'add_ann' });
 });
 
 router.post("/add_announcement", async (req, res) => {
@@ -33,7 +33,7 @@ router.post("/add_announcement", async (req, res) => {
 });
 
 router.get("/manage_subjects", (req, res) => {
-    res.render("admin/manage_subjects", { user: req.user });
+    res.render("admin/manage_subjects", { user: req.user, current_path: 'manage_subjects' });
 });
 
 router.get("/manage_subjects/create_subject", async (req, res) => {
@@ -60,6 +60,7 @@ router.get("/manage_subjects/create_subject", async (req, res) => {
         rooms,
         subjects,
         classes,
+        current_path: 'manage_subjects'
     });
 });
 
@@ -108,7 +109,7 @@ router.get("/manage_subjects/delete_subject", async (req, res) => {
         INNER JOIN uzytkownik ON uzytkownik.user_id = prowadzacy_id
     `);
 
-    res.render("admin/delete_subject", { user: req.user, subjects });
+    res.render("admin/delete_subject", { user: req.user, subjects, current_path: 'manage_subjects' });
 });
 
 router.post("/manage_subjects/delete_subject", async (req, res) => {
@@ -133,7 +134,7 @@ router.post("/manage_subjects/delete_subject", async (req, res) => {
 });
 
 router.get("/manage_classes", (req, res) => {
-    res.render("admin/manage_classes", { user: req.user });
+    res.render("admin/manage_classes", { user: req.user, current_path: 'manage_classes' });
 });
 
 router.get("/manage_classes/create_class", async (req, res) => {
@@ -146,6 +147,7 @@ router.get("/manage_classes/create_class", async (req, res) => {
     res.render("admin/create_class", {
         user: req.user,
         teachers: avilable_teachers,
+        current_path: 'manage_classes'
     });
 });
 
@@ -180,7 +182,7 @@ router.get("/manage_classes/delete_class", async (req, res) => {
         INNER JOIN uzytkownik 
         ON uzytkownik.user_id = wychowawca_id;
     `);
-    res.render("admin/delete_class", { user: req.user, classes });
+    res.render("admin/delete_class", { user: req.user, classes, current_path: 'manage_classes' });
 });
 
 router.post("/manage_classes/delete_class", async (req, res) => {
@@ -261,6 +263,7 @@ router.get("/manage_classes/edit_subjects", async (req, res) => {
         current_subject: subject_id,
         schedule,
         subjects,
+        current_path: 'manage_classes'
     });
 });
 
@@ -341,9 +344,7 @@ router.get('/manage_classes/edit_students', async (req, res) => {
         WHERE rola = 1 AND (klasa_id = ${class_id} OR klasa_id IS NULL)
     `);
 
-    console.log(students);
-
-    res.render('admin/edit_students', { user: req.user, classes, current_class: class_id, students });
+    res.render('admin/edit_students', { user: req.user, classes, current_class: class_id, students, current_path: 'manage_classes' });
 });
 
 router.get("/manage_users", async (req, res) => {
@@ -369,11 +370,11 @@ router.get("/manage_users", async (req, res) => {
         rola in (${rola})`
     );
 
-    res.render("admin/manage_users", { user: req.user, users: users });
+    res.render("admin/manage_users", { user: req.user, users: users, current_path: 'manage_users' });
 });
 
 router.get("/create_user", (req, res) => {
-    res.render("admin/create_user", { user: req.user });
+    res.render("admin/create_user", { user: req.user, current_path: 'manage_users' });
 });
 
 module.exports = router;

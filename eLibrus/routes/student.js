@@ -16,7 +16,7 @@ router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia;
 	`);
-    res.render("general/home", { user: req.user, notes });
+    res.render("general/home", { user: req.user, notes, current_path: 'student' });
 });
 
 router.get("/attendance", async function (req, res) {
@@ -86,6 +86,7 @@ router.get("/attendance", async function (req, res) {
             week: week,
             days: days,
             user: req.user,
+            current_path: 'attendance'
         });
     });
 });
@@ -115,7 +116,7 @@ router.get("/grades", async function (req, res) {
 			}
 		});
 	});
-    res.render("student/grades", { user: req.user, grades });
+    res.render("student/grades", { user: req.user, grades, current_path: 'grades' });
 });
 
 // student schedule
@@ -153,6 +154,7 @@ router.get("/schedule", async function (req, res) {
         students: req.students,
         current_student: req.user.user_id,
         schedule,
+        current_path: 'schedule'
     });
 });
 
@@ -170,6 +172,7 @@ router.get("/homeworks", async function (req, res) {
         students: req.students,
         current_student: req.user.user_id,
         homeworks,
+        current_path: 'homeworks'
     });
 });
 

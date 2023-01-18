@@ -1,8 +1,8 @@
 <div class="navbar-container">
-    <button class="active" onclick="location.href='/teacher'">Strona główna</button>
-    <button onclick="location.href='/teacher/messages'">Wiadomości</button>
-    <button onclick="location.href='/teacher/attendance'">Frekwencja</button>
-    <button onclick="location.href='/teacher/grades'">Oceny</button>
-    <button onclick="location.href='/teacher/schedule'">Plan zajęć</button>
-    <button onclick="location.href='/teacher/homeworks'">Prace domowe</button>
+    <button <% if (current_path == 'teacher') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher'">Strona główna</button>
+    <button <% if (current_path == 'messages') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher/messages'">Wiadomości</button>
+    <button <% if (current_path == 'attendance') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher/attendance'">Frekwencja</button>
+    <button <% if (current_path == 'grades') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher/grades'">Oceny</button>
+    <button <% if (current_path == 'schedule') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher/schedule'">Plan zajęć</button>
+    <button <% if (current_path == 'homeworks') { %> <=% class="active" %> <% } %> onclick="location.href='/teacher/homeworks'">Prace domowe</button>
 </div>

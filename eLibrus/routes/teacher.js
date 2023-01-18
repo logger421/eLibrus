@@ -18,7 +18,7 @@ router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia;
 	`);
-    res.render("general/home", { user: req.user, notes });
+    res.render("general/home", { user: req.user, notes, current_path: 'teacher' });
 });
 
 // teacher attendance
@@ -28,7 +28,8 @@ router.get("/attendance", async function (req, res) {
 
     let selected_class = req.query.class_id;
     if (typeof selected_class == "undefined") {
-        selected_class = classes[0].klasa_id;
+        if (classes.length > 0 ) selected_class = classes[0].klasa_id;
+        else selected_class = 0;
     }
 
     let selected_date = req.query.attendance_date;
@@ -102,6 +103,7 @@ router.get("/attendance", async function (req, res) {
         subject_id: selected_subject,
         classes_numbers: classes_numbers,
         class_number: selected_classes_number,
+        current_path: 'attendance'
     });
 });
 
@@ -166,14 +168,13 @@ router.get("/grades", async function (req, res) {
         }
     }
     const classes = await getClass(req.user.dataValues.user_id);
-    let class_id = 0,
-        subject_id = 0;
-    if (!req.query.class_id) class_id = classes[0].klasa_id;
-    else class_id = req.query.class_id;
+    let class_id = 0, subject_id = 0;
+    if (!req.query.class_id && classes.length > 0) class_id = classes[0].klasa_id;
+    if(req.query.class_id) class_id = req.query.class_id;
     const subjects = await getSubject(req.user.dataValues.user_id, class_id);
 
-    if (!req.query.subject_id) subject_id = subjects[0].zajecia_id;
-    else subject_id = req.query.subject_id;
+    if (!req.query.subject_id && subjects.length > 0) subject_id = subjects[0].zajecia_id;
+    if(req.query.subject_id) subject_id = req.query.subject_id;
 
     const [students, meta_students] = await sequelize.query(`
         SELECT user_id, imie, nazwisko FROM zajecia 
@@ -204,6 +205,7 @@ router.get("/grades", async function (req, res) {
         subject_id,
         students,
         students_grades,
+        current_path: 'grades'
     });
 });
 
@@ -303,6 +305,7 @@ router.get("/schedule", async function (req, res) {
         students: req.students,
         current_student: req.user.user_id,
         schedule,
+        current_path: 'schedule'
     });
 });
 
@@ -315,7 +318,12 @@ router.get("/homeworks", async function (req, res) {
     `);
     const classes = await getClass(req.user.dataValues.user_id);
     let class_id = 0;
-    if (!req.query.class_id) class_id = classes[0].klasa_id;
+    if (!req.query.class_id) {
+        if (classes.length > 0) 
+            class_id = classes[0].klasa_id;
+        else 
+            class_id = 0;
+    }
     else class_id = req.query.class_id;
 
     const subjects = await getSubject(req.user.dataValues.user_id, class_id);
@@ -333,6 +341,7 @@ router.get("/homeworks", async function (req, res) {
         classes,
         homeworks,
         class_id,
+        current_path: 'homeworks'
     });
 });
 

@@ -18,8 +18,13 @@ router.get('*', async function (req, res, next) {
 		JOIN uzytkownik AS rodzic JOIN uzytkownik AS uczen 
 		ON rodzic.user_id = rodzicielstwo.rodzic_id AND uczen.user_id = rodzicielstwo.dziecko_id`
 	);
-	if (!req.cookies.current_student)
-		res.cookie('current_student', result[0].user_id);
+	if (!req.cookies.current_student) {
+		if(result.length > 0)
+			res.cookie('current_student', result[0].user_id);
+		else
+			res.cookie('current_student', 0);
+		
+	}
 	req.students = result;
 	
 	next();
@@ -30,7 +35,7 @@ router.get('/', async function(req, res) {
 	const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia;
 	`);
-	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student, notes});
+	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student, notes, current_path: 'parent'});
 });
 
 // parent attendance
@@ -96,7 +101,7 @@ router.get('/attendance', async function(req, res) {
             };
         })
     ).then(() => {
-		res.render('parent/attendance', { user: req.user, students: req.students, current_student: req.cookies.current_student, week, days});
+		res.render('parent/attendance', { user: req.user, students: req.students, current_student: req.cookies.current_student, week, days, current_path: 'attendance'});
     });
 });
 
@@ -125,7 +130,7 @@ router.get('/grades', async function(req, res) {
 		});
 	});
 
-	res.render('parent/grades', { user: req.user, students: req.students, current_student: req.cookies.current_student, grades});
+	res.render('parent/grades', { user: req.user, students: req.students, current_student: req.cookies.current_student, grades, current_path: 'grades'});
 });
 
 // parent schedule
@@ -158,7 +163,7 @@ router.get('/schedule', async function(req, res) {
 		}
 	}
 
-	res.render('parent/schedule', { user: req.user, students: req.students, current_student: req.cookies.current_student, schedule});
+	res.render('parent/schedule', { user: req.user, students: req.students, current_student: req.cookies.current_student, schedule, current_path: 'schedule'});
 });
 
 // parent homeworks
@@ -169,7 +174,7 @@ router.get('/homeworks', async function(req, res) {
 		ON prowadzacy.user_id = prowadzacy_id where uczen.user_id = ${req.cookies.current_student}`
 	);
 	
-	res.render('parent/homeworks', { user: req.user, students: req.students, current_student: req.cookies.current_student, homeworks});
+	res.render('parent/homeworks', { user: req.user, students: req.students, current_student: req.cookies.current_student, homeworks, current_path: 'homeworks'});
 });
 
 router.post('/change_student', function(req, res) {
