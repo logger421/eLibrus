@@ -48,11 +48,11 @@
                         </tr>
                         <% users.forEach(element => { %>
                         <tr>
-                            <td><%=element.imie %> <%= element.nazwisko %></td>
+                            <td><%= element.imie %> <%= element.nazwisko %></td>
                             <td><%= element.data_urodzenia %></td>
                             <td><%= element.email %></td>
                             <td><%= element.rola_name %></td>
-                            <td>Edytuj</td>
+                            <td><a href="<%=`/admin/edit_user/${element.user_id}`%>">Edytuj</a></td>
                         </tr>
                         <% }); %>
                     </table>

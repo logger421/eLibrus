@@ -1,0 +1,57 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Zarządzaj użytkownikiem</h2>
+        </legend>
+        <div class="manage-wrapper">
+            <form action=<%=`/admin/edit_user/${user_info.user_id}`%> method="post" id="edit_info_form">
+                <select name="account-type" id="edit_user_type_selector">
+                    <option value="1" <%= user_info.rola == 1 ? 'selected' : ""%>>Uczen</option>
+                    <option value="2" <%= user_info.rola == 2 ? 'selected' : ""%>>Rodzic</option>
+                    <option value="3" <%= user_info.rola == 3 ? 'selected' : ""%>>Nauczyciel</option>
+                </select>
+                <div class="account-info">
+                    <label for="imie">Imie</label>
+                    <input type="text" name="first_name" id="imie" placeholder="<%=user_info.imie%>">
+
+                    <label for="nazwisko">Nazwisko</label>
+                    <input type="text" name="last_name" id="nazwisko" placeholder="<%=user_info.nazwisko%>">
+
+                    <label for="pesel">PESEL</label>
+                    <input type="text" name="PESEL" id="pesel" placeholder="<%=user_info.pesel%>">
+
+                    <label for="birthdate">Data urodzenia</label>
+                    <input type="date" name="birthdate" id="birthdate" value="<%=user_info.data_urodzenia%>">
+
+                    <label for="city">Miasto</label>
+                    <input type="text" name="city" id="city" placeholder="<%=user_info.miasto%>">
+
+                    <label for="zip-code">Kod pocztowy</label>
+                    <input type="text" name="zip_code" id="zip-code" placeholder="<%=user_info.kod_pocztowy%>">
+
+                    <label for="street">Ulica</label>
+                    <input type="text" name="street" id="street" placeholder="<%=user_info.ulica%>">
+
+                    <label for="house-no">Numer domu/mieszkania</label>
+                    <input type="text" name="house_no" id="house_no" placeholder="<%=user_info.nr_mieszkania%>">
+                </div>
+            </form>
+            <button class="edit-user-btn" id="edit_user_btn">Zapisz</button>
+            <button class="edit-user-btn">Zresetuj hasło</button>
+            <div class="go-back-wrapper">
+                <button class="go-back-btn" onclick="location.href='/admin/manage_users'">Cofnij</button>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<%- include ../templates/footer %>
+
+<script>
+    $("#edit_user_btn").on('click', () => {
+        $("#edit_info_form").submit();
+    });
+</script>

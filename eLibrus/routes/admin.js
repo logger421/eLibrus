@@ -25,11 +25,14 @@ router.get("/change_password", (req, res) => {
     });
 });
 
-router.get('/notifications', (req, res) => {
-    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
+router.get("/notifications", (req, res) => {
+    res.render("general/notifications", {
+        user: req.user,
+        current_path: "notifications",
+    });
 });
 
-router.post('/change_password', async (req, res) => {
+router.post("/change_password", async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
     const result = await change_password(
@@ -542,9 +545,11 @@ router.post("/create_user", async (req, res) => {
 
     const error_messages = [];
     const zipCodeRegex = /^\d{2}-\d{3}$/;
-    if (!zipCodeRegex.test(zip_code)) error_messages.push("Kod pocztowy jest niepoprawny");
+    if (!zipCodeRegex.test(zip_code))
+        error_messages.push("Kod pocztowy jest niepoprawny");
     const peselRegex = /^\d{11}$/;
-    if (!peselRegex.test(PESEL)) error_messages.push("Numer PESEL jest niepoprawny");
+    if (!peselRegex.test(PESEL))
+        error_messages.push("Numer PESEL jest niepoprawny");
     if (!first_name) error_messages.push("Nie wpisano imienia");
     if (!last_name) error_messages.push("Nie wpisano nazwiska");
     if (!PESEL) error_messages.push("Nie wpisano nr PESEL");
@@ -553,7 +558,8 @@ router.post("/create_user", async (req, res) => {
     if (!zip_code) error_messages.push("Nie wpisano kodu pocztowego");
     if (!street) error_messages.push("Nie wpisano ulicy");
     if (!house_no) error_messages.push("Nie wpisano numeru mieszkania");
-    if (account_type == 1 && !parent_email) error_messages.push("Nie wybrano rodzica");
+    if (account_type == 1 && !parent_email)
+        error_messages.push("Nie wybrano rodzica");
 
     if (error_messages.length > 0) {
         error_messages.forEach((error) => req.flash("error", error));
@@ -566,7 +572,10 @@ router.post("/create_user", async (req, res) => {
                 },
             });
             if (userWithPesel) {
-                req.flash("error", "Użytkownik z tym numerem PESEL już istnieje");
+                req.flash(
+                    "error",
+                    "Użytkownik z tym numerem PESEL już istnieje"
+                );
                 res.redirect("/admin/create_user");
             } else {
                 const userWithNameAndType = await uzytkownik.findOne({
@@ -579,7 +588,9 @@ router.post("/create_user", async (req, res) => {
                 if (userWithNameAndType) {
                     const maxId = await uzytkownik.max("user_id");
                     const createdUser = await uzytkownik.create({
-                        email: `${first_name.toLowerCase()}.${last_name.toLowerCase()}${maxId + 1}@${rola_name}.dziennikuj.pl`,
+                        email: `${first_name.toLowerCase()}.${last_name.toLowerCase()}${
+                            maxId + 1
+                        }@${rola_name}.dziennikuj.pl`,
                         haslo: `${rola_name}123`,
                         imie: first_name,
                         nazwisko: last_name,
@@ -615,6 +626,85 @@ router.post("/create_user", async (req, res) => {
             console.log(error);
         }
     }
+});
+
+router.get("/edit_user/:id", async (req, res) => {
+    const user_info = await uzytkownik.findByPk(req.params.id);
+    res.render("admin/edit_user", {
+        user: req.user,
+        user_info: user_info.dataValues,
+        current_path: "manage_users",
+    });
+});
+
+router.post("/edit_user/:id", async (req, res) => {
+    const {
+        account_type,
+        first_name,
+        last_name,
+        PESEL,
+        birthdate,
+        city,
+        zip_code,
+        street,
+        house_no,
+    } = req.body;
+    let user_info = await uzytkownik.findByPk(req.params.id);
+    user_info = user_info.dataValues;
+
+    const updated_user = {
+        user_id: user_info.user_id,
+        imie: first_name || user_info.imie,
+        nazwisko: last_name || user_info.nazwisko,
+        pesel: PESEL || user_info.pesel,
+        data_urodzenia: birthdate || user_info.data_urodzenia,
+        miasto: city || user_info.miasto,
+        kod_pocztowy: zip_code || user_info.kod_pocztowy,
+        ulica: street || user_info.ulica,
+        nr_mieszkania: house_no || user_info.nr_mieszkania,
+        rola: account_type || user_info.rola,
+    };
+
+    let email = user_info.email;
+    if (updated_user.imie != first_name || updated_user.nazwisko != last_name || updated_user.rola != account_type) {
+        let role = "";
+            switch (updated_user.rola) {
+                case '1':
+                    role = "uczen";
+                    break;
+                case '2':
+                    role = "rodzic";
+                    break;
+                case '3':
+                    role = "nauczyciel";
+                    break;
+            }
+        email = `${updated_user.imie.toLowerCase()}.${updated_user.nazwisko.toLowerCase()}${user_info.user_id}@${role}.dziennikuj.pl`;
+    }
+
+    const newAttendance = uzytkownik.build(
+        {
+            user_id: user_info.user_id,
+            email: email,
+            imie: updated_user.first_name,
+            nazwisko: updated_user.last_name,
+            pesel: updated_user.PESEL,
+            data_urodzenia: updated_user.birthdate,
+            miasto: updated_user.city,
+            kod_pocztowy: updated_user.zip_code,
+            ulica: updated_user.street,
+            nr_mieszkania: updated_user.house_no,
+            rola: updated_user.account_type
+        },
+        { isNewRecord: false }
+    );
+    newAttendance.save();
+
+    res.render("admin/edit_user", {
+        user: req.user,
+        user_info: updated_user,
+        current_path: "manage_users",
+    });
 });
 
 module.exports = router;
