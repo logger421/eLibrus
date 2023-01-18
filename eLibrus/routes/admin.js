@@ -679,15 +679,15 @@ router.post("/edit_user/:id", async (req, res) => {
         {
             user_id: user_info.user_id,
             email: email,
-            imie: updated_user.first_name,
-            nazwisko: updated_user.last_name,
-            pesel: updated_user.PESEL,
-            data_urodzenia: updated_user.birthdate,
-            miasto: updated_user.city,
-            kod_pocztowy: updated_user.zip_code,
-            ulica: updated_user.street,
-            nr_mieszkania: updated_user.house_no,
-            rola: updated_user.account_type
+            imie: updated_user.imie,
+            nazwisko: updated_user.nazwisko,
+            pesel: updated_user.pesel,
+            data_urodzenia: updated_user.data_urodzenia,
+            miasto: updated_user.miasto,
+            kod_pocztowy: updated_user.kod_pocztowy,
+            ulica: updated_user.ulica,
+            nr_mieszkania: updated_user.nr_mieszkania,
+            rola: updated_user.rola
         },
         { isNewRecord: false }
     );
