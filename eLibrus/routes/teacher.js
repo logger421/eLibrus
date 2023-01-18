@@ -128,7 +128,7 @@ router.get("/attendance", async function (req, res) {
     });
 });
 
-router.post("/attendance", (req, res) => {
+router.post("/attendance", async (req, res) => {
     const attendance_list = Object.entries(req.body)
         .filter(
             ([key]) =>
@@ -136,7 +136,7 @@ router.post("/attendance", (req, res) => {
         )
         .map(([id, value]) => ({ user_id: id, frekwencja: value }));
 
-    attendance_list.forEach((item) => {
+    await attendance_list.forEach((item) => {
         frekwencja
             .findOne({
                 where: {
@@ -259,6 +259,7 @@ router.get("/grades/edit_grades/:subject_id/:user_id", async (req, res) => {
         result: result[0],
         grades,
         avg,
+        current_path: 'edit_grades'
     });
 });
 

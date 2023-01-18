@@ -94,14 +94,35 @@
     </fieldset>
 </div>
 
+<div id="dialog-1" title="Powód">
+</div>
 
 <script>
     $("#attendance_date_picker").on('change', function () {
         $("#attendance_date").submit();
     })
 
+    $(function () {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Wyślij",
+                click: () => {
+                    $("#justify_attendance").submit();
+                }
+              },  
+            ]
+        });
+        $("#dialog-1").html(`
+            <p>Jaki był powód nieobecności?</p>
+            <textarea cols="30" rows="10"></textarea>
+        `);
+    })
+
     $("#justify_attendance_button").on('click', function () {
-        $("#justify_attendance").submit();
+        $("#dialog-1").dialog("open");
     })
 </script>
 

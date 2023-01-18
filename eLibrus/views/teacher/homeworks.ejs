@@ -36,7 +36,7 @@
                 </form>
                 <div class="teacher-panel">
                     <div>
-                        <button id="add_homework_button" style="float: left;">Dodaj pracę domową</button>
+                        <button id="submit_form" style="float: left;">Dodaj pracę domową</button>
                     </div>
                 </div>
                 <%- include ../templates/messages %>
@@ -53,9 +53,9 @@
                 </tr>
                 <% for(var i=0; i<homeworks.length; i++) { %>
                     <tr>
-                        <form action="/teacher/homeworks/delete_homework" method="POST">
+                        <form action="/teacher/homeworks/delete_homework" method="POST" id="form_delete_homework">
                             <td>
-                                <button id="delete_homework_btn" style="padding: .5rem; width: 100%;">Usuń</button>
+                                <button id="delete_homework_btn" type="button" style="padding: .5rem; width: 100%;">Usuń</button>
                             </td>
                             <input type="hidden" name="to_delete" value="<%= homeworks[i].zadanie_id %>">
                         </form>
@@ -71,10 +71,57 @@
     </fieldset>
 </div>
 
+<div id="dialog-1" title="Potwierdź dodanie">
+    <p>Czy na pewno chcesz dodać pracę domową?</p>
+</div>
+
+<div id="dialog-2" title="Potwierdź usunięcie">
+    <p>Czy na pewno chcesz usunąć pracę domową?</p>
+</div>
 
 <script>
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#add_homework").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_form").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
+    });
+
+    $(function() {
+        $("#dialog-2").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#form_delete_homework").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#delete_homework_btn").on('click', () => {
+            $("#dialog-2").dialog('open');
+        })
+
+    });
+
     $("#add_homework_button").on('click', function () {
-        $("#add_homework").submit();
+        $("#dialog-1").dialog("open");
     });
     $("#class").on("change", () => {
         $("#change_class_id").val($("#class").val());

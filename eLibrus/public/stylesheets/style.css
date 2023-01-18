@@ -135,7 +135,7 @@ body {
     background-color: var(--button-color-hover);
 }
 
-.navbar-container .active {
+.navbar-container .active, .header-container .active {
     text-decoration: underline;
 }
 
