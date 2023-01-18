@@ -1,0 +1,73 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Zarządzaj klasami</h2></legend>
+    <div class="manage-wrapper">
+        <form action="" method="GET" id="change_class">
+            <input type="hidden" id="hidden_class" name="class_id">
+        </form>
+        <form action="" method="POST" style="width: 80%;">
+            <select name="class_id" id="class_id">
+                <% for(var i=0; i<classes.length; i++) { %>
+                    <% if (current_class == classes[i].klasa_id) { %>
+                        <option value="<%= classes[i].klasa_id %>" selected>Klasa: <%= classes[i].klasa_id %> </option>        
+                    <% } else { %>
+                        <option value="<%= classes[i].klasa_id %>">Klasa: <%= classes[i].klasa_id %> </option>
+                    <% } %>
+                <% } %>
+            </select>
+            <input type="text" name="" id="filter" placeholder="Email / Imie i nazwisko">
+            <table>
+                <tr>
+                    <th>Imię i nazwisko</th>
+                    <th>Rocznik</th>
+                    <th>Email</th>
+                    <th>Wybierz</th>
+                </tr>
+                <% for(var i=0; i<students.length; i++) { %>
+                    <tr id="0<%= i %>">
+                        <td id="name">
+                            <%= students[i].imie %> <%= students[i].nazwisko %>
+                        </td>
+                        <td id="year"><%= students[i].rocznik %></td>
+                        <td id="email"><%= students[i].email %></td>
+                        <td><input type="checkbox" name="student_id" value="<%= students[i].user_id %>"></td>
+                    </tr>
+                <% } %>
+            </table>
+            <button>Dodaj</button>
+        </form>
+        <div class="go-back-wrapper">
+            <button class="go-back-btn" onclick="location.href='/admin/manage_classes.html'">Cofnij</button>
+        </div>
+    </div>
+</fieldset>
+</div>
+
+<script>
+    $("#class_id").on('change', () => {
+        $("#hidden_class").val($("#class_id").val());
+        $("#change_class").submit();
+    });
+
+    $("#filter").on('keyup', () => {
+        $("tr[id^='0']").show();
+        
+        let find = $("#filter").val().toLowerCase();
+        if (find)
+            $("tr[id^='0'] > td[id='name']").each((id, td) => {
+                if (td.innerHTML.toLowerCase().search(find) == -1 ) {
+                    if ($(`tr[id='0${id}'] > td[id='year']`)[0].innerHTML.toLowerCase().search(find) == -1) {
+                        if ($(`tr[id='0${id}'] > td[id='email']`)[0].innerHTML.toLowerCase().search(find) == -1) {
+                            $(`tr[id='0${id}']`).hide();
+                        }
+                    } 
+                }
+            })
+    })
+
+</script>
+
+<%- include ../templates/footer %>

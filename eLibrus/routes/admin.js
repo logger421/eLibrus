@@ -185,7 +185,10 @@ router.get('/manage_classes/edit_subjects', async (req, res) => {
     const [classes] = await sequelize.query(`
         SELECT klasa_id FROM klasa
     `);
-    let class_id = classes[0].klasa_id;
+    let class_id = 0;
+    if (classes.length > 0) {
+        class_id = classes[0].klasa_id;
+    }
     if (req.query.class_id) {
         class_id = req.query.class_id;
     }
@@ -278,7 +281,33 @@ router.post('/manage_classes/edit_subjects', async (req, res) => {
             res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
         }
     }
+    else {
+        res.redirect(`/admin/manage_classes/edit_subjects?class_id=${class_id}&subject_id=${subject_id}`);
+    }
 
+});
+
+router.get('/manage_classes/edit_students', async (req, res) => {
+    const [classes] = await sequelize.query(`
+        SELECT klasa_id FROM klasa
+    `);
+
+    let class_id = 0;
+    if (classes.length > 0) {
+        class_id = classes[0].klasa_id;
+    }
+    if (req.query.class_id) {
+        class_id = req.query.class_id;
+    }
+
+    const [students] = await sequelize.query(`
+        SELECT user_id, imie, nazwisko, email, YEAR(data_urodzenia) as rocznik FROM uzytkownik 
+        WHERE rola = 1 AND (klasa_id = ${class_id} OR klasa_id IS NULL)
+    `);
+
+    console.log(students);
+
+    res.render('admin/edit_students', { user: req.user, classes, current_class: class_id, students });
 });
 
 module.exports = router;
