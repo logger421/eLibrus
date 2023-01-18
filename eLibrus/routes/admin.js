@@ -2,8 +2,10 @@ const e = require("express");
 var express = require("express");
 var router = express.Router();
 const sequelize = require("../models").sequelize;
-const { uzytkownik, rodzicielstwo } = require("../models");
+const { uzytkownik } = require("../models");
 const change_password = require("../helpers/change_pass");
+const link_student_parent = require("../helpers/link_student_parent");
+
 router.get("/", async (req, res) => {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia
@@ -16,24 +18,31 @@ router.get("/", async (req, res) => {
     });
 });
 
-router.get('/change_password', (req, res) => {
-    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+router.get("/change_password", (req, res) => {
+    res.render("general/change_password", {
+        user: req.user,
+        current_path: "change_password",
+    });
 });
 
-router.post('/change_password', async (req, res) => {
+router.post("/change_password", async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
-    const result = await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again);
+    const result = await change_password(
+        req.user.dataValues.user_id,
+        old_pass,
+        new_pass,
+        new_pass_again
+    );
 
     if (result[0] == 0) {
-        for(let i=0; i<result[1].length; i++) 
-            req.flash('error', result[1][i]);
-    }
-    else {
-        req.flash('success_message', result[1][0]);
+        for (let i = 0; i < result[1].length; i++)
+            req.flash("error", result[1][i]);
+    } else {
+        req.flash("success_message", result[1][0]);
     }
 
-    res.redirect('/admin/change_password');
+    res.redirect("/admin/change_password");
 });
 
 router.get("/add_announcement", (req, res) => {
@@ -56,7 +65,7 @@ router.post("/add_announcement", async (req, res) => {
             VALUES
             ("${title}", "${description}")
         `);
-        req.flash('success_message', 'Ogłoszenie zostało pomyślnie dodane')
+        req.flash("success_message", "Ogłoszenie zostało pomyślnie dodane");
     }
 
     res.redirect("/admin/add_announcement");
@@ -465,6 +474,12 @@ router.get("/manage_users", async (req, res) => {
         rola in (${rola})`
     );
 
+    users.forEach((user) => {
+        user.rola_name = Object.keys(roleMap).find(
+            (key) => roleMap[key] == user.rola
+        );
+    });
+
     res.render("admin/manage_users", {
         user: req.user,
         current_path: "manage_users",
@@ -493,7 +508,7 @@ router.get("/create_user", async (req, res) => {
     });
 });
 
-router.post("/create_user", (req, res) => {
+router.post("/create_user", async (req, res) => {
     let {
         account_type,
         first_name,
@@ -506,7 +521,6 @@ router.post("/create_user", (req, res) => {
         house_no,
         parent_email,
     } = req.body;
-    console.log(req.body);
 
     const rola_name =
         account_type == 1
@@ -522,23 +536,11 @@ router.post("/create_user", (req, res) => {
     city = req.body.city.replace(/^\w/, (c) => c.toUpperCase());
     street = req.body.street.replace(/^\w/, (c) => c.toUpperCase());
 
-    // check if zip_code is in the format "dd-ddd"
-    const zipCodeRegex = /^\d{2}-\d{3}$/;
-    if (!zipCodeRegex.test(zip_code)) {
-        req.flash("error", "Kod pocztowy jest niepoprawny");
-        res.redirect("/admin/create_user");
-    }
-
-    // check if PESEL has 11 digits
-    const peselRegex = /^\d{11}$/;
-    if (!peselRegex.test(PESEL)) {
-        req.flash("error", "Numer PESEL jest niepoprawny");
-        res.redirect("/admin/create_user");
-    }
-
-    console.log(first_name, last_name);
-
     const error_messages = [];
+    const zipCodeRegex = /^\d{2}-\d{3}$/;
+    if (!zipCodeRegex.test(zip_code)) error_messages.push("Kod pocztowy jest niepoprawny");
+    const peselRegex = /^\d{11}$/;
+    if (!peselRegex.test(PESEL)) error_messages.push("Numer PESEL jest niepoprawny");
     if (!first_name) error_messages.push("Nie wpisano imienia");
     if (!last_name) error_messages.push("Nie wpisano nazwiska");
     if (!PESEL) error_messages.push("Nie wpisano nr PESEL");
@@ -547,215 +549,67 @@ router.post("/create_user", (req, res) => {
     if (!zip_code) error_messages.push("Nie wpisano kodu pocztowego");
     if (!street) error_messages.push("Nie wpisano ulicy");
     if (!house_no) error_messages.push("Nie wpisano numeru mieszkania");
-    if (account_type == 1 && !parent_email)
-        error_messages.push("Nie wybrano rodzica");
+    if (account_type == 1 && !parent_email) error_messages.push("Nie wybrano rodzica");
 
     if (error_messages.length > 0) {
         error_messages.forEach((error) => req.flash("error", error));
         res.redirect("/admin/create_user");
     } else {
-        uzytkownik
-            .findOne({
+        try {
+            const userWithPesel = await uzytkownik.findOne({
                 where: {
                     pesel: PESEL,
                 },
-            })
-            .then((user) => {
-                if (user) {
-                    req.flash(
-                        "error",
-                        "Użytkownik z tym numerem PESEL już istnieje"
-                    );
-                    res.redirect("/admin/create_user");
-                } else {
-                    uzytkownik
-                        .findOne({ where: { pesel: PESEL } })
-                        .then((user) => {
-                            if (user) {
-                                req.flash(
-                                    "error",
-                                    "Użytkownik z tym numerem PESEL już istnieje"
-                                );
-                                res.redirect("/admin/create_user");
-                            } else {
-                                uzytkownik
-                                    .findOne({
-                                        where: {
-                                            imie: first_name,
-                                            nazwisko: last_name,
-                                            rola: account_type,
-                                        },
-                                    })
-                                    .then((user) => {
-                                        if (user) {
-                                            uzytkownik
-                                                .max("user_id")
-                                                .then((maxId) => {
-                                                    uzytkownik
-                                                        .create({
-                                                            email: `${first_name}.${last_name}${
-                                                                maxId + 1
-                                                            }@${rola_name}.dziennikuj.pl`,
-                                                            haslo: `${rola_name}123`,
-                                                            imie: first_name,
-                                                            nazwisko: last_name,
-                                                            pesel: PESEL,
-                                                            data_urodzenia:
-                                                                birthdate,
-                                                            miasto: city,
-                                                            kod_pocztowy:
-                                                                zip_code,
-                                                            ulica: street,
-                                                            nr_mieszkania:
-                                                                house_no,
-                                                            rola: account_type,
-                                                            aktywny: 1,
-                                                        })
-                                                        .then((createdUser) => {
-                                                            if (
-                                                                createdUser.rola ==
-                                                                1
-                                                            ) {
-                                                                uzytkownik
-                                                                    .findOne({
-                                                                        where: {
-                                                                            email: parent_email,
-                                                                        },
-                                                                    })
-                                                                    .then(
-                                                                        (
-                                                                            parent
-                                                                        ) => {
-                                                                            if (
-                                                                                parent
-                                                                            ) {
-                                                                                rodzicielstwo
-                                                                                    .create(
-                                                                                        {
-                                                                                            dziecko_id:
-                                                                                                createdUser.user_id,
-                                                                                            rodzic_id:
-                                                                                                parent.user_id,
-                                                                                        }
-                                                                                    )
-                                                                                    .then(
-                                                                                        () => {
-                                                                                            req.flash(
-                                                                                                "success_message",
-                                                                                                "Użytkownik został utworzony"
-                                                                                            );
-                                                                                            res.redirect(
-                                                                                                "/admin/create_user"
-                                                                                            );
-                                                                                        }
-                                                                                    )
-                                                                                    .catch(
-                                                                                        (
-                                                                                            err
-                                                                                        ) => {
-                                                                                            console.log(
-                                                                                                err
-                                                                                            );
-                                                                                            res.redirect(
-                                                                                                "/admin/create_user"
-                                                                                            );
-                                                                                        }
-                                                                                    );
-                                                                            } else {
-                                                                                req.flash(
-                                                                                    "error",
-                                                                                    "Nie ma takiego rodzica"
-                                                                                );
-                                                                                res.redirect(
-                                                                                    "/admin/create_user"
-                                                                                );
-                                                                            }
-                                                                        }
-                                                                    )
-                                                                    .catch(
-                                                                        (
-                                                                            err
-                                                                        ) => {
-                                                                            console.log(
-                                                                                err
-                                                                            );
-                                                                            res.redirect(
-                                                                                "/admin/create_user"
-                                                                            );
-                                                                        }
-                                                                    );
-                                                            } else {
-                                                                req.flash(
-                                                                    "success_message",
-                                                                    "Użytkownik został utworzony"
-                                                                );
-                                                                res.redirect(
-                                                                    "/admin/create_user"
-                                                                );
-                                                            }
-                                                        })
-                                                        .catch((err) => {
-                                                            console.log(err);
-                                                            res.redirect(
-                                                                "/admin/create_user"
-                                                            );
-                                                        });
-                                                })
-                                                .catch((err) => {
-                                                    console.log(err);
-                                                    res.redirect(
-                                                        "/admin/create_user"
-                                                    );
-                                                });
-                                        } else {
-                                            uzytkownik
-                                                .create({
-                                                    email: `${first_name}.${last_name}@${rola_name}.dziennikuj.pl`,
-                                                    haslo: `${rola_name}123`,
-                                                    imie: first_name,
-                                                    nazwisko: last_name,
-                                                    pesel: PESEL,
-                                                    data_urodzenia: birthdate,
-                                                    miasto: city,
-                                                    kod_pocztowy: zip_code,
-                                                    ulica: street,
-                                                    nr_mieszkania: house_no,
-                                                    rola: account_type,
-                                                    aktywny: 1,
-                                                })
-                                                .then(() => {
-                                                    req.flash(
-                                                        "success_message",
-                                                        "Użytkownik został utworzony"
-                                                    );
-                                                    res.redirect(
-                                                        "/admin/create_user"
-                                                    );
-                                                })
-                                                .catch((err) => {
-                                                    console.log(err);
-                                                    res.redirect(
-                                                        "/admin/create_user"
-                                                    );
-                                                });
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
-                                        res.redirect("/admin/create_user");
-                                    });
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            res.redirect("/admin/create_user");
-                        });
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                res.redirect("/admin/create_user");
             });
+            if (userWithPesel) {
+                req.flash("error", "Użytkownik z tym numerem PESEL już istnieje");
+                res.redirect("/admin/create_user");
+            } else {
+                const userWithNameAndType = await uzytkownik.findOne({
+                    where: {
+                        imie: first_name,
+                        nazwisko: last_name,
+                        rola: account_type,
+                    },
+                });
+                if (userWithNameAndType) {
+                    const maxId = await uzytkownik.max("user_id");
+                    const createdUser = await uzytkownik.create({
+                        email: `${first_name.toLowerCase()}.${last_name.toLowerCase()}${maxId + 1}@${rola_name}.dziennikuj.pl`,
+                        haslo: `${rola_name}123`,
+                        imie: first_name,
+                        nazwisko: last_name,
+                        pesel: PESEL,
+                        data_urodzenia: birthdate,
+                        miasto: city,
+                        kod_pocztowy: zip_code,
+                        ulica: street,
+                        nr_mieszkania: house_no,
+                        rola: account_type,
+                        aktywny: 1,
+                    });
+                    link_student_parent(createdUser, parent_email, req, res);
+                } else {
+                    const createdUser = await uzytkownik.create({
+                        email: `${first_name.toLowerCase()}.${last_name.toLowerCase()}@${rola_name}.dziennikuj.pl`,
+                        haslo: `${rola_name}123`,
+                        imie: first_name,
+                        nazwisko: last_name,
+                        pesel: PESEL,
+                        data_urodzenia: birthdate,
+                        miasto: city,
+                        kod_pocztowy: zip_code,
+                        ulica: street,
+                        nr_mieszkania: house_no,
+                        rola: account_type,
+                        aktywny: 1,
+                    });
+                    link_student_parent(createdUser, parent_email, req, res);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 });
 
