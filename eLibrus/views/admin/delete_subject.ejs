@@ -5,7 +5,7 @@
     <fieldset>
         <legend><h2>Zarządzaj zajęciami</h2></legend>
     <div class="manage-wrapper">
-        <form action="" method="POST">
+        <form action="" method="POST" id="send_form">
             <input id="to_delete" type="hidden" name="to_delete" value="">
             <input list="subject" placeholder="Kod zajęć:" id="subject_id" autocomplete="off">
             <datalist id="subject">
@@ -17,7 +17,7 @@
             <input type="text" name="" id="subject_input" value="Przedmiot: " disabled>
             <input type="text" name="" id="room_input" value="Sala: " disabled>
             <input type="text" name="" id="class_input" value="Klasa: " disabled>
-            <button type="submit">Usuń</button>
+            <button type="button" id="submit_form">Usuń</button>
         </form>
         <%- include ../templates/messages %>
         <div class="go-back-wrapper">
@@ -25,6 +25,10 @@
         </div>
     </div>
 </fieldset>
+</div>
+
+<div id="dialog-1" title="Potwierdź usunięcie">
+    <p>Czy na pewno chcesz usunąć zajęcia?</p>
 </div>
 
 <script>
@@ -35,8 +39,25 @@
         $("#class_input").val(`Klasa: ${to_input[2]}`);
         $("#teacher_input").val(`Nauczyciel: ${to_input[3]}`);
         let sub_to_delete = $(`option[value='${$("#subject_id").val()}']`).attr('sub_id');
-        console.log(sub_to_delete);
         $("#to_delete").val(sub_to_delete);
+    });
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#send_form").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_form").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
     });  
 </script>
 

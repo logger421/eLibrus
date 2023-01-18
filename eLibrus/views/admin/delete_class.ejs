@@ -5,7 +5,7 @@
     <fieldset>
         <legend><h2>Zarządzaj klasami</h2></legend>
     <div class="manage-wrapper">
-        <form action="" method="POST">
+        <form action="" method="POST" id="send_form">
             <select name="to_delete" id="class_select">
                 <option value="" selected disabled>Klasa: </option>
                 <% for(var i=0; i<classes.length; i++) { %>
@@ -14,7 +14,7 @@
             </select>
             <input type="text" id="year_input" placeholder="Rok rozpoczęcia: " disabled>
             <input type="text" id="teacher_input" placeholder="Wychowawca: " disabled>
-            <button>Usuń</button>
+            <button type="button" id="submit_form">Usuń</button>
         </form>
         <%- include ../templates/messages %>
         <div class="go-back-wrapper">
@@ -24,11 +24,35 @@
 </fieldset>
 </div>
 
+<div id="dialog-1" title="Potwierdź usunięcie">
+    <p>Czy na pewno chcesz usunąć klasę?</p>
+</div>
+
 <script>
     $("#class_select").on('change', () => {
         $("#year_input").val("Data rozpoczęcia: 2023");
         $("#teacher_input").val('Wychowawca: ' + $(`option[value='${$("#class_select").val()}']`).attr('teacher'));
     });
+
+    $(function() {
+        $("#dialog-1").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [
+              {
+                text: "Potwierdź",
+                click: () => {
+                    $("#send_form").submit();
+                }
+              },  
+            ]
+        });
+
+        $("#submit_form").on('click', () => {
+            $("#dialog-1").dialog('open');
+        })
+
+    })
 </script>
 
 <%- include ../templates/footer %>

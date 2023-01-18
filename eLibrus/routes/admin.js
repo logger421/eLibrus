@@ -5,9 +5,14 @@ const sequelize = require("../models").sequelize;
 
 router.get("/", async (req, res) => {
     const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+		SELECT tytul, tresc FROM ogloszenia
+        ORDER BY id DESC
 	`);
     res.render("general/home", { user: req.user, notes, current_path: 'admin' });
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 router.get("/add_announcement", (req, res) => {
@@ -27,6 +32,7 @@ router.post("/add_announcement", async (req, res) => {
             VALUES
             ("${title}", "${description}")
         `);
+        req.flash('success_message', 'Ogłoszenie zostało pomyślnie dodane')
     }
 
     res.redirect("/admin/add_announcement");

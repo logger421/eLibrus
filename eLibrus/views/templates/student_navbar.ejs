@@ -1,8 +1,8 @@
 <div class="navbar-container">
-    <button <% if (current_path == 'student') { %> <=% class="active" %> <% } %> onclick="location.href='/student'">Strona główna</button>
-    <button <% if (current_path == 'messages') { %> <=% class="active" %> <% } %> onclick="location.href='/student/messages'">Wiadomości</button>
-    <button <% if (current_path == 'attendance') { %> <=% class="active" %> <% } %> onclick="location.href='/student/attendance'">Frekwencja</button>
-    <button <% if (current_path == 'grades') { %> <=% class="active" %> <% } %> onclick="location.href='/student/grades'">Oceny</button>
-    <button <% if (current_path == 'schedule') { %> <=% class="active" %> <% } %> onclick="location.href='/student/schedule'">Plan zajęć</button>
-    <button <% if (current_path == 'homeworks') { %> <=% class="active" %> <% } %> onclick="location.href='/student/homeworks'">Prace domowe</button>
+    <button <% if (current_path == 'student')   { %> class="active" <% } %> onclick="location.href='/student'">Strona główna</button>
+    <button <% if (current_path == 'messages')  { %> class="active" <% } %> onclick="location.href='/student/messages'">Wiadomości</button>
+    <button <% if (current_path == 'attendance'){ %> class="active" <% } %> onclick="location.href='/student/attendance'">Frekwencja</button>
+    <button <% if (current_path == 'grades')    { %> class="active" <% } %> onclick="location.href='/student/grades'">Oceny</button>
+    <button <% if (current_path == 'schedule')  { %> class="active" <% } %> onclick="location.href='/student/schedule'">Plan zajęć</button>
+    <button <% if (current_path == 'homeworks') { %> class="active" <% } %> onclick="location.href='/student/homeworks'">Prace domowe</button>
 </div>

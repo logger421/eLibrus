@@ -20,9 +20,6 @@
             </select>
             <input type="text" name="" id="filter" placeholder="Email / Imie i nazwisko">
             <%- include ../templates/messages %>
-            <div id="dialog-1" title="Zapisać zmiany?">
-                Czy na pewno chcesz zapisać zmiany?
-            </div>
             <table>
                 <tr>
                     <th>Imię i nazwisko</th>
@@ -55,6 +52,11 @@
     </div>
 </fieldset>
 </div>
+
+<div id="dialog-1" title="Zapisać zmiany?">
+    <p>Czy na pewno chcesz zapisać zmiany?</p>
+</div>
+
 
 <script>
     $("#class_id").on('change', () => {

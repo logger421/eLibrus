@@ -33,9 +33,14 @@ router.get('*', async function (req, res, next) {
 // parent home page
 router.get('/', async function(req, res) {
 	const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+		SELECT tytul, tresc FROM ogloszenia
+		ORDER BY id DESC
 	`);
 	res.render('general/home', { user: req.user, students: req.students, current_student: req.cookies.current_student, notes, current_path: 'parent'});
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 // parent attendance

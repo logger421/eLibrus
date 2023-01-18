@@ -16,9 +16,14 @@ const {
 // teacher home page
 router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+        SELECT tytul, tresc FROM ogloszenia
+        ORDER BY id DESC
 	`);
     res.render("general/home", { user: req.user, notes, current_path: 'teacher' });
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
 // teacher attendance

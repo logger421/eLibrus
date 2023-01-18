@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const moment = require("moment");
 const sequelize = require("../models").sequelize;
+const change_password = require("../helpers/change_pass");
 
 const {
     uzytkownik,
@@ -14,9 +15,22 @@ const {
 // student home page
 router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
-		SELECT tytul, tresc FROM ogloszenia;
+        SELECT tytul, tresc FROM ogloszenia
+        ORDER BY id DESC
 	`);
     res.render("general/home", { user: req.user, notes, current_path: 'student' });
+});
+
+router.get('/change_password', (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+});
+
+router.post('/change_password', async (req, res) => {
+    const { old_pass, new_pass, new_pass_again } = req.body;
+
+    console.log(await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again));
+
+    res.redirect('/student/change_password');
 });
 
 router.get("/attendance", async function (req, res) {
