@@ -26,6 +26,10 @@ router.get('/change_password', (req, res) => {
     res.render("general/change_password", {user: req.user, current_path: 'change_password'});
 });
 
+router.get('/notifications', (req, res) => {
+    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
+});
+
 router.post('/change_password', async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
@@ -340,13 +344,8 @@ router.get("/homeworks", async function (req, res) {
     `);
     const classes = await getClass(req.user.dataValues.user_id);
     let class_id = 0;
-    if (!req.query.class_id) {
-        if (classes.length > 0) 
-            class_id = classes[0].klasa_id;
-        else 
-            class_id = 0;
-    }
-    else class_id = req.query.class_id;
+    if (classes.length > 0) class_id = classes[0].klasa_id;
+    if (req.query.class_id) class_id = req.query.class_id;  
 
     const subjects = await getSubject(req.user.dataValues.user_id, class_id);
 

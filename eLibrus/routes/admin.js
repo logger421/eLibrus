@@ -25,7 +25,11 @@ router.get("/change_password", (req, res) => {
     });
 });
 
-router.post("/change_password", async (req, res) => {
+router.get('/notifications', (req, res) => {
+    res.render('general/notifications', { user: req.user, current_path: 'notifications' })
+});
+
+router.post('/change_password', async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
     const result = await change_password(

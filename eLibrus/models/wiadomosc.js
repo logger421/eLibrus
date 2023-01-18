@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     tresc: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     odczytana: {
       type: DataTypes.BOOLEAN,

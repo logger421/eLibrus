@@ -1,0 +1,47 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend><h2>Powiadomienia</h2></legend>
+    <div class="notifications-wrapper">
+        <table>
+            <tr>
+                <th>Zaznacz</th>
+                <th>Data</th>
+                <th>Tytuł</th>
+            </tr>
+                <% for(var i=0; i<notifications.length; i++) { %>
+                    <tr>
+                        <td><input type="checkbox" name="" id="checkbox"></td>
+                        <td>
+                            <%= notifications[i].data %>
+                        </td>
+                        <td>
+                            <% if (notifications[i].odczytana == 0) { %>
+                                <strong><%= notifications[i].tytul %></strong>
+                            <% } else { %>
+                                <%= notifications[i].tytul %>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% } %>
+        </table>
+        <div>
+            <button id="select_all">Zaznacz wszystkie</button>
+            <button>Usuń</button>
+        </div>
+        
+    </div>
+</fieldset>
+</div>
+
+<script>
+    $("#select_all").on("click", () => {
+        $("input[id='checkbox']").each((i, e) => {
+            e.checked = true;
+        });
+    })
+</script>
+
+<%- include ../templates/footer %>
