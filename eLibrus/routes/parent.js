@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const moment = require("moment");
-
+const change_password = require("../helpers/change_pass");
 const sequelize = require('../models').sequelize;
 
 const {
@@ -41,6 +41,22 @@ router.get('/', async function(req, res) {
 
 router.get('/change_password', (req, res) => {
     res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+});
+
+router.post('/change_password', async (req, res) => {
+    const { old_pass, new_pass, new_pass_again } = req.body;
+
+    const result = await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again);
+
+    if (result[0] == 0) {
+        for(let i=0; i<result[1].length; i++) 
+            req.flash('error', result[1][i]);
+    }
+    else {
+        req.flash('success_message', result[1][0]);
+    }
+
+    res.redirect('/parent/change_password');
 });
 
 // parent attendance

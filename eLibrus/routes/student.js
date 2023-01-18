@@ -28,7 +28,15 @@ router.get('/change_password', (req, res) => {
 router.post('/change_password', async (req, res) => {
     const { old_pass, new_pass, new_pass_again } = req.body;
 
-    console.log(await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again));
+    const result = await change_password(req.user.dataValues.user_id, old_pass, new_pass, new_pass_again);
+
+    if (result[0] == 0) {
+        for(let i=0; i<result[1].length; i++) 
+            req.flash('error', result[1][i]);
+    }
+    else {
+        req.flash('success_message', result[1][0]);
+    }
 
     res.redirect('/student/change_password');
 });
