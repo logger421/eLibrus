@@ -7,49 +7,72 @@
             <h2>Dodaj użytkownika</h2>
         </legend>
         <div class="manage-wrapper">
-            <form action="">
-                <select name="account-type" id="edit_user_type_selector">
-                    <option value="">Uczen</option>
-                    <option value="">Nauczyciel</option>
-                    <option value="">Rodzic</option>
+            <form action="/admin/create_user" method="post" name="full_user_data_form" id="full_user_data_form">
+                <select name="account_type" id="edit_user_type_selector">
+                    <option value="1">Uczen</option>
+                    <option value="2">Rodzic</option>
+                    <option value="3">Nauczyciel</option>
                 </select>
                 <div class="account-info">
                     <label for="imie">Imie</label>
-                    <input type="text" name="" id="imie" placeholder="Jan">
+                    <input type="text" name="first_name" id="imie" placeholder="Jan" value="<%=user_info.first_name%>">
 
                     <label for="nazwisko">Nazwisko</label>
-                    <input type="text" name="" id="nazwisko" placeholder="Kowalski">
+                    <input type="text" name="last_name" id="nazwisko" placeholder="Kowalski"
+                        value="<%=user_info.last_name%>">
 
                     <label for="pesel">PESEL</label>
-                    <input type="text" name="" id="pesel" placeholder="0123456789">
+                    <input type="text" name="PESEL" id="pesel" placeholder="0123456789">
 
                     <label for="birthdate">Data urodzenia</label>
-                    <input type="date" name="" id="birthdate">
+                    <input type="date" name="birthdate" id="birthdate">
 
                     <label for="city">Miasto</label>
-                    <input type="text" name="" id="city" placeholder="Kraków">
+                    <input type="text" name="city" id="city" placeholder="Kraków">
 
                     <label for="zip-code">Kod pocztowy</label>
-                    <input type="text" name="" id="zip-code" placeholder="12-345">
+                    <input type="text" name="zip_code" id="zip-code" placeholder="12-345">
 
                     <label for="street">Ulica</label>
-                    <input type="text" name="" id="street" placeholder="Łojasiewicza">
+                    <input type="text" name="street" id="street" placeholder="Łojasiewicza">
 
                     <label for="house-no">Numer domu/mieszkania</label>
-                    <input type="text" name="" id="house-no" placeholder="11">
+                    <input type="text" name="house_no" id="house_no" placeholder="11">
                 </div>
                 <div class="parent-picker">
-                    <button type="button" class="parent-search-btn"
-                        onclick="location.href='/admin/find_parent.html'">Wyszukaj rodzica</button>
-                    <input type="text" name="" id="parent-info" placeholder="" readonly>
+                    <label for="parent-info">Wyszukaj rodzica</label>
+                    <input list="parent" name="parent_email" placeholder="email rodzica" id="parent_id"
+                        autocomplete="off">
+                    <datalist id="parent">
+                        <% for(var i=0; i<parents.length; i++) { %>
+                        <option sub_id="<%= parents[i].user_id %>" value="<%= parents[i].email %>">
+                            <% } %>
+                    </datalist>
                 </div>
             </form>
-            <button class="edit-user-btn">Stwórz</button>
+            <%- include ../templates/messages %>
+            <button class="edit-user-btn" id="create_user_btn">Stwórz</button>
             <div class="go-back-wrapper">
-                <button class="go-back-btn" onclick="location.href='/admin/manage_users.html'">Cofnij</button>
+                <button class="go-back-btn" onclick="location.href='/admin/manage_users'">Cofnij</button>
             </div>
         </div>
     </fieldset>
 </div>
 
 <%- include ../templates/footer %>
+
+<script>
+    $("#create_user_btn").on('click', () => {
+        $("#full_user_data_form").submit();
+    });
+
+    $(document).ready(function () {
+        $("#edit_user_type_selector").change(function () {
+            if ($("#edit_user_type_selector").val() == "1") {
+                $(".parent-picker").show();
+            } else {
+                $(".parent-picker").hide();
+            }
+        });
+    });
+</script>

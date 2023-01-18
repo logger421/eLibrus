@@ -14,7 +14,7 @@
                             <form action="/admin/manage_users" method="get" name="search_users" id="search_users">
                                 <div class="account-name-input">
                                     <input type="text" name="first_name" id="first_name" placeholder="Imie">
-                                    <input type="text" name="second_name" id="second_name" placeholder="Nazwisko">
+                                    <input type="text" name="last_name" id="last_name" placeholder="Nazwisko">
                                     <input type="text" name="email" id="email" placeholder="Email">
                                 </div>
                                 <div class="account-type-picker">
@@ -34,7 +34,7 @@
                             </form>
                         </div>
                         <div class="align-right">
-                            <button type="button" onclick="location.href='/admin/create_user'">Stwórz</button>
+                            <button type="button" id="create_user">Stwórz</button>
                             <button>Szukaj</button>
                         </div>
                     </div>
@@ -47,13 +47,13 @@
                             <th></th>
                         </tr>
                         <% users.forEach(element => { %>
-                            <tr>
-                                <td><%=element.imie %> <%= element.nazwisko %></td>
-                                <td><%= element.data_urodzenia %></td>
-                                <td><%= element.email %></td>
-                                <td><%= element.rola %></td>
-                                <td>Edytuj</td>
-                            </tr>
+                        <tr>
+                            <td><%=element.imie %> <%= element.nazwisko %></td>
+                            <td><%= element.data_urodzenia %></td>
+                            <td><%= element.email %></td>
+                            <td><%= element.rola %></td>
+                            <td>Edytuj</td>
+                        </tr>
                         <% }); %>
                     </table>
                 </form>
@@ -62,3 +62,12 @@
 </div>
 
 <%- include ../templates/footer %>
+
+<script>
+    $("#create_user").click(function () {
+        var first_name = $("input[name='first_name']").val();
+        var last_name = $("input[name='last_name']").val();
+        var url = `/admin/create_user?first_name=${first_name}&last_name=${last_name}`;
+        window.location.href = url;
+    });
+</script>
