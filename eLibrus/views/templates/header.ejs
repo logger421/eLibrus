@@ -103,7 +103,11 @@
                     <% } %>
                     <button onclick="location.href='/home/logout'">Wyloguj</button>
                 <% } else { %>
-                    <button onclick="location.href='/home/login'">Zaloguj</button>
+                    <% if (typeof(hidden) != 'undefined' ) { %>
+                        <% if (!hidden) { %>
+                            <button onclick="location.href='/home/login'">Zaloguj</button>
+                        <% } %>    
+                    <% } %> 
                 <% } %>
             </div>
         </div>
