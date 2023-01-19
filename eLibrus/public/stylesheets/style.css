@@ -22,6 +22,7 @@
 
 html {
     scroll-behavior: smooth;
+    background: var(--body-background);
 }
 
 * {
@@ -33,7 +34,6 @@ html {
 /* Font init */
 body {
     font-family: Helvetica, sans-serif;
-    background: var(--body-background);
 }
 
 .header-container span {
@@ -57,6 +57,7 @@ body {
 
 .footer-container {
     grid-area: footer;
+    grid-row-end: -1;
 }
 
 .main-container {
@@ -78,7 +79,8 @@ body {
     align-self: start;
     position: sticky;
     top: 0;
-    background: var(--body-background);
+    /* background: var(--body-background); */
+    z-index: 2;
 }
 
 .header-container>* {
@@ -366,9 +368,15 @@ th {
 /* footer container styling */
 
 .footer-container {
-    background: var(--body-background);
+    padding: 3rem;
     text-align: center;
     font-weight: bold;
+    background-color: #1a418f;
+    box-shadow: 0 50vh 0 50vh #1a418f;
+}
+
+.footer-container > * {
+    color: white;
 }
 
 /* ADMIN */
@@ -917,6 +925,7 @@ th {
     position: sticky;
     inset: 0;
     margin: 0;
+    z-index: 1;
 }
 
 /* FIXES */
