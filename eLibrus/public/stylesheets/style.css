@@ -3,12 +3,14 @@
 :root {
     /* Fonts colors */
     --font-color: white;
+    --anchor-text-color: #042f5a;
 
     /* Elements colors */
     --button-font-color: white;
     --button-color: #002D62;
     --button-color-teacher-panel: gray;
     --button-color-hover: #007FFF;
+    --default-anchor-color: #1168c0;
 
     /* Background colors */
     --body-background: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
@@ -34,6 +36,10 @@ html {
 /* Font init */
 body {
     font-family: Helvetica, sans-serif;
+}
+
+button {
+    transition: 0.4s ease-in-out;
 }
 
 .header-container span {
@@ -79,7 +85,7 @@ body {
     align-self: start;
     position: sticky;
     top: 0;
-    /* background: var(--body-background); */
+    background: var(--body-background);
     z-index: 2;
 }
 
@@ -142,7 +148,6 @@ body {
     height: 5rem;
     background-color: var(--button-color);
     color: var(--button-font-color);
-    transition: 0.5s ease-in-out;
 }
 
 .navbar-container>*:last-child {
@@ -375,7 +380,7 @@ th {
     box-shadow: 0 50vh 0 50vh #1a418f;
 }
 
-.footer-container > * {
+.footer-container>* {
     color: white;
 }
 
@@ -1009,6 +1014,7 @@ input[type="checkbox"] {
     appearance: none;
     background-color: #fff;
     margin: 0;
+    padding: 0;
     font: inherit;
     color: currentColor;
     width: 0.75em;
@@ -1059,4 +1065,42 @@ input[type="checkbox"]:disabled {
 
 .glowing_button {
     animation: glowing 1300ms infinite;
+}
+
+a {
+    padding: 1em;
+    border-radius: 5px;
+    text-decoration: underline overline;
+    text-underline-offset: 5px;
+    color: var(--anchor-text-color);
+    font-weight: bold;
+    background-image: linear-gradient(var(--button-color-teacher-panel), var(--button-color-teacher-panel)),
+        linear-gradient(var(--main-body-background), var(--main-body-background));
+    background-size: 0 100%, auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all .2s ease-out;
+    white-space: nowrap;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: none;
+    background-size: 100% 100%, auto;
+}
+
+.main-body-container button {
+    background-color: transparent !important;
+    color: var(--button-color-teacher-panel) !important;
+    border-radius: 10px !important;
+    outline: 5px solid var(--button-color-teacher-panel) !important;
+}
+
+.main-body-container button:hover {
+    color: var(--font-color) !important;
+    box-shadow: inset 0 100px 0 0 var(--button-color-teacher-panel) !important;
+}
+
+svg {
+    position: absolute;
 }

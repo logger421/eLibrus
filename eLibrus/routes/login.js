@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 		ORDER BY id DESC
 	`);
 
-	res.render('general/home', { notes });
+	res.render('general/home', { notes, hidden: false });
 });
 
 /*
@@ -26,7 +26,7 @@ NOT LOGGED IN LOGIN
 */
 
 router.get('/login', (req, res) => {
-	res.render('general/login');
+	res.render('general/login', { hidden: true });
 });
 
 
@@ -46,7 +46,7 @@ NOT LOGGED IN REMIND PASSWORD
 */
 
 router.get('/remind_password', (req, res) => {
-	res.render('general/remind_password');
+	res.render('general/remind_password', {hidden: false});
 });
 
 router.post('/remind_password', (req, res) => {

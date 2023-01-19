@@ -27,23 +27,28 @@
                     <th>Nadawca</th>
                     <th class="data">Data</th>
                     <th>Tytuł</th>
-                    <th>Odczytaj</th>
                 </tr>
                 <tbody>
-                    <% for (var idx in messagesRec) { %>
-                        <% if (messagesRec[idx].usunieta != 2) { %>
-                        <tr class="<%= messagesRec[idx].odczytana == 0 ? 'bold' : '' %>">
-                            <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesRec[idx].wiadomosc_id %>" form="send_form"></td>
-                            <td><%= usersNamesRec[idx][0] %> <%= usersNamesRec[idx][1] %></td>
-                            <td class="data"><%= messagesRec[idx].data %></td>
-                            <td><%= messagesRec[idx].tytul %></td>
-                            <td class="buttons-table">
-                                <button class="messages-bttn-decisions-response" onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesRec[idx].wiadomosc_id %>'">Odczytaj</button>
-                                <% if (current_role != 'parent') { %>
-                                <button onclick="location.href='/<%= current_role %>/send_message?n=<%= messagesRec[idx].nadawca_id %>'" class="messages-bttn-decisions-response">Odpowiedz</button>
-                                <% } %>
-                            </td>
+                    <% if (messagesRec.length == 0) { %>
+                        <tr>
+                            <td colspan="5">BRAK WIADOMOŚCI</td>
                         </tr>
+                    <% } else { %>
+                        <% for (var idx in messagesRec) { %>
+                            <% if (messagesRec[idx].usunieta != 2) { %>
+                            <tr class="<%= messagesRec[idx].odczytana == 0 ? 'bold' : '' %>">
+                                <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesRec[idx].wiadomosc_id %>" form="send_form"></td>
+                                <td><%= usersNamesRec[idx][0] %> <%= usersNamesRec[idx][1] %></td>
+                                <td class="data"><%= messagesRec[idx].data %></td>
+                                <td><%= messagesRec[idx].tytul %></td>
+                                <td class="buttons-table">
+                                    <button class="messages-bttn-decisions-response" onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesRec[idx].wiadomosc_id %>'">Odczytaj</button>
+                                    <% if (current_role != 'parent') { %>
+                                    <button onclick="location.href='/<%= current_role %>/send_message?n=<%= messagesRec[idx].nadawca_id %>'" class="messages-bttn-decisions-response">Odpowiedz</button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% } %>
                         <% } %>
                     <% } %>
                 </tbody>
@@ -55,20 +60,25 @@
                         <th>Odbiorca</th>
                         <th class="data">Data</th>
                         <th>Tytuł</th>
-                        <th>Odczytaj</th>
                     </tr>
                     <tbody>
-                        <% for (var idx in messagesSent) { %>
-                            <% if (messagesSent[idx].usunieta != 1) { %>
+                        <% if (messagesSent.length == 0) { %>
                             <tr>
-                                <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesSent[idx].wiadomosc_id %>" form="send_form"></td>
-                                <td><%= usersNamesSent[idx][0] %> <%= usersNamesSent[idx][1] %></td>
-                                <td class="data"><%= messagesSent[idx].data %></td>
-                                <td><%= messagesSent[idx].tytul %></td>
-                                <td class="buttons-table">
-                                    <button onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesSent[idx].wiadomosc_id %>'" class="messages-bttn-decisions-response">Odczytaj</button>
-                                </td>
+                                <td colspan="5">BRAK WIADOMOŚCI</td>
                             </tr>
+                        <% } else { %>
+                            <% for (var idx in messagesSent) { %>
+                                <% if (messagesSent[idx].usunieta != 1) { %>
+                                <tr>
+                                    <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesSent[idx].wiadomosc_id %>" form="send_form"></td>
+                                    <td><%= usersNamesSent[idx][0] %> <%= usersNamesSent[idx][1] %></td>
+                                    <td class="data"><%= messagesSent[idx].data %></td>
+                                    <td><%= messagesSent[idx].tytul %></td>
+                                    <td class="buttons-table">
+                                        <button onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesSent[idx].wiadomosc_id %>'" class="messages-bttn-decisions-response">Odczytaj</button>
+                                    </td>
+                                </tr>
+                                <% } %>
                             <% } %>
                         <% } %>
                     </tbody>
