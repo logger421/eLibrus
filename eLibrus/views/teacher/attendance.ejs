@@ -8,9 +8,9 @@
             <h2>Frekwencja</h2>
         </legend>
         <div class="attendance-wrapper">
-            <div class="teacher-panel">
-                <div>
-                    <form method="get" action="/teacher/attendance" id="attendance_class">
+            <div class="teacher-panel centerized">
+                <form method="get" action="/teacher/attendance" id="attendance_class">
+                    <div class="teacher-form">
                         <select name="class_id" id="class_id" form="attendance_class">
                             <% classes.forEach((klasa) => { %>
                             <% if (klasa.klasa_id == class_id) { %>
@@ -19,9 +19,9 @@
                             <option value="<%= klasa.klasa_id %>">Klasa: <%= klasa.klasa_id %></option>
                             <% } %>
                             <% }) %>
-                            <input type="date" name="attendance_date" id="attendance_date" value="<%=date%>" onchange="checkDate()">
-                            <br>
                         </select>
+                        <input type="date" name="attendance_date" id="attendance_date" value="<%=date%>"
+                            onchange="checkDate()">
                         <select name="subject_id" id="attendance_subject_id" form="attendance_class">
                             <% subjects.forEach((subject) => { %>
                             <% if (subject.zajecia_id == subject_id) { %>
@@ -41,56 +41,55 @@
                             <% } %>
                             <% }) %>
                         </select>
-                    </form>
-                </div>
+                        <button id="mark-all-present">Wszyscy obecni</button>
+                    </div>
+                </form>
                 <div>
-                    <button id="mark-all-present">Wszyscy obecni</button>
                 </div>
             </div>
             <div class="scrollable">
-
                 <table style="width: 100% !important;">
                     <tr>
-                    <th class="fix_row">Uczeń</th>
-                    <th class="fix_row">Obecny</th>
-                    <th class="fix_row">Nieobecny</th>
-                    <th class="fix_row">Spoźniony</th>
-                    <th class="fix_row">Upsprawiedliwiony</th>
-                    <th class="fix_row">Zwolniony</th>
-                </tr>
-                <form action="/teacher/attendance" method="post" id="post_attendance" name="attendance">
-                    <input type="hidden" name="klasa_id" value="<%= class_id %>">
-                    <input type="hidden" name="date" value="<%= date %>">
-                    <input type="hidden" name="zajecia_id" value="<%= subject_id %>">
-                    <input type="hidden" name="nr_lekcji" value="<%= class_number %>">
-                    <% students.forEach(student => { %>
-                    <tr>
-                        <td><%= student.imie %> <%= student.nazwisko %> </td>
-                        <td>
-                            <input type="radio" name="<%=student.user_id%>" value="O" id="O"
-                                <%= student.frekwencja == 'O' ? 'checked' : '' %>>
-                        </td>
-                        <td>
-                            <input type="radio" name="<%=student.user_id%>" value="N" id="N"
-                                <%= student.frekwencja == 'N' ? 'checked' : '' %>>
-                        </td>
-                        <td>
-                            <input type="radio" name="<%=student.user_id%>" value="S" id="S"
-                                <%= student.frekwencja == 'S' ? 'checked' : '' %>>
-                        </td>
-                        <td>
-                            <input type="radio" name="<%=student.user_id%>" value="U" id="U"
-                                <%= student.frekwencja == 'U' ? 'checked' : '' %>>
-                        </td>
-                        <td>
-                            <input type="radio" name="<%=student.user_id%>" value="Z" id="Z"
-                                <%= student.frekwencja == 'Z' ? 'checked' : '' %>>
-                        </td>
+                        <th class="fix_row">Uczeń</th>
+                        <th class="fix_row">Obecny</th>
+                        <th class="fix_row">Nieobecny</th>
+                        <th class="fix_row">Spoźniony</th>
+                        <th class="fix_row">Upsprawiedliwiony</th>
+                        <th class="fix_row">Zwolniony</th>
                     </tr>
-                    <% }); %>
-                </form>
-            </table>
-        </div>
+                    <form action="/teacher/attendance" method="post" id="post_attendance" name="attendance">
+                        <input type="hidden" name="klasa_id" value="<%= class_id %>">
+                        <input type="hidden" name="date" value="<%= date %>">
+                        <input type="hidden" name="zajecia_id" value="<%= subject_id %>">
+                        <input type="hidden" name="nr_lekcji" value="<%= class_number %>">
+                        <% students.forEach(student => { %>
+                        <tr>
+                            <td><%= student.imie %> <%= student.nazwisko %> </td>
+                            <td>
+                                <input type="radio" name="<%=student.user_id%>" value="O" id="O"
+                                    <%= student.frekwencja == 'O' ? 'checked' : '' %>>
+                            </td>
+                            <td>
+                                <input type="radio" name="<%=student.user_id%>" value="N" id="N"
+                                    <%= student.frekwencja == 'N' ? 'checked' : '' %>>
+                            </td>
+                            <td>
+                                <input type="radio" name="<%=student.user_id%>" value="S" id="S"
+                                    <%= student.frekwencja == 'S' ? 'checked' : '' %>>
+                            </td>
+                            <td>
+                                <input type="radio" name="<%=student.user_id%>" value="U" id="U"
+                                    <%= student.frekwencja == 'U' ? 'checked' : '' %>>
+                            </td>
+                            <td>
+                                <input type="radio" name="<%=student.user_id%>" value="Z" id="Z"
+                                    <%= student.frekwencja == 'Z' ? 'checked' : '' %>>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </form>
+                </table>
+            </div>
             <div class="teacher-panel">
                 <div>
                     <button id="submit_attendance">Zapisz</button>
@@ -117,18 +116,16 @@
         $("#attendance_class").submit();
     })
 
-    $(function() {
+    $(function () {
         $("#dialog-1").dialog({
             autoOpen: false,
             modal: true,
-            buttons: [
-              {
+            buttons: [{
                 text: "Zapisz",
                 click: () => {
                     $("#post_attendance").submit();
                 }
-              },  
-            ]
+            }, ]
         });
 
         $("#submit_attendance").on('click', () => {

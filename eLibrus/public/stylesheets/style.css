@@ -822,3 +822,34 @@ th {
     inset: 0;
     margin: 0;
 }
+
+/* FIXES */
+
+.centerized {
+    align-items: center;
+}
+
+.teacher-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly !important;
+}
+
+.teacher-form > * {
+    width: fit-content;
+    max-height: 50px;
+    margin: 0 0 5px 10px !important;
+}
+
+#attendance_class {
+    align-items: center;
+    justify-content: space-evenly !important;
+}
+
+#mark-all-present {
+    white-space: nowrap;
+}
+
+.main-body-container button {
+    padding: 1rem !important;
+}
