@@ -6,15 +6,7 @@ const change_password = require("../helpers/change_pass");
 const { getClass, getSubject } = require("../helpers/teacher_classes_subjects");
 const { notification_student, notification_class } = require("../helpers/create_notification");
 const get_notifications = require("../helpers/get_notifications");
-
-const {
-    uzytkownik,
-    klasa,
-    zajecia,
-    przedmioty,
-    frekwencja,
-    data_zajec,
-} = require("../models");
+const { frekwencja } = require("../models");
 
 // teacher home page
 router.get("/", async function (req, res) {

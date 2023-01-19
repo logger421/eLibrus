@@ -4,14 +4,7 @@ const moment = require("moment");
 const sequelize = require("../models").sequelize;
 const change_password = require("../helpers/change_pass");
 const get_notifications = require("../helpers/get_notifications");
-
-const {
-    uzytkownik,
-    klasa,
-    zajecia,
-    przedmioty,
-    frekwencja,
-} = require("../models");
+const { frekwencja } = require("../models");
 
 // student home page
 router.get("/", async function (req, res) {
