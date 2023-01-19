@@ -47,14 +47,16 @@
                     <button id="mark-all-present">Wszyscy obecni</button>
                 </div>
             </div>
-            <table>
-                <tr>
-                    <th>Uczeń</th>
-                    <th>Obecny</th>
-                    <th>Nieobecny</th>
-                    <th>Spoźniony</th>
-                    <th>Upsprawiedliwiony</th>
-                    <th>Zwolniony</th>
+            <div class="scrollable">
+
+                <table style="width: 100% !important;">
+                    <tr>
+                    <th class="fix_row">Uczeń</th>
+                    <th class="fix_row">Obecny</th>
+                    <th class="fix_row">Nieobecny</th>
+                    <th class="fix_row">Spoźniony</th>
+                    <th class="fix_row">Upsprawiedliwiony</th>
+                    <th class="fix_row">Zwolniony</th>
                 </tr>
                 <form action="/teacher/attendance" method="post" id="post_attendance" name="attendance">
                     <input type="hidden" name="klasa_id" value="<%= class_id %>">
@@ -88,6 +90,7 @@
                     <% }); %>
                 </form>
             </table>
+        </div>
             <div class="teacher-panel">
                 <div>
                     <button id="submit_attendance">Zapisz</button>

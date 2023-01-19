@@ -879,3 +879,16 @@ th {
     padding: 1.2rem !important;
     margin: 1rem;
 }
+
+.scrollable {
+    overflow-y: scroll;
+    outline: 1px solid black;
+    max-height: 400px;
+    padding: 0 !important;
+}
+
+.fix_row {
+    position: sticky;
+    inset: 0;
+    margin: 0;
+}

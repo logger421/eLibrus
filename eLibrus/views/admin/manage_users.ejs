@@ -38,24 +38,26 @@
                             <button>Szukaj</button>
                         </div>
                     </div>
-                    <table>
-                        <tr>
-                            <th>Imię i nazwisko</th>
-                            <th>Data urodzenia</th>
-                            <th>Email</th>
-                            <th>Rola</th>
-                            <th></th>
-                        </tr>
-                        <% users.forEach(element => { %>
-                        <tr>
-                            <td><%= element.imie %> <%= element.nazwisko %></td>
-                            <td><%= element.data_urodzenia %></td>
-                            <td><%= element.email %></td>
-                            <td><%= element.rola_name %></td>
-                            <td><a href="<%=`/admin/edit_user/${element.user_id}`%>">Edytuj</a></td>
-                        </tr>
-                        <% }); %>
-                    </table>
+                    <div class="scrollable">
+                        <table>
+                            <tr>
+                                <th class="fix_row">Imię i nazwisko</th>
+                                <th class="fix_row">Data urodzenia</th>
+                                <th class="fix_row">Email</th>
+                                <th class="fix_row">Rola</th>
+                                <th class="fix_row">Edytuj</th>
+                            </tr>
+                            <% users.forEach(element => { %>
+                            <tr>
+                                <td><%= element.imie %> <%= element.nazwisko %></td>
+                                <td><%= element.data_urodzenia %></td>
+                                <td><%= element.email %></td>
+                                <td><%= element.rola_name %></td>
+                                <td><a href="<%=`/admin/edit_user/${element.user_id}`%>">Edytuj</a></td>
+                            </tr>
+                            <% }); %>
+                        </table>
+                    </div>
                 </form>
             </div>
     </fieldset>

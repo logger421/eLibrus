@@ -3,7 +3,9 @@
 
 <div class="main-body-container">
     <fieldset>
-        <legend><h2>Oceny</h2></legend>
+        <legend>
+            <h2>Oceny</h2>
+        </legend>
         <div class="grades-wrapper">
             <div class="teacher-panel">
                 <div>
@@ -13,55 +15,58 @@
                     </form>
                     <select name="class_id" id="class">
                         <% classes.forEach((subject) => { %>
-                            <% if (class_id == subject.klasa_id) { %>
-                                <option value="<%= subject.klasa_id %>" selected>Klasa: <%= subject.klasa_id %></option>
-                            <% } else { %>
-                                <option value="<%= subject.klasa_id %>">Klasa: <%= subject.klasa_id %></option>
-                            <% } %>
+                        <% if (class_id == subject.klasa_id) { %>
+                        <option value="<%= subject.klasa_id %>" selected>Klasa: <%= subject.klasa_id %></option>
+                        <% } else { %>
+                        <option value="<%= subject.klasa_id %>">Klasa: <%= subject.klasa_id %></option>
+                        <% } %>
                         <% }) %>
                     </select>
                     <select name="subject_id" id="subject" form="add_grades">
                         <% subjects.forEach((subject) => { %>
-                            <% if (subject_id == subject.zajecia_id) { %>
-                                <option value="<%= subject.zajecia_id %>" selected><%= subject.nazwa %></option>
-                            <% } else { %>
-                                <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
-                            <% } %>
-                            
+                        <% if (subject_id == subject.zajecia_id) { %>
+                        <option value="<%= subject.zajecia_id %>" selected><%= subject.nazwa %></option>
+                        <% } else { %>
+                        <option value="<%= subject.zajecia_id %>"><%= subject.nazwa %></option>
+                        <% } %>
+
                         <% }) %>
                     </select>
                 </div>
             </div>
-            <table>
-                <tr>
-                    <th>Zaznacz</th>
-                    <th>Osoba</th>
-                    <th>Oceny</th>
-                    <th>Średnia</th>
-                    <th>Ocena Końcowa</th>
-                </tr>
-                <% for(var i=0; i<students.length; i++) { %>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="user_id" value="<%= students[i].user_id %>" form="add_grades">
-                    </td>
-                    <td>
-                        <a href="/teacher/grades/edit_grades/<%= subject_id %>/<%= students[i].user_id %>">
-                            <%= students[i].imie %> <%= students[i].nazwisko %>
-                        </a>
-                    </td>
-                    <td>
-                        <%= students_grades[i].toString().replaceAll(",", ", "); %>
-                    </td>
-                    <td>
-                        <% if (students_grades[i].length > 0) { %>
+            <div class="scrollable">
+
+                <table style="width: 100%;">
+                    <tr>
+                        <th class="fix_row">Zaznacz</th>
+                        <th class="fix_row">Osoba</th>
+                        <th class="fix_row">Oceny</th>
+                        <th class="fix_row">Średnia</th>
+                        <th class="fix_row">Ocena Końcowa</th>
+                    </tr>
+                    <% for(var i=0; i<students.length; i++) { %>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="user_id" value="<%= students[i].user_id %>" form="add_grades">
+                        </td>
+                        <td>
+                            <a href="/teacher/grades/edit_grades/<%= subject_id %>/<%= students[i].user_id %>">
+                                <%= students[i].imie %> <%= students[i].nazwisko %>
+                            </a>
+                        </td>
+                        <td>
+                            <%= students_grades[i].toString().replaceAll(",", ", "); %>
+                        </td>
+                        <td>
+                            <% if (students_grades[i].length > 0) { %>
                             <%= (students_grades[i].reduce((a,b) => a+b, 0) / students_grades[i].length).toFixed(2) %>
-                        <% } %>        
-                    </td>
-                    <td></td>
-                </tr>
-                <% } %>
-            </table>
+                            <% } %>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
             <div class="teacher-panel">
                 <div>
                     <button id="add_grades_button">Zbiorcze dodanie</button>
@@ -97,18 +102,16 @@
         $("#change_class_form").submit();
     });
 
-    $(function() {
+    $(function () {
         $("#dialog-1").dialog({
             autoOpen: false,
             modal: true,
-            buttons: [
-              {
+            buttons: [{
                 text: "Potwierdź",
                 click: () => {
                     $("#add_grades").submit();
                 }
-              },  
-            ]
+            }, ]
         });
 
         $("#add_grades_button").on("click", () => {
