@@ -763,8 +763,8 @@ th {
 }
 
 .messages-bttn-decisions-wrapper-right {
-    width: 100%;
     position: relative;
+    width: 100%;
     margin-left: 4rem;
     margin-right: 4rem;
     text-align: right;
@@ -773,7 +773,7 @@ th {
 .messages-bttn-decisions-wrapper-left {
     width: 100%;
     text-align: left;
-    margin-left: 4rem;
+    margin-left: 4.6rem;
     margin-right: 4rem;
     position: relative;
 }
@@ -1092,7 +1092,7 @@ a:hover {
 .main-body-container button {
     background-color: transparent !important;
     color: var(--button-color-teacher-panel) !important;
-    border-radius: 10px !important;
+    border-radius: 15px !important;
     outline: 5px solid var(--button-color-teacher-panel) !important;
 }
 
@@ -1101,6 +1101,10 @@ a:hover {
     box-shadow: inset 0 100px 0 0 var(--button-color-teacher-panel) !important;
 }
 
-svg {
-    position: absolute;
+#wyslaneWiad {
+    margin-left: 1.25em !important;
+}
+
+.messages-bttn-decisions-wrapper-left #deleteButton {
+    margin-left: 1.25em !important;
 }
