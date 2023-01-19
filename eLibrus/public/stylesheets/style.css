@@ -113,6 +113,7 @@ body {
     background-color: var(--button-color);
     color: var(--button-font-color);
     font-size: 1.2em;
+    white-space: nowrap;
 }
 
 .header-container button:last-child {
@@ -942,4 +943,22 @@ th {
 
 .main-body-container button {
     padding: 1rem !important;
+}
+
+@keyframes glowing {
+    0% {
+      background-color: #002D62;
+      box-shadow: 0 0 1px #ffffff;
+    }
+    50% {
+      background-color: #002D62;
+      box-shadow: 0 0 5px #ffffff;
+    }
+    100% {
+      background-color: #002D62;
+      box-shadow: 0 0 1px #ffffff;
+    }
+  }
+.glowing_button {
+  animation: glowing 1300ms infinite;
 }

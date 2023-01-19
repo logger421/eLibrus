@@ -5,6 +5,7 @@ const sequelize = require("../models").sequelize;
 const change_password = require("../helpers/change_pass");
 const get_notifications = require("../helpers/get_notifications");
 const { frekwencja, wiadomosc, uzytkownik } = require("../models");
+const count_notif = require('../helpers/count_notifications');
 
 /*
 =================
@@ -17,10 +18,12 @@ router.get("/", async function (req, res) {
         SELECT tytul, tresc FROM ogloszenia
         ORDER BY id DESC
 	`);
+
     res.render("general/home", {
         user: req.user,
         notes,
         current_path: "student",
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -70,7 +73,8 @@ router.get('/messages', async (req, res) => {
 		usersNamesRec: usersDataRec,
 		usersNamesSent: usersDataSent,
         current_path: 'messages',
-        current_role: 'student'
+        current_role: 'student',
+        count_notif: await count_notif(req.user.dataValues.user_id)
 	});
 });
 
@@ -84,7 +88,8 @@ router.get('/read_message', async function(req, res) {
 		message: message,
 		nadawca: nadawca,
         current_path: 'messages',
-        current_role: 'student'
+        current_role: 'student',
+        count_notif: await count_notif(req.user.dataValues.user_id)
 	});
 });
 
@@ -102,6 +107,7 @@ router.get('/send_message', async function(req, res) {
             current_path: 'messages',
             current_role: 'student',
             avilable_ppl: all_teachers,
+            count_notif: await count_notif(req.user.dataValues.user_id)
 		});
 	} else {
 		res.render('general/send_message', {
@@ -109,7 +115,8 @@ router.get('/send_message', async function(req, res) {
 			nadawca_email: "",
             current_path: 'messages',
             current_role: 'student',
-            avilable_ppl: all_teachers
+            avilable_ppl: all_teachers,
+            count_notif: await count_notif(req.user.dataValues.user_id)
 		});
 	}
 });
@@ -188,6 +195,7 @@ router.get("/notifications", async (req, res) => {
         user: req.user,
         current_path: "notifications",
         notifications,
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -233,10 +241,11 @@ STUDENT CHANGE PASSWORD
 =================
 */
 
-router.get("/change_password", (req, res) => {
+router.get("/change_password", async (req, res) => {
     res.render("general/change_password", {
         user: req.user,
         current_path: "change_password",
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -321,6 +330,7 @@ router.get("/attendance", async function (req, res) {
     }
     let attendanceData = await Promise.all(promiseArr);
     let days = {};
+    let notif = await count_notif(req.user.dataValues.user_id)
     Promise.all(
         attendanceData.map((attendance, i) => {
             let template_attendance = Array.from({ length: 8 }, (_, i) => ({
@@ -364,6 +374,7 @@ router.get("/attendance", async function (req, res) {
                 (100 * (full_attendance.O + full_attendance.U)) /
                 Object.values(full_attendance).reduce((a, b) => a + b)
             ).toFixed(2),
+            count_notif: notif
         });
     });
 });
@@ -405,6 +416,7 @@ router.get("/grades", async function (req, res) {
         user: req.user,
         grades,
         current_path: "grades",
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -451,6 +463,7 @@ router.get("/schedule", async function (req, res) {
         current_student: req.user.user_id,
         schedule,
         current_path: "schedule",
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -476,6 +489,7 @@ router.get("/homeworks", async function (req, res) {
         current_student: req.user.user_id,
         homeworks,
         current_path: "homeworks",
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 

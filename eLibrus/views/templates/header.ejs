@@ -50,19 +50,31 @@
                         <% if (current_path == "notifications") { %>
                             class='active'
                         <% } %>
-                        >Powiadomienia</button>
+                        <% if (count_notif != 0) { %>
+                            class='glowing_button'
+                        <% } %>
+                        >Powiadomienia 
+                    </button>
                     <% } else if (user.dataValues.rola == 2) { %>
                         <button onclick="location.href='/parent/notifications'"
                         <% if (current_path == "notifications") { %>
                             class='active'
                         <% } %>
-                        >Powiadomienia</button>
+                        <% if (count_notif != 0) { %>
+                            class='glowing_button'
+                        <% } %>
+                        >Powiadomienia 
+                    </button>
                     <% } else if (user.dataValues.rola == 3) { %>
                         <button onclick="location.href='/teacher/notifications'"
                         <% if (current_path == "notifications") { %>
                             class='active'
                         <% } %>
-                        >Powiadomienia</button>
+                        <% if (count_notif != 0) { %>
+                            class='glowing_button'
+                        <% } %>
+                        >Powiadomienia 
+                    </button>
                     <% } %>
                     <% if (user.dataValues.rola == 1) { %> 
                         <button onclick="location.href='/student/change_password'"

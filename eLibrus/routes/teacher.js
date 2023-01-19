@@ -7,6 +7,8 @@ const { getClass, getSubject } = require("../helpers/teacher_classes_subjects");
 const { notification_student, notification_class } = require("../helpers/create_notification");
 const get_notifications = require("../helpers/get_notifications");
 const { frekwencja, wiadomosc, uzytkownik } = require("../models");
+const count_notif = require('../helpers/count_notifications');
+
 /*
 =================
 TEACHER HOME PAGE
@@ -18,7 +20,7 @@ router.get("/", async function (req, res) {
         SELECT tytul, tresc FROM ogloszenia
         ORDER BY id DESC
 	`);
-    res.render("general/home", { user: req.user, notes, current_path: 'teacher' });
+    res.render("general/home", { user: req.user, notes, current_path: 'teacher', count_notif: await count_notif(req.user.dataValues.user_id) });
 });
 
 /*
@@ -66,7 +68,8 @@ router.get('/messages', async (req, res) => {
 		usersNamesRec: usersDataRec,
 		usersNamesSent: usersDataSent,
         current_path: 'messages',
-        current_role: 'teacher'
+        current_role: 'teacher',
+        count_notif: await count_notif(req.user.dataValues.user_id)
 	});
 });
 
@@ -80,7 +83,8 @@ router.get('/read_message', async function(req, res) {
 		message: message,
 		nadawca: nadawca,
         current_path: 'messages',
-        current_role: 'teacher'
+        current_role: 'teacher',
+        count_notif: await count_notif(req.user.dataValues.user_id)
 	});
 });
 
@@ -106,7 +110,8 @@ router.get('/send_message', async function(req, res) {
 			nadawca_email: "",
             current_path: 'messages',
             current_role: 'teacher',
-            avilable_ppl: all_students_and_parents
+            avilable_ppl: all_students_and_parents,
+            count_notif: await count_notif(req.user.dataValues.user_id)
 		});
 	}
 });
@@ -182,7 +187,7 @@ TEACHER NOTIFICATIONS
 
 router.get('/notifications', async (req, res) => {
     const notifications = await get_notifications(req.user.dataValues.user_id);
-    res.render('general/notifications', { user: req.user, notifications,  current_path: 'notifications' })
+    res.render('general/notifications', { user: req.user, notifications,  current_path: 'notifications', count_notif: await count_notif(req.user.dataValues.user_id) })
 });
 
 router.post('/notifications', async (req, res) => {
@@ -222,8 +227,8 @@ TEACHER CHANGE PASSWORD
 =================
 */
 
-router.get('/change_password', (req, res) => {
-    res.render("general/change_password", {user: req.user, current_path: 'change_password'});
+router.get('/change_password', async (req, res) => {
+    res.render("general/change_password", {user: req.user, current_path: 'change_password', count_notif: await count_notif(req.user.dataValues.user_id)});
 });
 
 router.post('/change_password', async (req, res) => {
@@ -329,7 +334,8 @@ router.get("/attendance", async function (req, res) {
         subject_id: selected_subject,
         classes_numbers: classes_numbers,
         class_number: selected_classes_number,
-        current_path: 'attendance'
+        current_path: 'attendance',
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -439,7 +445,8 @@ router.get("/grades", async function (req, res) {
         subject_id,
         students,
         students_grades,
-        current_path: 'grades'
+        current_path: 'grades',
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -472,7 +479,8 @@ router.get("/grades/edit_grades/:subject_id/:user_id", async (req, res) => {
         result: result[0],
         grades,
         avg,
-        current_path: 'edit_grades'
+        current_path: 'edit_grades',
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -554,7 +562,8 @@ router.get("/schedule", async function (req, res) {
         students: req.students,
         current_student: req.user.user_id,
         schedule,
-        current_path: 'schedule'
+        current_path: 'schedule',
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
@@ -590,7 +599,8 @@ router.get("/homeworks", async function (req, res) {
         classes,
         homeworks,
         class_id,
-        current_path: 'homeworks'
+        current_path: 'homeworks',
+        count_notif: await count_notif(req.user.dataValues.user_id)
     });
 });
 
