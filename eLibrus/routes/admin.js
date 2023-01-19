@@ -468,8 +468,10 @@ router.post("/manage_classes/edit_students", async (req, res) => {
     await sequelize.query(`
         UPDATE uzytkownik 
         SET klasa_id = NULL
-        WHERE rola = 1 AND user_id NOT IN (${student_id.toString()}) AND klasa_id = ${class_id}
-    `);
+        WHERE rola = 1 AND user_id NOT IN ? AND klasa_id = ?
+    `, {
+        replacements: [student_id, class_id]
+    });
 
     await sequelize.query(`
         UPDATE uzytkownik 
