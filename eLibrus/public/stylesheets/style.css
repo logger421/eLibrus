@@ -1095,6 +1095,5 @@ a:hover {
 
 .main-body-container button:hover {
     color: var(--font-color) !important;
-    font-weight: bold;
     box-shadow: inset 0 100px 0 0 var(--button-color-teacher-panel) !important;
 }
