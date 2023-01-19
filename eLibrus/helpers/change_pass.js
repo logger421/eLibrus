@@ -14,8 +14,10 @@ const change_password = async (user_id, old_pass, new_pass, new_pass_again) => {
     else {
         const [check] = await sequelize.query(`
             SELECT * from uzytkownik
-            WHERE user_id = ${user_id} AND haslo = "${old_pass}"
-        `);
+            WHERE user_id = ? AND haslo = ?
+        `, {
+            replacements: [user_id, old_pass]
+        });
     
         if (check.length == 0) {
             errors.push('Aktualne hasło nie jest poprawne');
@@ -24,9 +26,11 @@ const change_password = async (user_id, old_pass, new_pass, new_pass_again) => {
         else {
             await sequelize.query(`
                 UPDATE uzytkownik
-                SET haslo = "${new_pass}"
-                WHERE user_id = ${user_id}
-            `);
+                SET haslo = ?
+                WHERE user_id = ?
+            `, {
+                replacements: [new_pass, user_id]
+            });
             return [1, ['Hasło zostało pomyślnie zmienione']];
         }
     }

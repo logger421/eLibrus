@@ -792,7 +792,8 @@ th {
     font-size: 1em;
     border: 0;
     padding: 0.5rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .messages-bttn-decisions-response:hover {

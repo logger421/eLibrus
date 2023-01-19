@@ -142,8 +142,10 @@ router.post("/manage_subjects/create_subject", async (req, res) => {
             SELECT imie, nazwisko, nazwa FROM zajecia 
             NATURAL JOIN przedmioty INNER JOIN uzytkownik 
             ON uzytkownik.user_id = prowadzacy_id
-            WHERE zajecia.klasa_id = ${class_id} AND przedmiot_id = ${subject_id}
-        `);
+            WHERE zajecia.klasa_id = ? AND przedmiot_id = ?
+        `,{
+            replacements: [class_id, subject_id]
+        });
         if (check.length > 0) {
             req.flash(
                 "error",
@@ -152,10 +154,12 @@ router.post("/manage_subjects/create_subject", async (req, res) => {
         } else {
             await sequelize.query(`
                 INSERT INTO zajecia 
-                (\`przedmiot_id\`,\`prowadzacy_id\`,\`sala_id\`,\`klasa_id\`)
+                (przedmiot_id,prowadzacy_id,sala_id,klasa_id)
                 VALUES
-                (${subject_id}, ${teacher_id}, ${room_id}, ${class_id})
-            `);
+                (?, ?, ?, ?)
+            `,{
+                replacements: [subject_id, teacher_id, room_id, class_id]
+            });
             req.flash(
                 "success_message",
                 "Zajęcia zostały dodane pomyślnie, przejdź do zarządzania klasami żeby dodać dzień i numer lekcji"
@@ -189,8 +193,10 @@ router.post("/manage_subjects/delete_subject", async (req, res) => {
         try {
             await sequelize.query(`
                 DELETE FROM zajecia 
-                WHERE zajecia_id = ${to_delete}
-            `);
+                WHERE zajecia_id = ?
+            `,{
+                replacements: [to_delete]
+            });
             req.flash("success_message", "Zajęcia zostały pomyślnie usunięte");
         } catch (e) {
             req.flash(
@@ -240,8 +246,10 @@ router.post("/manage_classes/create_class", async (req, res) => {
             await sequelize.query(`
                 INSERT INTO klasa 
                 VALUES
-                (${class_id}, ${teacher})
-            `);
+                (?, ?)
+            `,{
+                replacements: [class_id, teacher]
+            });
             req.flash("success_message", "Klasa została dodana");
         } catch (e) {
             req.flash(
@@ -276,8 +284,10 @@ router.post("/manage_classes/delete_class", async (req, res) => {
         try {
             await sequelize.query(`
                 DELETE FROM klasa 
-                WHERE klasa_id = ${to_delete}
-            `);
+                WHERE klasa_id = ?
+            `,{
+                replacements: [to_delete]
+            });
             req.flash("success_message", "Klasa została pomyślnie usunięta");
         } catch (e) {
             req.flash(
@@ -304,8 +314,10 @@ router.get("/manage_classes/edit_subjects", async (req, res) => {
     const [result, metadata] = await sequelize.query(`
         SELECT nazwa, dzien, nr_lekcji FROM zajecia 
         NATURAL JOIN data_zajec NATURAL JOIN przedmioty 
-        WHERE klasa_id = ${class_id}
-    `);
+        WHERE klasa_id = ?
+    `,{
+        replacements: [class_id]
+    });
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
     let schedule = {
@@ -332,8 +344,10 @@ router.get("/manage_classes/edit_subjects", async (req, res) => {
     const [subjects] = await sequelize.query(`
         SELECT zajecia_id, nazwa FROM zajecia 
         NATURAL JOIN przedmioty
-        WHERE zajecia.klasa_id = ${class_id}
-    `);
+        WHERE zajecia.klasa_id = ?
+    `,{
+        replacements: [class_id]
+    });
     let subject_id;
     if (subjects.length > 0) subject_id = subjects[0].zajecia_id;
     if (req.query.subject_id) subject_id = req.query.subject_id;
@@ -365,8 +379,10 @@ router.post("/manage_classes/edit_subjects", async (req, res) => {
             const [check] = await sequelize.query(`
                 SELECT * FROM data_zajec 
                 NATURAL JOIN zajecia 
-                WHERE klasa_id = ${class_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-            `);
+                WHERE klasa_id = ? AND dzien = ? AND nr_lekcji = ?
+            `,{
+                replacements: [class_id, day, number]
+            });
 
             if (check.length > 0) {
                 req.flash(
@@ -379,10 +395,12 @@ router.post("/manage_classes/edit_subjects", async (req, res) => {
             } else {
                 await sequelize.query(`
                     INSERT INTO data_zajec 
-                    (\`dzien\`,\`nr_lekcji\`,\`zajecia_id\`)
+                    (dzien, nr_lekcji, zajecia_id)
                     VALUES
-                    ('${day}', ${number}, ${subject_id})
-                `);
+                    (?, ?, ?)
+                `,{
+                    replacements: [day, number, subject_id]
+                });
                 req.flash(
                     "success_message",
                     "Zajęcia zostały pomyślnie dodane"
@@ -395,8 +413,10 @@ router.post("/manage_classes/edit_subjects", async (req, res) => {
             const [check] = await sequelize.query(`
                 SELECT * FROM data_zajec 
                 NATURAL JOIN zajecia 
-                WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-            `);
+                WHERE zajecia_id = ? AND dzien = ? AND nr_lekcji = ?
+            `,{
+                replacements: [subject_id, day, number]
+            });
 
             if (check.length == 0) {
                 req.flash(
@@ -409,8 +429,10 @@ router.post("/manage_classes/edit_subjects", async (req, res) => {
             } else {
                 await sequelize.query(`
                     DELETE FROM data_zajec 
-                    WHERE zajecia_id = ${subject_id} AND dzien = '${day}' AND nr_lekcji = ${number}
-                `);
+                    WHERE zajecia_id = ? AND dzien = ? AND nr_lekcji = ?
+                `,{
+                    replacements: [subject_id, day, number]
+                });
                 req.flash(
                     "success_message",
                     "Zajęcia zostały pomyślnie usunięte"
@@ -442,8 +464,10 @@ router.get("/manage_classes/edit_students", async (req, res) => {
 
     const [students] = await sequelize.query(`
         SELECT user_id, imie, nazwisko, email, YEAR(data_urodzenia) as rocznik, klasa_id FROM uzytkownik 
-        WHERE rola = 1 AND (klasa_id = ${class_id} OR klasa_id IS NULL)
-    `);
+        WHERE rola = 1 AND (klasa_id = ? OR klasa_id IS NULL)
+    `,{
+        replacements: [class_id]
+    });
 
     res.render("admin/edit_students", {
         user: req.user,
@@ -456,7 +480,6 @@ router.get("/manage_classes/edit_students", async (req, res) => {
 
 router.post("/manage_classes/edit_students", async (req, res) => {
     let { class_id, student_id } = req.body;
-
     if (!class_id) {
         req.flash("error", "Nie wybrano klasy");
         res.redirect("/admin/manage_classes/edit_studets");
@@ -464,20 +487,24 @@ router.post("/manage_classes/edit_students", async (req, res) => {
 
     if (!student_id) student_id = [0];
     if (typeof student_id == "string") student_id = [student_id];
-
+    console.log()
+    console.log(student_id)
+    console.log(typeof student_id)
     await sequelize.query(`
         UPDATE uzytkownik 
         SET klasa_id = NULL
-        WHERE rola = 1 AND user_id NOT IN ? AND klasa_id = ?
+        WHERE rola = 1 AND user_id NOT IN (?) AND klasa_id = ?
     `, {
         replacements: [student_id, class_id]
     });
 
     await sequelize.query(`
         UPDATE uzytkownik 
-        SET klasa_id = ${class_id}
-        WHERE rola = 1 AND user_id IN (${student_id.toString()})
-    `);
+        SET klasa_id = ?
+        WHERE rola = 1 AND user_id IN (?)
+    `,{
+        replacements: [class_id, student_id]
+    });
 
     res.redirect("/admin/manage_classes/edit_students");
 });
@@ -508,8 +535,8 @@ router.get("/manage_users", async (req, res) => {
         LOWER(imie) LIKE LOWER("${first_name}%") AND 
         LOWER(nazwisko) LIKE LOWER("${last_name}%") AND
         LOWER(email) LIKE LOWER("${email}%") AND
-        rola in (${rola})`
-    );
+        rola in (${rola})
+        `);
 
     users.forEach((user) => {
         user.rola_name = Object.keys(roleMap).find(

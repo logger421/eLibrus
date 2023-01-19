@@ -12,6 +12,10 @@
                 <th>Data</th>
                 <th>Tytuł</th>
             </tr>
+                <% if (notifications.length == 0) { %>
+                    <td colspan="3">BRAK POWIADOMIEŃ</td>
+                <% } %>
+
                 <% for(var i=0; i<notifications.length; i++) { %>
                     <tr>
                         <td><input type="checkbox" name="note_id" id="checkbox" value="<%= notifications[i].wiadomosc_id %>"></td>
