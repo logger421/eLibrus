@@ -4,9 +4,14 @@ const moment = require("moment");
 const sequelize = require("../models").sequelize;
 const change_password = require("../helpers/change_pass");
 const get_notifications = require("../helpers/get_notifications");
-const { frekwencja } = require("../models");
+const { frekwencja, wiadomosc, uzytkownik } = require("../models");
 
-// student home page
+/*
+=================
+STUDENT HOME PAGE
+=================
+*/
+
 router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
         SELECT tytul, tresc FROM ogloszenia
@@ -18,6 +23,164 @@ router.get("/", async function (req, res) {
         current_path: "student",
     });
 });
+
+/*
+=================
+STUDENT MESSAGES
+=================
+*/
+
+router.get('/messages', async (req, res) => {
+    const user_id = req.user.dataValues.user_id;
+
+    const messagesArrReceived = await wiadomosc.findAll({
+		where: {
+			odbiorca_id: user_id,
+			typ: 1,
+		}
+	})
+	const messagesArrSent = await wiadomosc.findAll({
+		where: {
+			nadawca_id: user_id,
+			typ: 1,
+		}
+	})
+	const messagesDataReceived = [];
+	for (const message of messagesArrReceived) {
+		messagesDataReceived.push(message.dataValues);
+	}
+	const messagesDataSent = [];
+	for (const message of messagesArrSent) {
+		messagesDataSent.push(message.dataValues);
+	}
+	const usersDataRec = [];
+	for (const data of messagesDataReceived) {
+		const userData = await uzytkownik.findByPk(data.nadawca_id);
+		usersDataRec.push([userData.imie, userData.nazwisko])
+	}
+	const usersDataSent = [];
+	for (const data of messagesDataSent) {
+		const userData = await uzytkownik.findByPk(data.odbiorca_id);
+		usersDataSent.push([userData.imie, userData.nazwisko])
+	}
+	res.render('general/messages', {
+		user: req.user,
+		messagesRec: messagesDataReceived,
+		messagesSent: messagesDataSent,
+		usersNamesRec: usersDataRec,
+		usersNamesSent: usersDataSent,
+        current_path: 'messages',
+        current_role: 'student'
+	});
+});
+
+router.get('/read_message', async function(req, res) {
+	const message_id = req.query.message_id;
+	const message = await wiadomosc.findByPk(message_id);
+	const nadawca = await uzytkownik.findByPk(message.nadawca_id);
+	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id=${message_id}`);
+	res.render('general/read_message', {
+		user: req.user,
+		message: message,
+		nadawca: nadawca,
+        current_path: 'messages',
+        current_role: 'student'
+	});
+});
+
+router.get('/send_message', async function(req, res) {
+	const nadawca_id = req.query.n;
+	const [all_teachers] = await sequelize.query(`
+        SELECT imie, nazwisko, email FROM uzytkownik
+        WHERE rola = 3
+    `);
+    if (nadawca_id) {
+		const nadawca = await uzytkownik.findByPk(nadawca_id);
+		res.render('general/send_message', {
+			user: req.user,
+			nadawca_email: nadawca.email,
+            current_path: 'messages',
+            current_role: 'student',
+            avilable_ppl: all_teachers,
+		});
+	} else {
+		res.render('general/send_message', {
+			user: req.user,
+			nadawca_email: "",
+            current_path: 'messages',
+            current_role: 'student',
+            avilable_ppl: all_teachers
+		});
+	}
+});
+
+router.post('/send_message', async function(req, res) {
+    const odbiorca = await uzytkownik.findOne({ where: { email: req.body["odbiorca"] } });
+	if (!odbiorca) {
+		req.flash('error', 'Brak użytkownika o podanym adresie email');
+        res.redirect('/student/send_message');
+    } else {
+		var nowDate = new Date();
+		var data = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate();
+        
+        await sequelize.query(`
+			INSERT INTO wiadomosc (nadawca_id, odbiorca_id, typ, data, tytul, tresc, odczytana, usunieta) VALUES
+			(${req.user.dataValues.user_id}, ${odbiorca.user_id}, 1, "${data}", "${req.body["tytul"]}", "${req.body["tresc"]}", 0, 0)
+		`);
+		res.redirect('/student/messages');
+	}
+});
+
+router.post('/delete_message', async function(req, res) {
+    let to_delete = req.body.checkbox;
+
+    if (!to_delete) res.redirect('/student/messages');
+    else {
+        to_delete = [to_delete];
+
+        for(let i=0; i<to_delete.length; i++) {
+            // zaznacz jako usunieta przy nadawcy
+            await sequelize.query(`
+                UPDATE wiadomosc
+                SET usunieta = 1 
+                WHERE usunieta = 0
+                AND nadawca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+            await sequelize.query(`
+                DELETE FROM wiadomosc
+                WHERE usunieta = 2 
+                AND nadawca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+
+            await sequelize.query(`
+                UPDATE wiadomosc
+                SET usunieta = 2 
+                WHERE usunieta = 0
+                AND odbiorca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+            await sequelize.query(`
+                DELETE FROM wiadomosc
+                WHERE usunieta = 1 
+                AND odbiorca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+        }
+        res.redirect('/student/messages');
+    }
+});
+
+/*
+=================
+STUDENT NOTIFICATIONS
+=================
+*/
 
 router.get("/notifications", async (req, res) => {
     const notifications = await get_notifications(req.user.dataValues.user_id);
@@ -64,6 +227,12 @@ router.post("/notifications", async (req, res) => {
     }
 });
 
+/*
+=================
+STUDENT CHANGE PASSWORD
+=================
+*/
+
 router.get("/change_password", (req, res) => {
     res.render("general/change_password", {
         user: req.user,
@@ -90,6 +259,12 @@ router.post("/change_password", async (req, res) => {
 
     res.redirect("/student/change_password");
 });
+
+/*
+=================
+STUDENT ATTENDANCE
+=================
+*/
 
 router.get("/attendance", async function (req, res) {
     let week = req.query.attendance_date;
@@ -193,7 +368,12 @@ router.get("/attendance", async function (req, res) {
     });
 });
 
-// student grades
+/*
+=================
+STUDENT GRADES
+=================
+*/
+
 router.get("/grades", async function (req, res) {
     const [przedmioty, metadata_przedmioty] = await sequelize.query(
         `SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
@@ -228,7 +408,12 @@ router.get("/grades", async function (req, res) {
     });
 });
 
-// student schedule
+/*
+=================
+STUDENT SCHEDULE
+=================
+*/
+
 router.get("/schedule", async function (req, res) {
     const [result, metadata] = await sequelize.query(
         `
@@ -269,7 +454,12 @@ router.get("/schedule", async function (req, res) {
     });
 });
 
-// student homeworks
+/*
+=================
+STUDENT HOMEWORK
+=================
+*/
+
 router.get("/homeworks", async function (req, res) {
     const [homeworks, metadata] = await sequelize.query(
         `

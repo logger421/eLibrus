@@ -3,7 +3,7 @@
 :root {
     /* Fonts colors */
     --font-color: white;
-    
+
     /* Elements colors */
     --button-font-color: white;
     --button-color: #002D62;
@@ -43,19 +43,30 @@ body {
 }
 
 /* Grid init */
-.header-container { grid-area: header; }
-.navbar-container { grid-area: navbar; }
-.main-body-container { grid-area: main-body; }
-.footer-container { grid-area: footer; }
+.header-container {
+    grid-area: header;
+}
+
+.navbar-container {
+    grid-area: navbar;
+}
+
+.main-body-container {
+    grid-area: main-body;
+}
+
+.footer-container {
+    grid-area: footer;
+}
 
 .main-container {
     display: grid;
     grid-template-columns: 21.3em auto auto auto auto auto;
-    grid-template-areas: 
-    'header header header header header header'
-    'navbar main-body main-body main-body main-body main-body'
-    'navbar main-body main-body main-body main-body main-body'
-    'footer footer footer footer footer footer';
+    grid-template-areas:
+        'header header header header header header'
+        'navbar main-body main-body main-body main-body main-body'
+        'navbar main-body main-body main-body main-body main-body'
+        'footer footer footer footer footer footer';
 }
 
 /* Header container styling */
@@ -70,7 +81,7 @@ body {
     background: var(--body-background);
 }
 
-.header-container > * {
+.header-container>* {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -117,7 +128,7 @@ body {
     margin-left: .65em;
 }
 
-.navbar-container > * {
+.navbar-container>* {
     border: var(--default-border);
     border-bottom: 0;
     font-size: 1em;
@@ -127,15 +138,17 @@ body {
     color: var(--button-font-color);
 }
 
-.navbar-container > *:last-child {
+.navbar-container>*:last-child {
     border-bottom: var(--default-border);
 }
 
-.navbar-container > *:hover, .header-container button:hover {
+.navbar-container>*:hover,
+.header-container button:hover {
     background-color: var(--button-color-hover);
 }
 
-.navbar-container .active, .header-container .active {
+.navbar-container .active,
+.header-container .active {
     text-decoration: underline;
 }
 
@@ -151,7 +164,7 @@ th {
     background-color: gray;
 }
 
-    /* Announcments */
+/* Announcments */
 
 .main-body-container .notes-wrapper {
     display: flex;
@@ -187,7 +200,7 @@ th {
 /* = STUDENT = */
 /* Schedule */
 
-    /* Schedule */
+/* Schedule */
 
 .main-body-container .schedule-wrapper {
     display: flex;
@@ -200,7 +213,8 @@ th {
     /* border: 1px solid black; */
 }
 
-.main-body-container .schedule-wrapper td, .main-body-container .schedule-wrapper th {
+.main-body-container .schedule-wrapper td,
+.main-body-container .schedule-wrapper th {
     text-align: center;
     padding: 1.2rem;
     border: 1px solid black;
@@ -212,7 +226,7 @@ th {
     table-layout: fixed;
 }
 
-    /* Homeworks */
+/* Homeworks */
 
 .main-body-container .homework-wrapper * {
     /* border: 1px solid black; */
@@ -231,13 +245,14 @@ th {
     table-layout: fixed;
 }
 
-.main-body-container .homework-wrapper td, .main-body-container .homework-wrapper th {
+.main-body-container .homework-wrapper td,
+.main-body-container .homework-wrapper th {
     text-align: center;
     padding: 1.2rem;
     border: 1px solid black;
 }
 
-    /* Grades */
+/* Grades */
 .main-body-container .grades-wrapper * {
     /* border: 1px solid black; */
 }
@@ -255,13 +270,14 @@ th {
     table-layout: fixed;
 }
 
-.main-body-container .grades-wrapper td, .main-body-container .grades-wrapper th {
+.main-body-container .grades-wrapper td,
+.main-body-container .grades-wrapper th {
     text-align: center;
     padding: 1.2rem;
     border: 1px solid black;
 }
 
-    /* Attendance */
+/* Attendance */
 /* .main-body-container .attendance-wrapper * {
     border: 1px solid black;
 } */
@@ -276,7 +292,7 @@ th {
 .main-body-container .attendance-wrapper table {
     border-collapse: collapse;
     width: 90%;
-     /*table-layout: fixed;*/
+    /*table-layout: fixed;*/
 }
 
 .main-body-container .table-stat {
@@ -285,7 +301,8 @@ th {
     margin: 5%;
 }
 
-.main-body-container .attendance-wrapper td, .main-body-container .attendance-wrapper th {
+.main-body-container .attendance-wrapper td,
+.main-body-container .attendance-wrapper th {
     text-align: center;
     padding: 1.2rem;
     word-wrap: break-word;
@@ -307,7 +324,8 @@ th {
     margin-bottom: 1rem;
 }
 
-.main-body-container .teacher-panel button, .main-body-container .login-wrapper button {
+.main-body-container .teacher-panel button,
+.main-body-container .login-wrapper button {
     padding: 7px 48px;
     background-color: var(--button-color-teacher-panel);
     color: var(--button-font-color);
@@ -315,7 +333,8 @@ th {
     border: 0;
 }
 
-.main-body-container .teacher-panel button:hover, .main-body-container .login-wrapper button:hover {
+.main-body-container .teacher-panel button:hover,
+.main-body-container .login-wrapper button:hover {
     background-color: rgb(62, 62, 62);
 }
 
@@ -334,7 +353,7 @@ th {
 }
 
 /* ADMIN */
-    /* announcements */
+/* announcements */
 
 .main-body-container .add-wrapper {
     display: flex;
@@ -349,7 +368,7 @@ th {
     margin: 2rem;
 }
 
-.main-body-container .add-wrapper form > * {
+.main-body-container .add-wrapper form>* {
     padding: 1rem;
     margin: .5rem;
 }
@@ -365,7 +384,7 @@ th {
     background-color: rgb(62, 62, 62);
 }
 
-    /* Magane users */
+/* Magane users */
 
 .manage-users-input-wrapper {
     display: flex;
@@ -383,7 +402,7 @@ th {
     justify-content: space-evenly;
 }
 
-.account-name-input > input {
+.account-name-input>input {
     height: 2rem;
     padding: 1.5rem;
     margin: 0.4rem;
@@ -411,7 +430,7 @@ th {
     justify-content: center;
 }
 
-.align-right > * {
+.align-right>* {
     padding: 1rem !important;
     margin: 1rem;
     width: 10rem;
@@ -425,7 +444,7 @@ th {
     background-color: rgb(62, 62, 62) !important;
 }
 
-    /* edit user */
+/* edit user */
 
 #edit_user_type_selector {
     width: 50%;
@@ -442,13 +461,13 @@ th {
     padding: 0.6em !important;
 }
 
-.account-info > input {
+.account-info>input {
     height: 1.5rem;
     padding: 1.5rem;
     margin: 1rem;
 }
 
-.account-info > label {
+.account-info>label {
     text-align: right;
 }
 
@@ -457,7 +476,7 @@ th {
     margin: 0.5em !important;
 }
 
-    /* create user */
+/* create user */
 
 .parent-picker {
     display: flex;
@@ -480,7 +499,7 @@ th {
     font-size: 1.2em;
 }
 
-    /* Manage classes */
+/* Manage classes */
 
 .main-body-container .manage-wrapper {
     display: flex;
@@ -488,7 +507,7 @@ th {
     align-items: center;
 }
 
-.main-body-container .manage-wrapper > button {
+.main-body-container .manage-wrapper>button {
     width: 30%;
     margin: 1rem;
     padding: 1rem;
@@ -498,7 +517,7 @@ th {
     border: 0;
 }
 
-.main-body-container .manage-wrapper > button:hover {
+.main-body-container .manage-wrapper>button:hover {
     background-color: rgb(62, 62, 62);
 }
 
@@ -506,20 +525,21 @@ th {
     display: flex;
     flex-direction: column;
 }
-.main-body-container .manage-wrapper form > * {
+
+.main-body-container .manage-wrapper form>* {
     width: 100%;
     margin: 1rem;
     padding: 1rem;
 }
 
-.main-body-container .manage-wrapper form > button {
+.main-body-container .manage-wrapper form>button {
     background-color: var(--button-color-teacher-panel);
     color: var(--button-font-color);
     font-size: 1.2em;
     border: 0;
 }
 
-.main-body-container .manage-wrapper form > button:hover {
+.main-body-container .manage-wrapper form>button:hover {
     background-color: rgb(62, 62, 62);
 }
 
@@ -542,7 +562,8 @@ th {
     background-color: rgb(62, 62, 62);
 }
 
-.main-body-container .manage-wrapper td, .main-body-container .manage-wrapper th {
+.main-body-container .manage-wrapper td,
+.main-body-container .manage-wrapper th {
     text-align: center;
     padding: 1.2rem;
     word-wrap: break-word;
@@ -552,7 +573,7 @@ th {
 .main-body-container .manage-wrapper table {
     border-collapse: collapse;
     width: 100%;
-     /*table-layout: fixed;*/
+    /*table-layout: fixed;*/
 }
 
 /* = GENERAL */
@@ -571,22 +592,22 @@ th {
     white-space: nowrap;
 }
 
-.main-body-container .login-wrapper form > label {
+.main-body-container .login-wrapper form>label {
     margin: 0.1rem;
 }
 
-.main-body-container .login-wrapper form div > * {
+.main-body-container .login-wrapper form div>* {
     margin: 1rem;
 }
 
-.main-body-container .login-wrapper form > * {
+.main-body-container .login-wrapper form>* {
     margin: .5rem;
     padding: .5rem;
     text-align: center;
 }
-    
 
-    /* notificatins */
+
+/* notificatins */
 
 .main-body-container .notifications-wrapper {
     display: flex;
@@ -600,14 +621,15 @@ th {
     table-layout: fixed;
 }
 
-.main-body-container .notifications-wrapper td, .main-body-container .notifications-wrapper th {
+.main-body-container .notifications-wrapper td,
+.main-body-container .notifications-wrapper th {
     text-align: center;
     padding: 1.2rem;
     word-wrap: break-word;
     border: 1px solid black;
 }
 
-.main-body-container .notifications-wrapper div > button {
+.main-body-container .notifications-wrapper div>button {
     background-color: var(--button-color-teacher-panel);
     color: var(--button-font-color);
     font-size: 1.2em;
@@ -616,7 +638,7 @@ th {
     padding: 1rem;
 }
 
-.main-body-container .notifications-wrapper div > button:hover {
+.main-body-container .notifications-wrapper div>button:hover {
     background-color: rgb(62, 62, 62);
 }
 
@@ -625,7 +647,7 @@ th {
     margin-left: 11.5%;
 }
 
-    /* Change password */
+/* Change password */
 
 .main-body-container .change-pass-wrapper {
     display: flex;
@@ -640,25 +662,24 @@ th {
     white-space: nowrap;
 }
 
-.main-body-container .change-pass-wrapper form > * {
+.main-body-container .change-pass-wrapper form>* {
     margin: 1.5rem;
     padding: 1rem;
     text-align: center;
 }
 
-.main-body-container .change-pass-wrapper form > button {
+.main-body-container .change-pass-wrapper form>button {
     background-color: var(--button-color-teacher-panel);
     color: var(--button-font-color);
     font-size: 1.2em;
     border: 0;
 }
 
-.main-body-container .change-pass-wrapper form > button:hover {
+.main-body-container .change-pass-wrapper form>button:hover {
     background-color: rgb(62, 62, 62);
 }
 
-    /* Manage messages */
-
+/* Manage messages */
 .main-body-container .messages-wrapper * {
     /* border: 1px solid black; */
 }
@@ -679,10 +700,14 @@ th {
 
 .main-body-container .messages-wrapper td,
 .main-body-container .messages-wrapper th {
-    font-weight: 600;
     text-align: center;
     padding: 1.2rem;
     border: 1px solid black;
+}
+
+.main-body-container .messages-wrapper .bold,
+.main-body-container .messages-wrapper .bold {
+    font-weight: 600;
 }
 
 .main-body-container .messages-wrapper .checker,
@@ -691,6 +716,11 @@ th {
     padding: 1rem;
     border: 1px solid black;
     width: 15%;
+}
+
+.main-body-container .messages-wrapper td.buttons-table {
+    border: none;
+    padding: 0;
 }
 
 .messages-bttn-decisions-wrapper-right {
@@ -715,6 +745,68 @@ th {
     font-size: 1.2em;
     border: 0;
     padding: 1rem;
+}
+
+.messages-bttn-decisions-response {
+    background-color: var(--button-color-teacher-panel);
+    color: var(--button-font-color);
+    font-size: 1em;
+    border: 0;
+    padding: 0.5rem;
+    margin-right: 1rem;
+}
+
+.messages-bttn-decisions-response:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.messages-bttn-decisions-right {
+    margin-top: 1rem;
+}
+
+.messages-bttn-decisions-left {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.messages-bttn-decisions:hover {
+    background-color: rgb(62, 62, 62);
+}
+
+.messages-wrapper form {
+    margin-top: 1rem;
+    width: 75%;
+}
+
+.messages-wrapper form .pair {
+    margin-top: 1rem;
+}
+
+.messages-wrapper input,
+.messages-wrapper textarea {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    resize: none;
+    font-size: 1.1em;
+}
+
+.messages-bttn-decisions-wrapper {
+    width: 75%;
+    position: relative;
+    text-align: center;
+    display: flex;
+    margin: 1rem;
+}
+
+.messages-bttn-decisions-wrapper .left-bttn {
+    text-align: left;
+    width: 50%;
+}
+
+.messages-bttn-decisions-wrapper .right-bttn {
+    text-align: right;
+    width: 50%;
 }
 
 #delete_homework_btn {
@@ -783,8 +875,7 @@ th {
     align-self: center;
 }
 
-.temp fieldset > button {
-    padding: 1.2rem!important;
+.temp fieldset>button {
+    padding: 1.2rem !important;
     margin: 1rem;
 }
-

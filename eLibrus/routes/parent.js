@@ -5,13 +5,23 @@ const change_password = require("../helpers/change_pass");
 const sequelize = require("../models").sequelize;
 const get_notifications = require("../helpers/get_notifications");
 const { notification_teacher } = require("../helpers/create_notification");
-const { frekwencja } = require("../models");
+const { frekwencja, wiadomosc, uzytkownik } = require("../models");
+
+/*
+=================
+PARENT MIDDLEWARE FOR CURRENT STUDENT
+=================
+*/
 
 router.get("*", async function (req, res, next) {
     const [result, metadata] = await sequelize.query(
         `SELECT uczen.user_id, uczen.imie, uczen.nazwisko FROM rodzicielstwo 
 		JOIN uzytkownik AS rodzic JOIN uzytkownik AS uczen 
-		ON rodzic.user_id = rodzicielstwo.rodzic_id AND uczen.user_id = rodzicielstwo.dziecko_id`
+		ON rodzic.user_id = rodzicielstwo.rodzic_id AND uczen.user_id = rodzicielstwo.dziecko_id
+        WHERE rodzic.user_id = ?
+        `, {
+            replacements: [req.user.dataValues.user_id]
+        }
     );
     if (!req.cookies.current_student) {
         if (result.length > 0) res.cookie("current_student", result[0].user_id);
@@ -22,7 +32,12 @@ router.get("*", async function (req, res, next) {
     next();
 });
 
-// parent home page
+/*
+=================
+PARENT HOME PAGE
+=================
+*/
+
 router.get("/", async function (req, res) {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia
@@ -36,6 +51,94 @@ router.get("/", async function (req, res) {
         current_path: "parent",
     });
 });
+
+
+/*
+=================
+TEACHER MESSAGES
+=================
+*/
+
+router.get('/messages', async (req, res) => {
+    const user_id = req.user.dataValues.user_id;
+	const messagesArrReceived = await wiadomosc.findAll({
+		where: {
+			odbiorca_id: user_id,
+			typ: 1,
+		}
+	})
+
+	const messagesDataReceived = [];
+	for (const message of messagesArrReceived) {
+		messagesDataReceived.push(message.dataValues);
+	}
+
+	const usersDataRec = [];
+	for (const data of messagesDataReceived) {
+		const userData = await uzytkownik.findByPk(data.nadawca_id);
+		usersDataRec.push([userData.imie, userData.nazwisko])
+	}
+
+	res.render('general/messages', {
+		user: req.user,
+        students: req.students,
+        current_student: req.cookies.current_student,
+		messagesRec: messagesDataReceived,
+		usersNamesRec: usersDataRec,
+        current_path: 'messages',
+        current_role: 'parent'
+	});
+});
+
+router.get('/read_message', async function(req, res) {
+	const message_id = req.query.message_id;
+	const message = await wiadomosc.findByPk(message_id);
+	const nadawca = await uzytkownik.findByPk(message.nadawca_id);
+	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id=${message_id}`);
+	res.render('general/read_message', {
+		user: req.user,
+        students: req.students,
+        current_student: req.cookies.current_student,
+		message: message,
+		nadawca: nadawca,
+        current_path: 'messages',
+        current_role: 'parent'
+	});
+});
+
+router.post('/delete_message', async function(req, res) {
+    let to_delete = req.body.checkbox;
+    if (!to_delete) res.redirect('/parent/messages');
+    else {
+        to_delete = [to_delete];
+        
+        for(let i=0; i<to_delete.length; i++) {
+            // ODBIORCA
+            await sequelize.query(`
+                UPDATE wiadomosc
+                SET usunieta = 2 
+                WHERE usunieta = 0
+                AND odbiorca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+            await sequelize.query(`
+                DELETE FROM wiadomosc
+                WHERE usunieta = 1 
+                AND odbiorca_id = ? AND wiadomosc_id = ?
+            `, {
+                replacements: [req.user.dataValues.user_id, to_delete[i]]
+            });
+        }
+        res.redirect('/parent/messages');
+    }
+});
+
+/*
+=================
+PARENT NOTIFICATIONS
+=================
+*/
 
 router.get("/notifications", async (req, res) => {
     const notifications = await get_notifications(req.user.dataValues.user_id);
@@ -82,6 +185,12 @@ router.post("/notifications", async (req, res) => {
     }
 });
 
+/*
+=================
+PARENT CHANGE PASSWORD
+=================
+*/
+
 router.get("/change_password", (req, res) => {
     res.render("general/change_password", {
         user: req.user,
@@ -109,7 +218,12 @@ router.post("/change_password", async (req, res) => {
     res.redirect("/parent/change_password");
 });
 
-// parent attendance
+/*
+=================
+PARENT ATTENDANCE
+=================
+*/
+
 router.get("/attendance", async function (req, res) {
     let week = req.query.attendance_date;
     const user_id = req.cookies.current_student;
@@ -214,7 +328,37 @@ router.get("/attendance", async function (req, res) {
     });
 });
 
-// parent grades
+router.post("/justify_attendance", async function (req, res) {
+    let changed = 0;
+    let justify;
+    if (req.body["justify"]) {
+        if (typeof req.body["justify"] == "string") {
+            justify = [req.body["justify"]];
+        }
+        for (var i = 0; i < justify.length; i++) {
+            await sequelize.query(`
+					UPDATE frekwencja SET frekwencja = 'U' 
+					WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${justify[i]}'
+				`);
+            changed = 1;
+        }
+    }
+
+    if (changed) {
+        notification_teacher(req.cookies.current_student);
+    }
+
+    res.redirect(
+        `/parent/attendance/?attendance_date=${req.body["redirect_to_attendance_date"]}`
+    );
+});
+
+/*
+=================
+PARENT GRADES
+=================
+*/
+
 router.get("/grades", async function (req, res) {
     const [classses, metadata_przedmioty] = await sequelize.query(
         `SELECT zajecia_id, przedmioty.nazwa FROM zajecia 
@@ -251,7 +395,12 @@ router.get("/grades", async function (req, res) {
     });
 });
 
-// parent schedule
+/*
+=================
+PARENT SCHEDULE
+=================
+*/
+
 router.get("/schedule", async function (req, res) {
     const [result, metadata] = await sequelize.query(
         `
@@ -292,7 +441,12 @@ router.get("/schedule", async function (req, res) {
     });
 });
 
-// parent homeworks
+/*
+=================
+PARENT HOMEWORK
+=================
+*/
+
 router.get("/homeworks", async function (req, res) {
     const [homeworks, metadata] = await sequelize.query(
         `
@@ -311,34 +465,16 @@ router.get("/homeworks", async function (req, res) {
     });
 });
 
+/*
+=================
+PARENT CHANGE CURRENT STUDENT
+=================
+*/
+
 router.post("/change_student", function (req, res) {
     res.cookie("current_student", req.body.selected_student);
     res.redirect("/");
 });
 
-router.post("/justify_attendance", async function (req, res) {
-    let changed = 0;
-    let justify;
-    if (req.body["justify"]) {
-        if (typeof req.body["justify"] == "string") {
-            justify = [req.body["justify"]];
-        }
-        for (var i = 0; i < justify.length; i++) {
-            await sequelize.query(`
-					UPDATE frekwencja SET frekwencja = 'U' 
-					WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${justify[i]}'
-				`);
-            changed = 1;
-        }
-    }
-
-    if (changed) {
-        notification_teacher(req.cookies.current_student);
-    }
-
-    res.redirect(
-        `/parent/attendance/?attendance_date=${req.body["redirect_to_attendance_date"]}`
-    );
-});
 
 module.exports = router;

@@ -1,0 +1,125 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<!-- reszta -->
+<!-- TODO TODO TODO TODO  my part-->
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Wiadomości</h2>
+        </legend>
+        <div class="messages-wrapper">
+            <% if (current_role != 'parent') { %> 
+                <div class="messages-bttn-decisions-wrapper-right">
+                    <button onclick="location.href='/<%= current_role %>/send_message'"
+                    class="messages-bttn-decisions messages-bttn-decisions-right">Nowa wiadomość</button>
+                </div>
+            <% } %>
+            <div class="messages-bttn-decisions-wrapper-left">
+                <button id="odebraneWiad" class="messages-bttn-decisions messages-bttn-decisions-left">Odebrane</button>
+                <% if (current_role != 'parent') { %>
+                    <button id="wyslaneWiad" class="messages-bttn-decisions messages-bttn-decisions-left">Wysłane</button>
+                <% } %>
+            </div>
+            <table id="myTableRec">
+                <tr>
+                    <th class="checker" name="checkboxes">Zaznacz</th>
+                    <th>Nadawca</th>
+                    <th class="data">Data</th>
+                    <th>Tytuł</th>
+                    <th>Odczytaj</th>
+                </tr>
+                <tbody>
+                    <% for (var idx in messagesRec) { %>
+                        <% if (messagesRec[idx].usunieta != 2) { %>
+                        <tr class="<%= messagesRec[idx].odczytana == 0 ? 'bold' : '' %>">
+                            <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesRec[idx].wiadomosc_id %>" form="send_form"></td>
+                            <td><%= usersNamesRec[idx][0] %> <%= usersNamesRec[idx][1] %></td>
+                            <td class="data"><%= messagesRec[idx].data %></td>
+                            <td><%= messagesRec[idx].tytul %></td>
+                            <td class="buttons-table">
+                                <button class="messages-bttn-decisions-response" onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesRec[idx].wiadomosc_id %>'">Odczytaj</button>
+                                <button onclick="location.href='/<%= current_role %>/send_message?n=<%= messagesRec[idx].nadawca_id %>'" class="messages-bttn-decisions-response">Odpowiedz</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+            <% if (current_role != 'parent') { %>
+                <table id="myTableSent">
+                    <tr>
+                        <th class="checker" name="checkboxes">Zaznacz</th>
+                        <th>Odbiorca</th>
+                        <th class="data">Data</th>
+                        <th>Tytuł</th>
+                        <th>Odczytaj</th>
+                    </tr>
+                    <tbody>
+                        <% for (var idx in messagesSent) { %>
+                            <% if (messagesSent[idx].usunieta != 1) { %>
+                            <tr>
+                                <td class="checker"><input type="checkbox" name="checkbox" value="<%= messagesSent[idx].wiadomosc_id %>" form="send_form"></td>
+                                <td><%= usersNamesSent[idx][0] %> <%= usersNamesSent[idx][1] %></td>
+                                <td class="data"><%= messagesSent[idx].data %></td>
+                                <td><%= messagesSent[idx].tytul %></td>
+                                <td class="buttons-table">
+                                    <button onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesSent[idx].wiadomosc_id %>'" class="messages-bttn-decisions-response">Odczytaj</button>
+                                </td>
+                            </tr>
+                            <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+            <div class="messages-bttn-decisions-wrapper-left">
+                <button id="selectAll" class="messages-bttn-decisions messages-bttn-decisions-left">Zaznacz
+                    wszystkie</button>
+                <button class="messages-bttn-decisions messages-bttn-decisions-left" id="deleteButton">Usuń</button>
+                <form action="/<%= current_role %>/delete_message" method="POST" id="send_form">
+                </form>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $("#myTableSent").hide();
+    $("#odebraneWiad").click(function() {
+        $("#myTableRec").show();
+        $("#myTableSent").hide();
+        $("#myTableSent input[type='checkbox']").prop("checked", false);
+    });
+    $("#wyslaneWiad").click(function() {
+        $("#myTableSent").show();
+        $("#myTableRec").hide();
+        $("#myTableRec input[type='checkbox']").prop("checked", false);
+    });
+    $("#selectAll").click(function() {
+        var checkboxes_vis = $("#myTableRec input[type='checkbox']");
+        var checkboxes_nonvis = $("#myTableSent input[type='checkbox']");
+        if ($("#myTableSent").is(":visible")) {
+            checkboxes_vis = $("#myTableSent input[type='checkbox']");
+            checkboxes_nonvis = $("#myTableRec input[type='checkbox']");
+        }
+        checkboxes_vis.prop("checked", function(_, value) {
+            return !value;
+        });
+        checkboxes_nonvis.prop("checked", false);
+    });
+    $("#deleteButton").click(function() {
+        var checkboxes_vis = $("#myTableRec input[type='checkbox']");
+        if ($("#myTableSent").is(":visible")) {
+            checkboxes_vis = $("#myTableSent input[type='checkbox']");
+        }
+        var checked_vis = [];
+        checkboxes_vis.filter(":checked").each(function() {
+            checked_vis.push($(this).val());
+        });
+        $("#send_form").submit();
+    });
+});
+</script>
+
+<%- include ../templates/footer %>
