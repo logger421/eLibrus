@@ -1079,6 +1079,7 @@ a {
     background-repeat: no-repeat;
     background-position: center center;
     transition: all .2s ease-out;
+    white-space: nowrap;
 }
 
 a:hover {
@@ -1090,6 +1091,7 @@ a:hover {
 .main-body-container button {
     background-color: transparent !important;
     color: var(--button-color-teacher-panel) !important;
+    border-radius: 10px !important;
     outline: 5px solid var(--button-color-teacher-panel) !important;
 }
 
