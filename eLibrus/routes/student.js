@@ -136,7 +136,7 @@ router.post('/delete_message', async function(req, res) {
 
     if (!to_delete) res.redirect('/student/messages');
     else {
-        to_delete = [to_delete];
+        if (typeof(to_delete) == 'string') to_delete = [to_delete];
 
         for(let i=0; i<to_delete.length; i++) {
             // zaznacz jako usunieta przy nadawcy

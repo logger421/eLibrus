@@ -32,7 +32,7 @@
                         class="messages-bttn-decisions">Cofnij</button>
                 </div>
                 <div class="right-bttn">
-                    <% if (current_role != 'rodzic') { %>
+                    <% if (current_role != 'parent') { %>
                         <button onclick="location.href='/<%= current_role %>/send_message?n=<%= nadawca.user_id %>'"
                             class="messages-bttn-decisions">Odpowiedz</button>
                     <% } %>

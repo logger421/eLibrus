@@ -39,7 +39,9 @@
                             <td><%= messagesRec[idx].tytul %></td>
                             <td class="buttons-table">
                                 <button class="messages-bttn-decisions-response" onclick="location.href='/<%= current_role %>/read_message?message_id=<%= messagesRec[idx].wiadomosc_id %>'">Odczytaj</button>
+                                <% if (current_role != 'parent') { %>
                                 <button onclick="location.href='/<%= current_role %>/send_message?n=<%= messagesRec[idx].nadawca_id %>'" class="messages-bttn-decisions-response">Odpowiedz</button>
+                                <% } %>
                             </td>
                         </tr>
                         <% } %>
