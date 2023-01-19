@@ -29,9 +29,9 @@
                     <th>Tytuł</th>
                 </tr>
                 <tbody>
-                    <% if (messagesRec.length == 0) { %>
+                    <% if (messagesRec.every(message => message.usunieta == 2)) { %>
                         <tr>
-                            <td colspan="5">BRAK WIADOMOŚCI</td>
+                            <td colspan="4">BRAK WIADOMOŚCI</td>
                         </tr>
                     <% } else { %>
                         <% for (var idx in messagesRec) { %>
@@ -62,9 +62,9 @@
                         <th>Tytuł</th>
                     </tr>
                     <tbody>
-                        <% if (messagesSent.length == 0) { %>
+                        <% if (messagesSent.every(message => message.usunieta == 1)) { %>
                             <tr>
-                                <td colspan="5">BRAK WIADOMOŚCI</td>
+                                <td colspan="4">BRAK WIADOMOŚCI</td>
                             </tr>
                         <% } else { %>
                             <% for (var idx in messagesSent) { %>
