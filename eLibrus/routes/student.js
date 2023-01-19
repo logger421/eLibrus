@@ -156,14 +156,14 @@ router.get("/attendance", async function (req, res) {
     Promise.all(
         attendanceData.map((attendance, i) => {
             let template_attendance = Array.from({ length: 8 }, (_, i) => ({
-                id: i + 1,
+                nr_lekcji: i + 1,
                 zajecia_id: 0,
                 user_id: user_id,
                 frekwencja: "-",
             }));
             let full_attendance = template_attendance.map((obj) => {
                 let attendanceObj = attendance.find(
-                    (item) => item.id === obj.id
+                    (item) => item.nr_lekcji === obj.nr_lekcji
                 );
                 return attendanceObj ? attendanceObj : obj;
             });
@@ -192,9 +192,10 @@ router.get("/attendance", async function (req, res) {
             week: week,
             days: days,
             full_attendance: full_attendance,
-            frekwencja_percentage:
+            frekwencja_percentage: (
                 (100 * (full_attendance.O + full_attendance.U)) /
-                Object.values(full_attendance).reduce((a, b) => a + b),
+                Object.values(full_attendance).reduce((a, b) => a + b)
+            ).toFixed(2),
         });
     });
 });
