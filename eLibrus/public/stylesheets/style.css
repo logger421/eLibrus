@@ -1004,11 +1004,30 @@ input[type="radio"]::before {
     margin-top: -0.25em;
     margin-left: -0.25em;
     transform: scale(0);
-    transition: transform 0.1s ease-in-out;
+    transition: all 0.15s ease-in-out;
 }
 
 input[type="radio"]:checked::before {
     transform: scale(1);
+}
+
+input[type="radio"]:hover {
+    animation: outline-pulse 100ms;
+    outline: 4px solid var(--button-color);
+}
+
+@keyframes outline-pulse {
+    0% {
+        outline: 2px solid var(--button-color);
+    }
+
+    50% {
+        outline: 3px solid var(--button-color);
+    }
+
+    100% {
+        outline: 4px solid var(--button-color);
+    }
 }
 
 input[type="checkbox"] {
@@ -1107,5 +1126,9 @@ a:hover {
 }
 
 .messages-bttn-decisions-wrapper-left #deleteButton {
+    margin-left: 1.25em !important;
+}
+
+#edit_grades_button {
     margin-left: 1.25em !important;
 }
