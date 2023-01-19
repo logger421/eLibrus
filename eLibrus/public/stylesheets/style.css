@@ -85,6 +85,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
 }
 
 .header-container select {
@@ -114,6 +115,7 @@ body {
     font-size: 1.2em;
     border-radius: 2em;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .header-container button:last-child {
@@ -496,6 +498,13 @@ th {
 
 .parent-picker {
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.parent-picker>input {
+    padding: 1rem;
+    margin-left: 1rem;
 }
 
 .parent-search-btn {
@@ -910,6 +919,18 @@ th {
 }
 
 /* FIXES */
+#manage_class_form {
+    display: flex;
+    flex-direction: row;
+}
+
+#manage_class_form>button {
+    white-space: nowrap;
+}
+
+#manage_class_form>* {
+    width: fit-content;
+}
 
 .centerized {
     align-items: center;
@@ -972,4 +993,25 @@ input[type="radio"]::before {
 
 input[type="radio"]:checked::before {
     transform: scale(1);
+}
+
+@keyframes glowing {
+    0% {
+        background-color: #002D62;
+        box-shadow: 0 0 1px #ffffff;
+    }
+
+    50% {
+        background-color: #002D62;
+        box-shadow: 0 0 5px #ffffff;
+    }
+
+    100% {
+        background-color: #002D62;
+        box-shadow: 0 0 1px #ffffff;
+    }
+}
+
+.glowing_button {
+    animation: glowing 1300ms infinite;
 }
