@@ -48,10 +48,27 @@
     </fieldset>
 </div>
 
+<div id="dialog-3" title="Potwierdź wstawienie">
+    <p>Czy na pewno chcesz zmienić dane użytkownika?</p>
+</div>
+
 <%- include ../templates/footer %>
 
 <script>
-    $("#edit_user_btn").on('click', () => {
-        $("#edit_info_form").submit();
+    $(function () {
+        $("#dialog-3").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [{
+                text: "Potwierdź",
+                click: () => {
+                    $("#edit_info_form").submit();
+                }
+            }, ]
+        });
+
+        $("#edit_user_btn").on("click", () => {
+            $("#dialog-3").dialog("open");
+        })
     });
 </script>

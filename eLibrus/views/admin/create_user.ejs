@@ -59,13 +59,14 @@
     </fieldset>
 </div>
 
+<div id="dialog-2" title="Potwierdź wstawienie">
+    <p>Czy na pewno chcesz dodać użytkownika?</p>
+</div>
+
+
 <%- include('../templates/footer.ejs') %>
 
 <script>
-    $("#create_user_btn").on('click', () => {
-        $("#full_user_data_form").submit();
-    });
-
     $(document).ready(function () {
         $("#edit_user_type_selector").change(function () {
             if ($("#edit_user_type_selector").val() == "1") {
@@ -74,5 +75,22 @@
                 $(".parent-picker").hide();
             }
         });
+    });
+
+    $(function () {
+        $("#dialog-2").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: [{
+                text: "Potwierdź",
+                click: () => {
+                    $("#full_user_data_form").submit();
+                }
+            }, ]
+        });
+
+        $("#create_user_btn").on("click", () => {
+            $("#dialog-2").dialog("open");
+        })
     });
 </script>
