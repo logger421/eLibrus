@@ -1,0 +1,51 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Wiadomości</h2>
+        </legend>
+        <div class="messages-wrapper">
+            <form action="/<%= current_role %>/send_message" method="POST" id="post_message" name="msg">
+                <div class="pair">
+                    <label for="msgReceiver">Odbiorca (adres email)</label>
+                    <input list="emails" type="text" id="msgReceiver" value="<%= nadawca_email %>" name="odbiorca" autocomplete="off">
+                    <datalist id="emails">
+                        <% for(var i=0; i<avilable_ppl.length; i++) { %>
+                            <option sub_id="" value="<%= avilable_ppl[i].email %>">
+                        <% } %>
+                    </datalist>
+                </div>
+                <div class="pair">
+                    <label for="msgtitle">Tytuł</label>
+                    <input type="text" id="msgTitle" autocomplete="off" name="tytul">
+                </div>
+                <div class="pair">
+                    <label for="msgText">Treść wiadomości</label>
+                    <textarea id="msgText" rows="10" autocomplete="off" name="tresc"></textarea>
+                </div>
+            </form>
+            <div class="messages-bttn-decisions-wrapper">
+                <div class="left-bttn">
+                    <button onclick="location.href='/<%= current_role %>/messages'"
+                    class="messages-bttn-decisions">Cofnij</button>
+                </div>
+                <div class="right-bttn"><button id="submit_message"
+                        class="messages-bttn-decisions">Wyślij</button></div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <%- include('../templates/messages.ejs') %>
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    <!-- TODO TODO TODO TODO  my part-->
+    $("#submit_message").on('click', function () {
+        $("#post_message").submit();
+    })
+</script>
+
+<%- include ../templates/footer %>

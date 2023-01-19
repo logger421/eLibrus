@@ -26,15 +26,16 @@ const notification_student = async (student_id, subject_id) => {
             replacements: [student_id]
     });
 
-    await sequelize.query(`
-        INSERT INTO wiadomosc
-        (\`nadawca_id\`,\`odbiorca_id\`,\`typ\`,\`data\`,\`tytul\`, \`odczytana\`, \`usunieta\`)
-        VALUES
-        (?, ?, '2', CURDATE(), ?, 0, 0)
-        `, {
-        replacements: [parent[0].user_id, parent[0].user_id, `Oceny dziecka ${parent[0].imie} ${parent[0].nazwisko} uległy zmianie`]
-    });
-
+    if (parent.length > 0) {
+        await sequelize.query(`
+            INSERT INTO wiadomosc
+            (\`nadawca_id\`,\`odbiorca_id\`,\`typ\`,\`data\`,\`tytul\`, \`odczytana\`, \`usunieta\`)
+            VALUES
+            (?, ?, '2', CURDATE(), ?, 0, 0)
+            `, {
+            replacements: [parent[0].user_id, parent[0].user_id, `Oceny dziecka ${parent[0].imie} ${parent[0].nazwisko} uległy zmianie`]
+        });
+    }
 
 };
 

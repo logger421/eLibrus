@@ -4,7 +4,12 @@ var router = express.Router();
 const passport = require('passport');
 const { sequelize } = require('../models');
 
-// home page unauthenticated
+/*
+=================
+NOT LOGGED IN HOME PAGE 
+=================
+*/
+
 router.get('/', async (req, res) => {
 	const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia
@@ -14,7 +19,12 @@ router.get('/', async (req, res) => {
 	res.render('general/home', { notes });
 });
 
-// login page get / post
+/*
+=================
+NOT LOGGED IN LOGIN 
+=================
+*/
+
 router.get('/login', (req, res) => {
 	res.render('general/login');
 });
@@ -29,7 +39,12 @@ router.post('/login', (req, res, next) => {
 	})(req, res, next);
 });
 
-// remind password page get / post
+/*
+=================
+NOT LOGGED IN REMIND PASSWORD 
+=================
+*/
+
 router.get('/remind_password', (req, res) => {
 	res.render('general/remind_password');
 });
@@ -46,6 +61,13 @@ router.post('/remind_password', (req, res) => {
 
 	res.redirect('/home/remind_password');
 });
+
+
+/*
+=================
+LOGGED IN LOGOUT 
+=================
+*/
 
 router.get('/logout', (req, res, next) => {
 	req.logout((err) => {

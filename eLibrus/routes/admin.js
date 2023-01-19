@@ -5,6 +5,12 @@ const { uzytkownik } = require("../models");
 const change_password = require("../helpers/change_pass");
 const link_student_parent = require("../helpers/link_student_parent");
 
+/*
+=================
+ADMIN HOME PAGE 
+=================
+*/
+
 router.get("/", async (req, res) => {
     const [notes, meta] = await sequelize.query(`
 		SELECT tytul, tresc FROM ogloszenia
@@ -16,6 +22,12 @@ router.get("/", async (req, res) => {
         current_path: "admin",
     });
 });
+
+/*
+=================
+ADMIN CHANGE PASSWORD
+=================
+*/
 
 router.get("/change_password", (req, res) => {
     res.render("general/change_password", {
@@ -44,6 +56,12 @@ router.post('/change_password', async (req, res) => {
     res.redirect("/admin/change_password");
 });
 
+/*
+=================
+ADMIN ADD ANOUNCEMENT 
+=================
+*/
+
 router.get("/add_announcement", (req, res) => {
     res.render("admin/add_announcement", {
         user: req.user,
@@ -69,6 +87,12 @@ router.post("/add_announcement", async (req, res) => {
 
     res.redirect("/admin/add_announcement");
 });
+
+/*
+=================
+ADMIN MANAGE SUBJECTS 
+=================
+*/
 
 router.get("/manage_subjects", (req, res) => {
     res.render("admin/manage_subjects", {
@@ -177,6 +201,12 @@ router.post("/manage_subjects/delete_subject", async (req, res) => {
     }
     res.redirect("/admin/manage_subjects/delete_subject");
 });
+
+/*
+=================
+ADMIN MANAGE CLASSES 
+=================
+*/
 
 router.get("/manage_classes", (req, res) => {
     res.render("admin/manage_classes", {
@@ -449,6 +479,12 @@ router.post("/manage_classes/edit_students", async (req, res) => {
 
     res.redirect("/admin/manage_classes/edit_students");
 });
+
+/*
+=================
+ADMIN MANAGE USERS 
+=================
+*/
 
 router.get("/manage_users", async (req, res) => {
     console.log(req.query);

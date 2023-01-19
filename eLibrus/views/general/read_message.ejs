@@ -1,0 +1,45 @@
+<%- include ../templates/header %>
+<%- include ../templates/navbar %>
+
+<!-- reszta -->
+<!-- TODO TODO TODO TODO  my part-->
+<div class="main-body-container">
+    <fieldset>
+        <legend>
+            <h2>Wiadomości</h2>
+        </legend>
+        <div class="messages-wrapper">
+            <form>
+                <div class="pair">
+                    <label for="msgReceiver">Nadawca</label>
+                    <textarea name="" id="msgReceiver" cols="30" rows="1"
+                        readonly="readonly"><%= nadawca.imie%> <%= nadawca.nazwisko %> (<%= nadawca.email %>)</textarea>
+                </div>
+                <div class="pair">
+                    <label for="msgtitle">Tytuł</label>
+                    <textarea name="" id="msgTitle" cols="30" rows="1"
+                        readonly="readonly" ><%= message.tytul %></textarea>
+                </div>
+                <div class="pair">
+                    <label for="msgText">Treść wiadomości</label>
+                    <textarea id="msgText" rows="10"
+                        readonly="readonly"><%= message.tresc %></textarea>
+                </div>
+            </form>
+            <div class="messages-bttn-decisions-wrapper">
+                <div class="left-bttn">
+                    <button onclick="location.href='/<%= current_role %>/messages'"
+                        class="messages-bttn-decisions">Cofnij</button>
+                </div>
+                <div class="right-bttn">
+                    <% if (current_role != 'parent') { %>
+                        <button onclick="location.href='/<%= current_role %>/send_message?n=<%= nadawca.user_id %>'"
+                            class="messages-bttn-decisions">Odpowiedz</button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<%- include ../templates/footer %>
