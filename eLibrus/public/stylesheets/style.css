@@ -112,6 +112,8 @@ body {
     background-color: var(--button-color);
     color: var(--button-font-color);
     font-size: 1.2em;
+    border-radius: 2em;
+    cursor: pointer;
 }
 
 .header-container button:last-child {
@@ -136,6 +138,7 @@ body {
     height: 5rem;
     background-color: var(--button-color);
     color: var(--button-font-color);
+    transition: 0.5s ease-in-out;
 }
 
 .navbar-container>*:last-child {
@@ -149,7 +152,20 @@ body {
 
 .navbar-container .active,
 .header-container .active {
-    text-decoration: underline;
+    font-weight: bold;
+    text-decoration: underline overline;
+    text-underline-offset: 5px;
+    animation: underline-overline 1s ease-in-out;
+}
+
+@keyframes underline-overline {
+    0% {
+        text-decoration: none;
+    }
+
+    100% {
+        text-decoration: underline overline;
+    }
 }
 
 /* main body container styling */
@@ -905,7 +921,7 @@ th {
     justify-content: space-evenly !important;
 }
 
-.teacher-form > * {
+.teacher-form>* {
     width: fit-content;
     max-height: 50px;
     margin: 0 0 5px 10px !important;
@@ -922,4 +938,38 @@ th {
 
 .main-body-container button {
     padding: 1rem !important;
+    border-radius: 1.5em;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 0.75em;
+    height: 0.75em;
+    outline: 0.15em solid currentColor;
+    border-radius: 50%;
+    position: relative;
+}
+
+input[type="radio"]::before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background-color: var(--button-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -0.25em;
+    margin-left: -0.25em;
+    transform: scale(0);
+    transition: transform 0.1s ease-in-out;
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
 }
