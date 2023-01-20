@@ -49,6 +49,7 @@
                     <td> <%= days[date].stats.U %> </td>
                     <td>
                         <input 
+                            class="justify_attendance_checkbox"
                             form="justify_attendance"
                             type="checkbox" 
                             name="justify" 
@@ -110,19 +111,21 @@
               {
                 text: "Wyślij",
                 click: () => {
-                    $("#justify_attendance").submit();
+                    if ($("#justift-note-textarea").val().length > 1)
+                        $("#justify_attendance").submit();
                 }
               },  
             ]
         });
         $("#dialog-1").html(`
             <p>Jaki był powód nieobecności?</p>
-            <textarea cols="30" rows="10"></textarea>
+            <textarea cols="30" rows="10" id="justift-note-textarea"></textarea>
         `);
     })
 
     $("#justify_attendance_button").on('click', function () {
-        $("#dialog-1").dialog("open");
+        if ($(".justify_attendance_checkbox").toArray().some(checkbox => checkbox.checked == true))
+            $("#dialog-1").dialog("open");
     })
 </script>
 
