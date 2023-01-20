@@ -1030,6 +1030,25 @@ input[type="radio"]:hover {
     }
 }
 
+input[type="radio"]:not(:hover) {
+    animation: outline-pulse-reverse 100ms;
+    outline: 2px solid var(--button-color);
+}
+
+@keyframes outline-pulse-reverse {
+    0% {
+        outline: 4px solid var(--button-color);
+    }
+
+    50% {
+        outline: 3px solid var(--button-color);
+    }
+
+    100% {
+        outline: 2px solid var(--button-color);
+    }
+}
+
 input[type="checkbox"] {
     appearance: none;
     background-color: #fff;
