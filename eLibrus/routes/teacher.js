@@ -77,7 +77,9 @@ router.get('/read_message', async function(req, res) {
 	const message_id = req.query.message_id;
 	const message = await wiadomosc.findByPk(message_id);
 	const nadawca = await uzytkownik.findByPk(message.nadawca_id);
-	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id=${message_id}`);
+	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id= ?`,{
+        replacements: [message_id]
+    });
 	res.render('general/read_message', {
 		user: req.user,
 		message: message,
@@ -127,8 +129,10 @@ router.post('/send_message', async function(req, res) {
         
         await sequelize.query(`
 			INSERT INTO wiadomosc (nadawca_id, odbiorca_id, typ, data, tytul, tresc, odczytana, usunieta) VALUES
-			(${req.user.dataValues.user_id}, ${odbiorca.user_id}, 1, "${data}", "${req.body["tytul"]}", "${req.body["tresc"]}", 0, 0)
-		`);
+			(?, ?, 1, ?, ?, ?, 0, 0)
+		`,{
+            replacements: [req.user.dataValues.user_id, odbiorca.user_id, data, req.body["tytul"], req.body["tresc"]]
+        });
 		res.redirect('/teacher/messages');
 	}
 });
@@ -277,8 +281,10 @@ router.get("/attendance", async function (req, res) {
         FROM zajecia
         NATURAL JOIN przedmioty
         NATURAL JOIN data_zajec
-        WHERE prowadzacy_id = ${user_id} AND klasa_id = ${selected_class} AND dzien="${selected_day}"
-    `);
+        WHERE prowadzacy_id = ? AND klasa_id = ? AND dzien= ?
+    `, {
+        replacements: [user_id, selected_class, selected_day]
+    });
 
     const temp = new Set();
     const filtered_subjects = subjects.filter((el) => {
@@ -295,8 +301,9 @@ router.get("/attendance", async function (req, res) {
     }
 
     const [classes_numbers] = await sequelize.query(
-        `SELECT * FROM zajecia NATURAL JOIN data_zajec WHERE klasa_id=${selected_class} AND dzien="${selected_day}" AND zajecia_id=${selected_subject}`
-    );
+        `SELECT * FROM zajecia NATURAL JOIN data_zajec WHERE klasa_id= ? AND dzien= ? AND zajecia_id= ?`, {
+            replacements: [selected_class, selected_day, selected_subject]
+    });
 
     // TODO: fix the case of no classes numbers
     let selected_classes_number = req.query.classes_number;
@@ -306,12 +313,14 @@ router.get("/attendance", async function (req, res) {
     }
 
     const [frekwencja] = await sequelize.query(
-        `SELECT * FROM frekwencja WHERE zajecia_id=${selected_subject} AND data_zajec="${selected_date}" AND nr_lekcji=${selected_classes_number}`
-    );
+        `SELECT * FROM frekwencja WHERE zajecia_id=? AND data_zajec= ? AND nr_lekcji= ?`,{
+            replacements: [selected_subject, selected_date, selected_classes_number]
+    });
 
     const [students] = await sequelize.query(
-        `SELECT * FROM uzytkownik WHERE klasa_id=${selected_class}`
-    );
+        `SELECT * FROM uzytkownik WHERE klasa_id=${selected_class}`, {
+            replacements: [selected_class]
+    });
 
     // every student will have a field frekwencja from now on
     const studentsWithAttendance = students.map((student) => {
@@ -398,11 +407,11 @@ router.get("/grades", async function (req, res) {
         for (var i = 0; i < user_id.length; i++) {
             await sequelize.query(`
                 INSERT INTO oceny 
-                (\`ocena\`, \`user_id\`, \`zajecia_id\`)
+                (ocena, user_id, zajecia_id)
                 VALUES 
                 (?, ?, ?)
-                `, {
-                    replacements: [grade_value, user_id[i], subject_id]
+            `, {
+                replacements: [grade_value, user_id[i], subject_id]
             });
             await notification_student(user_id[i], subject_id);
         }
@@ -419,8 +428,10 @@ router.get("/grades", async function (req, res) {
     const [students, meta_students] = await sequelize.query(`
         SELECT user_id, imie, nazwisko FROM zajecia 
         NATURAL JOIN uzytkownik
-        WHERE zajecia_id = ${subject_id}
-    `);
+        WHERE zajecia_id = ?
+    `, {
+        replacements: [subject_id]
+    });
 
     let students_grades = [];
 
@@ -428,9 +439,11 @@ router.get("/grades", async function (req, res) {
         const [temp_grades, metadata_oceny] = await sequelize.query(`
             SELECT ocena FROM oceny 
             NATURAL JOIN zajecia NATURAL JOIN uzytkownik 
-            WHERE user_id = ${students[i].user_id} 
-            AND zajecia_id = ${subject_id}
-        `);
+            WHERE user_id = ?
+            AND zajecia_id = ?
+        `, {
+            replacements: [students[i].user_id, students[i].user_id]
+        });
         const grades = temp_grades.map((grade) => {
             return grade.ocena;
         });
@@ -456,14 +469,18 @@ router.get("/grades/edit_grades/:subject_id/:user_id", async (req, res) => {
     const [result, meta] = await sequelize.query(`
         SELECT user_id, zajecia_id, imie, nazwisko, klasa_id, nazwa FROM uzytkownik
         NATURAL JOIN zajecia natural join przedmioty
-        WHERE user_id = ${user_id} AND zajecia_id = ${subject_id}
-    `);
+        WHERE user_id = ? AND zajecia_id = ?
+    `, {
+        replacements: [user_id, subject_id]
+    });
 
     const [grades, meta_grades] = await sequelize.query(`
         SELECT ocena_id, ocena FROM uzytkownik 
         NATURAL JOIN oceny 
-        WHERE user_id = ${user_id} AND zajecia_id = ${subject_id}
-    `);
+        WHERE user_id = ? AND zajecia_id = ?
+    `, {
+        replacements: [user_id, subject_id]
+    });
 
     let avg = 0;
     if (grades.length > 0) {
@@ -491,16 +508,20 @@ router.post("/grades/edit_grades", async (req, res) => {
         if (result[key] == "remove") {
             await sequelize.query(`
                 DELETE FROM oceny
-                WHERE ocena_id = ${key}
-            `);
+                WHERE ocena_id = ?
+            `, {
+                replacements: [key]
+            });
             changed = 1;
         } else if (key == "add") {
             if (result[key] > 0) {
                 await sequelize.query(`
                     INSERT oceny
-                    (\`ocena\`, \`user_id\`, \`zajecia_id\`)
-                    values(${result[key]}, ${result["user_id"]}, ${result["subject_id"]})
-                `);
+                    (ocena, user_id, zajecia_id)
+                    values(?, ?, ?)
+                `, {
+                    replacements: [result[key], result["user_id"], result["subject_id"]]
+                });
                 changed = 1;
             }
         } else if (/^[0-9]+/.test(key)) {
@@ -508,7 +529,9 @@ router.post("/grades/edit_grades", async (req, res) => {
                 UPDATE oceny
                 SET ocena = ${result[key]}
                 WHERE ocena_id = ${key}
-            `);
+            `,{
+                replacements: [result[key], key]
+            });
             changed = 1;
         }
     }
@@ -532,8 +555,9 @@ router.get("/schedule", async function (req, res) {
         `SELECT nazwa, dzien, nr_lekcji FROM zajecia 
         NATURAL JOIN data_zajec NATURAL JOIN przedmioty INNER JOIN uzytkownik
         ON prowadzacy_id = user_id 
-        WHERE prowadzacy_id = ${req.user.user_id}`
-    );
+        WHERE prowadzacy_id = ?`, {
+            replacements: [req.user.user_id]
+    });
 
     let dni = ["Poniedzialek", "Wtorek", "Sroda", "Czwartek", "Piatek"];
     let schedule = {
@@ -577,8 +601,10 @@ router.get("/homeworks", async function (req, res) {
     const [homeworks, metadata] = await sequelize.query(`
     SELECT zajecia.klasa_id, termin_oddania, tytul, opis, nazwa, zadanie_id FROM zadanie_domowe 
     NATURAL JOIN zajecia NATURAL JOIN przedmioty INNER JOIN uzytkownik AS prowadzacy 
-    ON prowadzacy.user_id = prowadzacy_id WHERE prowadzacy.user_id = ${req.user.dataValues.user_id}
-    `);
+    ON prowadzacy.user_id = prowadzacy_id WHERE prowadzacy.user_id = ?
+    `, {
+        replacements: [req.user.dataValues.user_id]
+});
     const classes = await getClass(req.user.dataValues.user_id);
     let class_id = 0;
     if (classes.length > 0) class_id = classes[0].klasa_id;
@@ -610,10 +636,12 @@ router.post("/homeworks", async function (req, res) {
     if (title != "" && description != "" && deadline != "") {
         await sequelize.query(`
             INSERT INTO zadanie_domowe 
-            (\`zajecia_id\`, \`termin_oddania\`, \`tytul\`, \`opis\`)
+            (zajecia_id, termin_oddania, tytul, opis)
             VALUES 
-            (${subject_id}, '${deadline}', '${title}', '${description}')
-        `);
+            (?, ?, ?, ?)
+        `, {
+            replacements: [subject_id, deadline, title, description]
+    });
         notification_class(subject_id);
         req.flash('success_message', 'Praca domowa została dodana');
     }
@@ -629,8 +657,10 @@ router.post('/homeworks/delete_homework', async (req, res) => {
     console.log(req.body);
     await sequelize.query(`
         DELETE FROM zadanie_domowe 
-        WHERE zadanie_id = ${req.body.to_delete}
-    `);
+        WHERE zadanie_id = ?
+    `, {
+        replacements: [req.body.to_delete]
+});
     req.flash('success_message', 'Praca domowa została usunięta');
     res.redirect('/teacher/homeworks');
 });
