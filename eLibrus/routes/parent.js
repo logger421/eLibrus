@@ -97,7 +97,9 @@ router.get('/read_message', async function(req, res) {
 	const message_id = req.query.message_id;
 	const message = await wiadomosc.findByPk(message_id);
 	const nadawca = await uzytkownik.findByPk(message.nadawca_id);
-	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id=${message_id}`);
+	sequelize.query(`UPDATE wiadomosc SET odczytana=1 WHERE wiadomosc_id= ?`, {
+        replacements: [message_id]
+    });
 	res.render('general/read_message', {
 		user: req.user,
         students: req.students,
@@ -349,8 +351,10 @@ router.post("/justify_attendance", async function (req, res) {
         for (var i = 0; i < justify.length; i++) {
             await sequelize.query(`
 					UPDATE frekwencja SET frekwencja = 'U' 
-					WHERE frekwencja = 'N' AND user_id = ${req.cookies.current_student} AND data_zajec = '${justify[i]}'
-				`);
+					WHERE frekwencja = 'N' AND user_id = ? AND data_zajec = ?
+				`, {
+                    replacements: [req.cookies.current_student, justify[i]]
+                });
             changed = 1;
         }
     }
