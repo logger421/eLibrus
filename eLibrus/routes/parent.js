@@ -343,6 +343,9 @@ router.post("/justify_attendance", async function (req, res) {
         if (typeof req.body["justify"] == "string") {
             justify = [req.body["justify"]];
         }
+        else {
+            justify = req.body["justify"];
+        }
         for (var i = 0; i < justify.length; i++) {
             await sequelize.query(`
 					UPDATE frekwencja SET frekwencja = 'U' 

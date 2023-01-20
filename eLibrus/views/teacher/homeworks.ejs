@@ -51,14 +51,15 @@
                     <th>Termin</th>
                     <th>Treść</th>
                 </tr>
+                <form action="/teacher/homeworks/delete_homework" method="POST" id="form_delete_homework">
+                    <input type="hidden" name="to_delete" id="input_to_delete">
+                </form>
                 <% for(var i=0; i<homeworks.length; i++) { %>
                     <tr>
-                        <form action="/teacher/homeworks/delete_homework" method="POST" id="form_delete_homework">
-                            <td>
-                                <button id="delete_homework_btn" type="button" style="padding: .5rem; width: 100%;">Usuń</button>
-                            </td>
-                            <input type="hidden" name="to_delete" value="<%= homeworks[i].zadanie_id %>">
-                        </form>
+                        <td>
+                            <button id="delete_homework_btn" style="padding: .5rem; width: 100%;" 
+                            onclick="$('#input_to_delete').val('<%= homeworks[i].zadanie_id %>'); $('#dialog-2').dialog('open');">Usuń</button>
+                        </td>
                         <td><%= homeworks[i].klasa_id %></td>
                         <td><%= homeworks[i].nazwa %></td>
                         <td><%= homeworks[i].tytul %></td>
@@ -113,11 +114,6 @@
               },  
             ]
         });
-
-        $("#delete_homework_btn").on('click', () => {
-            $("#dialog-2").dialog('open');
-        })
-
     });
 
     $("#add_homework_button").on('click', function () {
