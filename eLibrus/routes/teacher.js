@@ -104,7 +104,8 @@ router.get('/send_message', async function(req, res) {
 			user: req.user,
 			nadawca_email: nadawca.email,
             current_path: 'messages',
-            current_role: 'teacher'
+            current_role: 'teacher',
+            count_notif: await count_notif(req.user.dataValues.user_id)
 		});
 	} else {
 		res.render('general/send_message', {
