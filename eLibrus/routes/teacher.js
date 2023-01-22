@@ -100,12 +100,14 @@ router.get('/send_message', async function(req, res) {
     
     if (nadawca_id) {
 		const nadawca = await uzytkownik.findByPk(nadawca_id);
-		res.render('general/send_message', {
-			user: req.user,
-			nadawca_email: nadawca.email,
-            current_path: 'messages',
-            current_role: 'teacher'
-		});
+		res.render("general/send_message", {
+            user: req.user,
+            nadawca_email: nadawca.email,
+            current_path: "messages",
+            current_role: "teacher",
+            avilable_ppl: all_students_and_parents,
+            count_notif: await count_notif(req.user.dataValues.user_id),
+        });
 	} else {
 		res.render('general/send_message', {
 			user: req.user,
@@ -442,7 +444,7 @@ router.get("/grades", async function (req, res) {
             WHERE user_id = ?
             AND zajecia_id = ?
         `, {
-            replacements: [students[i].user_id, students[i].user_id]
+            replacements: [students[i].user_id, subject_id]
         });
         const grades = temp_grades.map((grade) => {
             return grade.ocena;
