@@ -34,10 +34,11 @@
                         <select name="classes_number" id="attendance_classes_number" , form="attendance_class">
                             <% classes_numbers.forEach((classes_number) => { %>
                             <% if (classes_number.nr_lekcji == class_number) { %>
-                            <option value="<%= classes_number.nr_lekcji %>" selected><%= classes_number.nr_lekcji %>
+                            <option value="<%= classes_number.nr_lekcji %>" selected>Numer lekcji: <%= classes_number.nr_lekcji %>
                             </option>
                             <% } else { %>
-                            <option value="<%= classes_number.nr_lekcji %>"><%= classes_number.nr_lekcji %></option>
+                            <option value="<%= classes_number.nr_lekcji %>">Numer lekcji: <%= classes_number.nr_lekcji %>
+                            </option>
                             <% } %>
                             <% }) %>
                         </select>
